@@ -124,7 +124,15 @@ REST_FRAMEWORK = {
 
 DJOSER = {
     'LOGIN_FIELD' : 'email',
+    'USER_CREATE_PASSWORD_RETYPE' : True,
+    'SERIALIZERS' : {
+        'user_create' : 'accounts.serializers.UserCreateSerializer',
+        'user' : 'accounts.serializers.UserCreateSerializer',
+        #'current_user' : 'accounts.serializers.CurrentUserSerializer',
+    },
 }
+
+AUTH_USER_MODEL = 'accounts.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/

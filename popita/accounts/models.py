@@ -7,4 +7,4 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
 
     def get_username(self):
-        return self.name
+        return self.email
