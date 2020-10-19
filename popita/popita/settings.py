@@ -45,8 +45,7 @@ INSTALLED_APPS = [
 
     'accounts.apps.AccountsConfig',
     'location.apps.LocationConfig',
-    'messenger.apps.MessengerConfig',
-
+    'chat.apps.ChatConfig',
 ]
 
 MIDDLEWARE = [
