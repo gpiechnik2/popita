@@ -1,5 +1,6 @@
-from django.contrib.auth.models import User
+from accounts.models import User
 from .models import Message, Messages
+from rest_framework import serializers
 
 class MessagesSerializer(serializers.ModelSerializer):
 
