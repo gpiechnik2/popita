@@ -10,9 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PopitaApp">
-
-        <activity android:name=".Login_choices"></activity>
-
+        <activity android:name=".Login_with_email"></activity>
+        <activity android:name=".Login_choices" />
         <activity
             android:name=".Splash_screen"
             android:theme="@style/Theme.AppCompat.NoActionBar">
@@ -23,7 +22,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-
     </application>
 
 </manifest>

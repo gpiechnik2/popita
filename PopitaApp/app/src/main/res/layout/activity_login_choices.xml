@@ -37,8 +37,8 @@
         android:layout_height="65dp"
         android:layout_marginTop="40dp"
 
-        android:drawableStart="@drawable/ic_back_icon_03"
-        android:drawableLeft="@drawable/ic_back_icon_03"
+        android:drawableStart="@drawable/ic_x_icon_03"
+        android:drawableLeft="@drawable/ic_x_icon_03"
         android:gravity="center"
         android:layout_gravity="center"
         android:padding="16.5dp"

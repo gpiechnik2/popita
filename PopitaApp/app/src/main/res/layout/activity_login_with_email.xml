@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Login_with_email"
+    android:background="@color/orange">
+
+    <ImageView
+    android:id="@+id/imageView4"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_margin="30dp"
+    app:srcCompat="@drawable/ic_log_with_email_02" />
+
+    <Button
+        android:id="@+id/back_btn"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="30dp"
+
+        android:drawableStart="@drawable/ic_x_icon_03"
+        android:drawableLeft="@drawable/ic_x_icon_03"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:padding="16.5dp"
+
+        android:background="@drawable/button_background_back"
+        android:fontFamily="@font/montserrat_extrabold"
+        android:textColor="@color/white"
+        android:textSize="46dp"
+        android:clickable="true"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/card_login_with_email"
+            >
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="20dp"
+
+                android:fontFamily="@font/montserrat_extrabold"
+                android:text="Login"
+                android:textColor="@color/black"
+                android:textSize="24dp"
+                android:gravity="left" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="3"
+            android:background="@drawable/card_login_with_email_second"
+            android:layout_alignParentBottom="true"
+
+            >
+
+            <EditText
+                android:id="@+id/email_address"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="26dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/input_background"
+                android:paddingLeft="20dp"
+
+                android:drawableStart="@drawable/ic_login_icon_03"
+                android:drawableLeft="@drawable/ic_login_icon_03"
+                android:gravity="left|center"
+                android:layout_gravity="center"
+                android:drawablePadding="10dp"
+
+                android:fontFamily="@font/montserrat_medium"
+                android:text="Email adress"
+                android:textColor="@color/black"
+                android:textSize="21dp"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/input_background"
+                android:paddingLeft="20dp"
+
+                android:drawableStart="@drawable/ic_password_icon_03"
+                android:drawableLeft="@drawable/ic_password_icon_03"
+                android:gravity="left|center"
+                android:layout_gravity="center"
+                android:drawablePadding="10dp"
+
+                android:fontFamily="@font/montserrat_medium"
+                android:text="●●●●●●●●●"
+                android:textColor="@color/black"
+                android:textSize="21dp"
+                android:inputType="text" />
+
+            <Button
+                android:id="@+id/sign_in_btn"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_weight="10"
+                android:layout_marginBottom="32dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:gravity="center"
+
+                android:background="@drawable/button_background"
+                android:fontFamily="@font/montserrat_extrabold"
+                android:text="Sign in"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="21dp"
+                android:clickable="true"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>
