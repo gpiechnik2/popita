@@ -16,20 +16,6 @@
     app:srcCompat="@drawable/ic_log_with_email_02" />
 
     <Button
-        android:id="@+id/back_btn_back"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_marginTop="45dp"
-        android:layout_marginLeft="30dp"
-
-        android:background="@drawable/button_background_back_second"
-        android:fontFamily="@font/montserrat_extrabold"
-        android:textColor="@color/white"
-        android:textSize="40dp"
-        android:clickable="false"
-        />
-
-    <Button
         android:id="@+id/back_btn"
         android:layout_width="65dp"
         android:layout_height="65dp"
@@ -105,7 +91,7 @@
                 android:drawableLeft="@drawable/ic_login_icon_03"
                 android:gravity="left|center"
                 android:layout_gravity="center"
-                android:drawablePadding="10dp"
+                android:drawablePadding="12dp"
 
                 android:fontFamily="@font/montserrat_medium"
                 android:text="Email adress"
@@ -128,7 +114,7 @@
                 android:drawableLeft="@drawable/ic_password_icon_03"
                 android:gravity="left|center"
                 android:layout_gravity="center"
-                android:drawablePadding="10dp"
+                android:drawablePadding="12dp"
 
                 android:fontFamily="@font/montserrat_medium"
                 android:text="●●●●●●●●●"

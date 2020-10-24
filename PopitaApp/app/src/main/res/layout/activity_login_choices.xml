@@ -19,19 +19,6 @@
         app:srcCompat="@drawable/ic_login_choice_02" />
 
     <Button
-        android:id="@+id/back_btn_back"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_marginTop="45dp"
-
-        android:background="@drawable/button_background_back_second"
-        android:fontFamily="@font/montserrat_extrabold"
-        android:textColor="@color/white"
-        android:textSize="40dp"
-        android:clickable="false"
-        />
-
-    <Button
         android:id="@+id/back_btn"
         android:layout_width="65dp"
         android:layout_height="65dp"

@@ -9,26 +9,14 @@
     android:paddingLeft="30dp"
     android:paddingRight="30dp"
     android:paddingBottom="32dp"
+    android:paddingTop="32dp"
     >
-
-    <Button
-        android:id="@+id/back_btn_back"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_marginTop="45dp"
-
-        android:background="@drawable/button_background_back_second"
-        android:fontFamily="@font/montserrat_extrabold"
-        android:textColor="@color/white"
-        android:textSize="40dp"
-        android:clickable="false"
-        />
 
     <Button
         android:id="@+id/back_btn"
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="13dp"
 
         android:drawableStart="@drawable/ic_x_icon_03"
         android:drawableLeft="@drawable/ic_x_icon_03"
@@ -42,6 +30,119 @@
         android:textSize="46dp"
         android:clickable="true"
         />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        >
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView"
+            android:layout_marginBottom="5dp"
+
+            android:fontFamily="@font/montserrat_extrabold"
+            android:text="Sign up"
+            android:textColor="@color/black"
+            android:textSize="36dp"
+            />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView"
+
+            android:fontFamily="@font/montserrat_medium"
+            android:text="You have chance to create new account if you really want to."
+            android:textColor="@color/black"
+            android:textSize="17dp"
+            />
+
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:background="@drawable/input_background"
+            android:paddingLeft="20dp"
+            android:layout_marginTop="25dp"
+
+            android:drawableStart="@drawable/ic_login_icon_03"
+            android:drawableLeft="@drawable/ic_login_icon_03"
+            android:gravity="left|center"
+            android:layout_gravity="center"
+            android:drawablePadding="12dp"
+
+            android:fontFamily="@font/montserrat_medium"
+            android:text="Full name"
+            android:textColor="@color/black"
+            android:textSize="21dp"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:background="@drawable/input_background"
+            android:paddingLeft="20dp"
+            android:layout_marginTop="20dp"
+
+            android:drawableStart="@drawable/ic_email_icon_03"
+            android:drawableLeft="@drawable/ic_email_icon_03"
+            android:gravity="left|center"
+            android:layout_gravity="center"
+            android:drawablePadding="12dp"
+
+            android:fontFamily="@font/montserrat_medium"
+            android:text="Email address"
+            android:textColor="@color/black"
+            android:textSize="21dp"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:background="@drawable/input_background"
+            android:paddingLeft="20dp"
+            android:layout_marginTop="20dp"
+
+            android:drawableStart="@drawable/ic_password_icon_03"
+            android:drawableLeft="@drawable/ic_password_icon_03"
+            android:gravity="left|center"
+            android:layout_gravity="center"
+            android:drawablePadding="12dp"
+
+            android:fontFamily="@font/montserrat_medium"
+            android:text="●●●●●●●●●"
+            android:textColor="@color/black"
+            android:textSize="21dp"
+            android:inputType="text" />
+
+        <Button
+            android:id="@+id/sign_up_btn"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:gravity="center"
+            android:paddingBottom="5dp"
+            android:layout_marginTop="25dp"
+
+            android:background="@drawable/button_background_signup"
+            android:fontFamily="@font/montserrat_extrabold"
+            android:text="Sign up"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="21dp"
+            android:clickable="true"
+            />
+
+
+
+    </LinearLayout>
 
 
 </RelativeLayout>
