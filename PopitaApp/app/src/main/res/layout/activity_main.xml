@@ -7,9 +7,9 @@
     tools:context=".MainActivity"
     android:paddingLeft="30dp"
     android:paddingRight="30dp"
-    android:paddingBottom="25dp"
+    android:paddingBottom="32dp"
     android:paddingTop="40dp"
-
+    android:background="@color/white"
     >
 
     <ImageView
@@ -38,6 +38,7 @@
             android:layout_height="65dp"
             android:layout_marginRight="10dp"
             android:layout_weight="10"
+            android:gravity="center"
 
 
             android:background="@drawable/button_background_white"
@@ -53,6 +54,7 @@
             android:layout_height="65dp"
             android:layout_marginLeft="10dp"
             android:layout_weight="10"
+            android:gravity="center"
 
             android:background="@drawable/button_background"
             android:fontFamily="@font/montserrat_extrabold"
@@ -67,9 +69,11 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView"
+        android:layout_above="@+id/textView2"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
 
-        android:layout_marginTop="20dp"
         android:fontFamily="@font/montserrat_extrabold"
         android:text="Login or register first"
         android:textColor="@color/black"
@@ -80,9 +84,10 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView"
+        android:layout_above="@+id/firstLayout"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginBottom="40dp"
 
         android:fontFamily="@font/montserrat_medium"
         android:text="You don’t think you should login first and behave like human not robot."

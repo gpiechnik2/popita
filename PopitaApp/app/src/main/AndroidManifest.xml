@@ -11,6 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PopitaApp">
 
+        <activity android:name=".Login_choices"></activity>
 
         <activity
             android:name=".Splash_screen"
@@ -21,8 +22,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
 
-</application>
+    </application>
 
 </manifest>
