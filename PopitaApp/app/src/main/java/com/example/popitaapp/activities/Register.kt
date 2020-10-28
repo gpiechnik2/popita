@@ -73,10 +73,10 @@ class Register : AppCompatActivity() {
                 "}"
 
         val jsonObject = JSONObject()
-        jsonObject.put("name", "greg")
-        jsonObject.put("email", "emailme@onet.pl")
+        jsonObject.put("first_name", "greg")
+        jsonObject.put("email", "emailm2e@onet.pl")
         jsonObject.put("password", "J493jirg")
-        jsonObject.put("password2", "J493jirg")
+        jsonObject.put("re_password", "J493jirg")
 
         val body = jsonObject.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
 
@@ -88,6 +88,7 @@ class Register : AppCompatActivity() {
                 .post(body)
                 .build()
         println("DODOD")
+        println(request)
         okHttpClient.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 println("XXcccccc")
