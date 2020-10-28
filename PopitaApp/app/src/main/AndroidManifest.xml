@@ -3,26 +3,79 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.popitaapp">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PopitaApp">
-        <activity android:name=".Register"></activity>
-        <activity android:name=".Login_with_email" />
-        <activity android:name=".Login_choices" />
+        android:theme="@style/Theme.PopitaApp"
+        android:usesCleartextTraffic="true"
+
+
+        >
+
+        <!-- Splash screen -->
         <activity
-            android:name=".Splash_screen"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:name=".activities.Splash_screen"
+            android:theme="@style/AppTheme.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+
+        <!-- Main Activity -->
+        <activity
+            android:name=".activities.MainActivity"
+            android:theme="@style/AppTheme.FullScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Register -->
+        <activity
+            android:name=".activities.Register"
+            android:theme="@style/AppTheme.FullScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Login with email -->
+        <activity
+            android:name=".activities.Login_with_email"
+            android:theme="@style/AppTheme.FullScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Login choices -->
+        <activity
+            android:name=".activities.Login_choices"
+            android:theme="@style/AppTheme.FullScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
     </application>
+
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
 
 </manifest>

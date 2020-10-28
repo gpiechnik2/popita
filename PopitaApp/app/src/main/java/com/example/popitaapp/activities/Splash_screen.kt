@@ -1,4 +1,4 @@
-package com.example.popitaapp
+package com.example.popitaapp.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,8 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import android.os.Handler
 import android.os.Looper
-
-
+import com.example.popitaapp.R
 
 fun static() {
     AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)

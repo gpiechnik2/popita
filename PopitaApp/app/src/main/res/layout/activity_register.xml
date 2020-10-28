@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Register"
+    tools:context=".activities.Register"
     android:background="@color/white"
     android:paddingLeft="30dp"
     android:paddingRight="30dp"
@@ -78,8 +78,8 @@
             android:drawablePadding="12dp"
 
             android:fontFamily="@font/montserrat_medium"
-            android:text="Full name"
-            android:textColor="@color/black"
+            android:hint="Full name"
+            android:textColorHint="@color/black"
             android:textSize="21dp"
             android:inputType="text" />
 
@@ -98,8 +98,8 @@
             android:drawablePadding="12dp"
 
             android:fontFamily="@font/montserrat_medium"
-            android:text="Email address"
-            android:textColor="@color/black"
+            android:hint="Email address"
+            android:textColorHint="@color/black"
             android:textSize="21dp"
             android:inputType="text" />
 
@@ -118,8 +118,8 @@
             android:drawablePadding="12dp"
 
             android:fontFamily="@font/montserrat_medium"
-            android:text="●●●●●●●●●"
-            android:textColor="@color/black"
+            android:hint="●●●●●●●●●"
+            android:textColorHint="@color/black"
             android:textSize="21dp"
             android:inputType="text" />
 

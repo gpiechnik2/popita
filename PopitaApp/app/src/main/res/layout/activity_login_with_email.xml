@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Login_with_email"
+    tools:context=".activities.Login_with_email"
     android:background="@color/orange">
 
     <ImageView
@@ -94,7 +94,8 @@
                 android:drawablePadding="12dp"
 
                 android:fontFamily="@font/montserrat_medium"
-                android:text="Email adress"
+                android:hint="Email address"
+                android:textColorHint="@color/black"
                 android:textColor="@color/black"
                 android:textSize="21dp"
                 android:inputType="text" />
@@ -117,8 +118,8 @@
                 android:drawablePadding="12dp"
 
                 android:fontFamily="@font/montserrat_medium"
-                android:text="●●●●●●●●●"
-                android:textColor="@color/black"
+                android:hint="●●●●●●●●●"
+                android:textColorHint="@color/black"                android:textColor="@color/black"
                 android:textSize="21dp"
                 android:inputType="text" />
 
