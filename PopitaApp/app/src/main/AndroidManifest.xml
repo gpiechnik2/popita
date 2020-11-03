@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -13,10 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PopitaApp"
-        android:usesCleartextTraffic="true"
-
-
-        >
+        android:usesCleartextTraffic="true">
 
         <!-- Splash screen -->
         <activity
@@ -27,9 +25,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- Main Activity -->
+        </activity> <!-- Main Activity -->
         <activity
             android:name=".activities.MainActivity"
             android:theme="@style/AppTheme.FullScreen">
@@ -38,9 +34,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- Register -->
+        </activity> <!-- Register -->
         <activity
             android:name=".activities.Register"
             android:theme="@style/AppTheme.FullScreen">
@@ -49,9 +43,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- Login with email -->
+        </activity> <!-- Login with email -->
         <activity
             android:name=".activities.Login_with_email"
             android:theme="@style/AppTheme.FullScreen">
@@ -60,9 +52,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- Login choices -->
+        </activity> <!-- Login choices -->
         <activity
             android:name=".activities.Login_choices"
             android:theme="@style/AppTheme.FullScreen">
@@ -72,10 +62,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.RoomActivity"
+            android:theme="@style/AppTheme.FullScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
     </application>
-
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-
 
 </manifest>

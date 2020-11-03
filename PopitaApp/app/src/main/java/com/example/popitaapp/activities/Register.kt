@@ -62,33 +62,22 @@ class Register : AppCompatActivity() {
 
     fun fetchJson(name: String, email: String, password: String) {
 
-        println(":)))")
-
         val url = "http://192.168.0.101:8000/auth/users/"
-        val payload = "{\n" +
-                "    \"first_name\": \"greg\",\n" +
-                "    \"email\": \"grzegorz1.piechnik99@gmail.com\",\n" +
-                "    \"password\": \"J493jirg\",\n" +
-                "    \"re_password\": \"J493jirg\"\n" +
-                "}"
 
         val jsonObject = JSONObject()
-        jsonObject.put("first_name", "greg")
-        jsonObject.put("email", "emailm2e@onet.pl")
-        jsonObject.put("password", "J493jirg")
-        jsonObject.put("re_password", "J493jirg")
+        jsonObject.put("first_name", name)
+        jsonObject.put("email", email)
+        jsonObject.put("password", password)
+        jsonObject.put("re_password", password)
 
         val body = jsonObject.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
 
         val okHttpClient = OkHttpClient()
-        //val requestBody = payload.toRequestBody()
         val request = Request.Builder()
-                //.method("POST", requestBody)
                 .url(url)
                 .post(body)
                 .build()
-        println("DODOD")
-        println(request)
+
         okHttpClient.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 println("XXcccccc")
@@ -98,6 +87,7 @@ class Register : AppCompatActivity() {
             }
 
             override fun onResponse(call: Call, response: Response) {
+                println("RESPONSEEE")
                 println(response)
                 println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
                 // Handle this
