@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.popitaapp.R
 import okhttp3.*
@@ -38,24 +39,23 @@ class Register : AppCompatActivity() {
             val password = password_input.text.toString().trim()
 
             if (name.isEmpty()) {
-                sign_up_btn.error = "Name required"
+                Toast.makeText(this@Register, "Name required.", Toast.LENGTH_SHORT).show()
                 sign_up_btn.requestFocus()
                 return@setOnClickListener
             }
 
             if (email.isEmpty()) {
-                email_input.error = "Email required"
+                Toast.makeText(this@Register, "Email required.", Toast.LENGTH_SHORT).show()
                 email_input.requestFocus()
                 return@setOnClickListener
             }
 
             if (password.isEmpty()) {
-                password_input.error = "Password required"
+                Toast.makeText(this@Register, "Password required.", Toast.LENGTH_SHORT).show()
                 password_input.requestFocus()
                 return@setOnClickListener
             }
 
-            println("XXXXXCccccc")
             fetchJson(name, email, password)
         }
     }
@@ -80,17 +80,16 @@ class Register : AppCompatActivity() {
 
         okHttpClient.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                println("XXcccccc")
+                this@Register.runOnUiThread(Runnable {
+                    Toast.makeText(this@Register, "Unexpected error.", Toast.LENGTH_SHORT).show()
+                })
                 println(e)
-                println("DDDDDXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-                // Handle this
             }
 
             override fun onResponse(call: Call, response: Response) {
-                println("RESPONSEEE")
-                println(response)
-                println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-                // Handle this
+                this@Register.runOnUiThread(Runnable {
+                    Toast.makeText(this@Register, "Your account has been created. Please log in.", Toast.LENGTH_SHORT).show()
+                })
             }
         })
 

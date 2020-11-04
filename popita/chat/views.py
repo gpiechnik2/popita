@@ -20,7 +20,7 @@ class RoomViewSet(viewsets.ModelViewSet):
 
 class MessageViewSet(viewsets.ModelViewSet):
     """
-    A viewset for viewing and editing room instances.
+    A viewset for viewing and editing message instances.
     """
 
     permission_classes = [IsAuthenticated]
