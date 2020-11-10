@@ -15,7 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PopitaApp"
         android:usesCleartextTraffic="true">
-
         <!-- Splash screen -->
         <activity
             android:name=".activities.Splash_screen"
@@ -71,7 +70,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.RoomDetailActivity"
+            android:theme="@style/AppTheme.FullScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

@@ -4,13 +4,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 28
     buildToolsVersion "30.0.2"
 
     defaultConfig {
         applicationId "com.example.popitaapp"
         minSdkVersion 16
-        targetSdkVersion 30
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
 
@@ -43,6 +43,8 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.1'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -51,5 +53,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
-
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation 'com.android.support:cardview-v7:28.1.1'
 }

@@ -1,12 +1,10 @@
 package com.example.popitaapp.activities
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.popitaapp.R
 import android.widget.Button
-import androidx.appcompat.app.AppCompatDelegate
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

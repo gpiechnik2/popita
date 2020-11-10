@@ -62,7 +62,8 @@ class Login_with_email : AppCompatActivity() {
 
     fun fetchJson(email: String, password: String) {
 
-        val url = "http://192.168.0.101:8000/auth/token/login/"
+        val url = "http://192.168.31.19:8000/auth/token/login/"
+        //val url = "http://192.168.0.101:8000/auth/token/login/"
 
         val jsonObject = JSONObject()
         jsonObject.put("email", email)
@@ -92,18 +93,23 @@ class Login_with_email : AppCompatActivity() {
                     val auth_token = jsonObject.get("auth_token")
 
                     //instance and save method
-                    val sharedPreference =  getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
+                    val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
                     var editor = sharedPreference.edit()
                     editor.putString("auth_token", auth_token.toString())
                     editor.commit()
 
                     //on-production only
-                    val authorization_token = sharedPreference.getString("auth_token", null)
-                    println(authorization_token)
+                    //val authorization_token = sharedPreference.getString("auth_token", null)
+                    //println(authorization_token)
 
                     this@Login_with_email.runOnUiThread(Runnable {
                         Toast.makeText(this@Login_with_email, "Successful log in.", Toast.LENGTH_SHORT).show()
                     })
+
+                    //room activity
+                    val intent = Intent(this@Login_with_email, RoomActivity::class.java)
+                    startActivity(intent);
+
                 }
 
                 else if (response.code == 400) {

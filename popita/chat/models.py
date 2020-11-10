@@ -13,7 +13,7 @@ class Room(models.Model):
 
 class Message(models.Model):
 
-    sender = models.ForeignKey(User, on_delete = models.CASCADE)
+    receiver = models.ForeignKey(User, on_delete = models.CASCADE)
     room = models.ForeignKey(Room, on_delete = models.CASCADE)
     message = models.CharField(max_length = 1500)
     timestamp = models.DateTimeField(auto_now_add = True)
