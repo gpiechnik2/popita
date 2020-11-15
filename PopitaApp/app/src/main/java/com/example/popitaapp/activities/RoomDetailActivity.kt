@@ -3,20 +3,24 @@ package com.example.popitaapp.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.popitaapp.R
-import com.example.popitaapp.activities.adapters.MessageAdapter
 import com.example.popitaapp.activities.models.Message
-import com.example.popitaapp.activities.models.Room
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieViewHolder
+import com.xwray.groupie.Item
+import kotlinx.android.synthetic.main.activity_room_detail.*
+import kotlinx.android.synthetic.main.message_item_layout.view.*
+import kotlinx.android.synthetic.main.message_item_layout_02.view.*
+import kotlinx.android.synthetic.main.message_item_layout_03.view.*
+import kotlinx.coroutines.*
 import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
-
+import java.lang.Runnable
 
 class RoomDetailActivity : AppCompatActivity() {
 
@@ -29,7 +33,6 @@ class RoomDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_room_detail)
 
         //back button
-        var back_btn = findViewById(R.id.back_btn) as Button
         back_btn.setOnClickListener {
             // Handler code here.
             val intent = Intent(this, RoomActivity::class.java)
@@ -37,114 +40,236 @@ class RoomDetailActivity : AppCompatActivity() {
         }
 
         //change receiver name
-        var receiver_name_text = findViewById(R.id.receiver_name_text) as TextView
-        receiver_name_text.text = getIntent().getStringExtra("receiver_name")
+        receiver_name.text = getIntent().getStringExtra("receiver_name")
 
         //get id of a room
         val room_id = getIntent().getIntExtra("id", 0)
-
-        //connect with Message model
-        val rv = findViewById<RecyclerView>(R.id.recyclerView2)
-        rv.layoutManager = LinearLayoutManager(this@RoomDetailActivity, LinearLayoutManager.VERTICAL, false)
-
-        //get json with chats info and append results to val messages
-        fetchJson(room_id)
+        println(room_id)
 
         //create adapter
-        var adapter = MessageAdapter(messages)
-        rv.adapter = adapter
+        val adapter = GroupAdapter<GroupieViewHolder>()
+        recyclerView2.layoutManager = LinearLayoutManager(this@RoomDetailActivity, LinearLayoutManager.VERTICAL, false)
 
+        //get json and match messages to specified view
+        fetchJson(room_id)
+
+        //2 seconds delay to process fetchJson
+        runBlocking {     // but this expression blocks the main thread
+            delay(2000L)  // ... while we delay for 2 seconds to keep JVM alive
         }
 
-        //TODO connect to endpoint connected with room_id
-        private fun fetchJson(room_id: Int) {
+        for (i in messages) {
+            println(i)
+            //if you are sender, add new message
+            if (i.receiver == 0) {
+                adapter.add(ChatItem(i))
+            }
+            //i not, check previous message
+            else {
+                //if its first message,
+                if (messages.lastIndex < 0) {
+                    adapter.add(ChatFromItem(i))
+                }
+                //if there is only 1 message
+                else if (messages.lastIndex >= 0) {
+                    //and you are receiver(1)
+                    if (messages.last().receiver == 1) {
+                        adapter.add(ChatFromItem_02(i))
+                    }
+                }
+            }
+        }
 
-            //get auth token
-            val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
-            val auth_token = sharedPreference.getString("auth_token", null)
+        recyclerView2.adapter = adapter
 
-            val url = "http://192.168.31.19:8000/chat/rooms/"
-            //val url = "http://192.168.0.101:8000/chat/rooms/"
+        //new message util
 
-            val okHttpClient = OkHttpClient()
-            val request = Request.Builder()
-                    .url(url)
-                    .header("Authorization", "Token " + auth_token.toString())
-                    .build()
 
-            okHttpClient.newCall(request).enqueue(object : Callback {
-                override fun onFailure(call: Call, e: IOException) {
+    }
+
+    private fun sendMessage(room_id: Int) {
+
+        //get auth token
+        val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
+        val auth_token = sharedPreference.getString("auth_token", null)
+
+        //val url = "http://192.168.0.5:8000/chat/rooms/$room_id/messages/"
+        val url = "http://192.168.0.101:8000/chat/rooms/$room_id/messages/"
+
+        val okHttpClient = OkHttpClient()
+        val request = Request.Builder()
+                .url(url)
+                .header("Authorization", "Token " + auth_token.toString())
+                .build()
+
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                this@RoomDetailActivity.runOnUiThread(Runnable {
+                    Toast.makeText(
+                            this@RoomDetailActivity,
+                            "Sending message failed.",
+                            Toast.LENGTH_SHORT
+                    ).show()
+                })
+                println(e)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.code == 200) {
+                    //refresh activity
+
+                } else if (response.code == 400) {
                     this@RoomDetailActivity.runOnUiThread(Runnable {
                         Toast.makeText(
                                 this@RoomDetailActivity,
-                                "Getting messages failed.",
+                                "Unable to get messages with provided credentials. Please log in or register first.",
+                                Toast.LENGTH_SHORT
+                        ).show()
+
+                        val intent = Intent(this@RoomDetailActivity, MainActivity::class.java)
+                        startActivity(intent);
+                    })
+
+                } else if (response.code == 401) {
+                    this@RoomDetailActivity.runOnUiThread(Runnable {
+                        Toast.makeText(
+                                this@RoomDetailActivity,
+                                "Unable to get messages with provided credentials. Please log in or register first.",
+                                Toast.LENGTH_SHORT
+                        ).show()
+
+                        val intent = Intent(this@RoomDetailActivity, MainActivity::class.java)
+                        startActivity(intent);
+                    })
+
+                } else {
+                    this@RoomDetailActivity.runOnUiThread(Runnable {
+                        Toast.makeText(
+                                this@RoomDetailActivity,
+                                "Unable to log in.",
                                 Toast.LENGTH_SHORT
                         ).show()
                     })
-                    println(e)
                 }
+            }
+        })
+    }
 
-                override fun onResponse(call: Call, response: Response) {
-                    if (response.code == 200) {
+    private fun fetchJson(room_id: Int) {
 
-                        val body = response.body?.string()
-                        val jsonObject = JSONObject(body)
-                        val results = jsonObject.get("results")
+        //get auth token
+        val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
+        val auth_token = sharedPreference.getString("auth_token", null)
 
-                        println(jsonObject)
-                        println(results)
+        //val url = "http://192.168.0.5:8000/chat/rooms/$room_id/messages/"
+        val url = "http://192.168.0.101:8000/chat/rooms/$room_id/messages/"
 
-                        getMessages(jsonObject)
+        val okHttpClient = OkHttpClient()
+        val request = Request.Builder()
+            .url(url)
+            .header("Authorization", "Token " + auth_token.toString())
+            .build()
 
-                    } else if (response.code == 400) {
-                        this@RoomDetailActivity.runOnUiThread(Runnable {
-                            Toast.makeText(
-                                    this@RoomDetailActivity,
-                                    "Unable to get messages with provided credentials. Please log in or register first.",
-                                    Toast.LENGTH_SHORT
-                            ).show()
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                this@RoomDetailActivity.runOnUiThread(Runnable {
+                    Toast.makeText(
+                        this@RoomDetailActivity,
+                        "Getting messages failed.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                })
+                println(e)
+            }
 
-                            val intent = Intent(this@RoomDetailActivity, MainActivity::class.java)
-                            startActivity(intent);
-                        })
+            override fun onResponse(call: Call, response: Response) {
+                if (response.code == 200) {
 
-                    } else if (response.code == 401) {
-                        this@RoomDetailActivity.runOnUiThread(Runnable {
-                            Toast.makeText(
-                                    this@RoomDetailActivity,
-                                    "Unable to get messages with provided credentials. Please log in or register first.",
-                                    Toast.LENGTH_SHORT
-                            ).show()
+                    val body = response.body?.string()
+                    val jsonObject = JSONObject(body)
 
-                            val intent = Intent(this@RoomDetailActivity, MainActivity::class.java)
-                            startActivity(intent);
-                        })
+                    getMessages(jsonObject)
 
-                    } else {
-                        this@RoomDetailActivity.runOnUiThread(Runnable {
-                            Toast.makeText(
-                                    this@RoomDetailActivity,
-                                    "Unable to log in.",
-                                    Toast.LENGTH_SHORT
-                            ).show()
-                        })
-                    }
+                } else if (response.code == 400) {
+                    this@RoomDetailActivity.runOnUiThread(Runnable {
+                        Toast.makeText(
+                            this@RoomDetailActivity,
+                            "Unable to get messages with provided credentials. Please log in or register first.",
+                            Toast.LENGTH_SHORT
+                        ).show()
 
+                        val intent = Intent(this@RoomDetailActivity, MainActivity::class.java)
+                        startActivity(intent);
+                    })
 
+                } else if (response.code == 401) {
+                    this@RoomDetailActivity.runOnUiThread(Runnable {
+                        Toast.makeText(
+                            this@RoomDetailActivity,
+                            "Unable to get messages with provided credentials. Please log in or register first.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        val intent = Intent(this@RoomDetailActivity, MainActivity::class.java)
+                        startActivity(intent);
+                    })
+
+                } else {
+                    this@RoomDetailActivity.runOnUiThread(Runnable {
+                        Toast.makeText(
+                            this@RoomDetailActivity,
+                            "Unable to log in.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    })
                 }
-            })
+            }
+        })
+    }
+
+    fun getMessages(results: JSONObject) {
+
+        //clear not to duplicate message records
+        messages.clear()
+
+        val message_results = results.getJSONArray("results")
+
+        for (i in 0 until message_results.length()) {
+            val id = message_results.getJSONObject(i).getInt("id")
+            val receiver = message_results.getJSONObject(i).getInt("receiver")
+            val message = message_results.getJSONObject(i).getString("message")
+            val timestamp = message_results.getJSONObject(i).getString("timestamp")
+
+            messages.add(Message(id, receiver, message, timestamp))
         }
 
-        fun getMessages(results: JSONObject) {
+        //TODO if getMessages is empty, move to ANOTHER view
 
-            println("CXCXCCX")
-            println(results)
-            println("XCCXZCXZXCZCXZCXZZ")
-
-            //actions
-            messages.add(Message("Paul", "Mdsa das dasd asr"))
-
-            //TODO if getMessages is empty, move to ANOTHER view
-
-        }
+    }
 }
+
+class ChatFromItem(private val message: Message): Item<GroupieViewHolder>() {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+        viewHolder.itemView.txtMessage.text = message.message
+    }
+
+    override fun getLayout() = R.layout.message_item_layout
+
+}
+
+class ChatFromItem_02(private val message: Message): Item<GroupieViewHolder>() {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+        viewHolder.itemView.txtMessage2.text = message.message
+    }
+
+    override fun getLayout() = R.layout.message_item_layout_02
+
+}
+
+class ChatItem(private val message: Message): Item<GroupieViewHolder>() {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+        viewHolder.itemView.txtMessage3.text = message.message
+    }
+
+    override fun getLayout() = R.layout.message_item_layout_03
+    }

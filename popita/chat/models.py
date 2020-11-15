@@ -10,7 +10,6 @@ class Room(models.Model):
     def __str__(self):
         return self.title
 
-
 class Message(models.Model):
 
     receiver = models.ForeignKey(User, on_delete = models.CASCADE)

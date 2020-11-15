@@ -88,6 +88,7 @@ class MessageSerializer(serializers.ModelSerializer):
 
     receiver = serializers.PrimaryKeyRelatedField(many = False, queryset = User.objects.all())
     room = RoomSerializer(read_only = True)
+    timestamp = serializers.DateTimeField(format = '%Y-%m-%d %H:%m', input_formats = None, read_only = True)
 
     class Meta:
         model = Message
@@ -117,3 +118,32 @@ class MessageSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('User must be in database.')
 
         return validated_data
+
+    #change receivers
+    def to_representation(self, instance):
+        ret = super(MessageSerializer, self).to_representation(instance)
+        # check the request is list view or detail view
+        is_list_view = isinstance(self.instance, list)
+        receiver = instance.receiver
+
+        if is_list_view:
+
+            user = self.context['request'].user
+
+            #receiver == 1: You are receiver, receiver == 0: You are sender
+            if str(user) == str(receiver):
+                main_receiver = 1
+            else:
+                main_receiver = 0
+
+            #remove room receivers, receiver based on room receivers and timestamp
+            ret.pop("room")
+            ret.pop("receiver")
+
+            extra_ret = {
+                "receiver" : main_receiver,
+            }
+
+            ret.update(extra_ret)
+
+        return ret

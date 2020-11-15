@@ -5,9 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.RoomDetailActivity"
-    android:paddingLeft="30dp"
-    android:paddingRight="30dp"
-    android:paddingBottom="32dp"
+    android:paddingBottom="24dp"
     android:paddingTop="32dp"
     android:background="@color/white"
     >
@@ -17,6 +15,7 @@
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:layout_marginTop="40dp"
+        android:layout_marginLeft="100dp"
 
         android:drawableStart="@drawable/ic_x_icon_03"
         android:drawableLeft="@drawable/ic_x_icon_03"
@@ -24,9 +23,9 @@
         android:layout_gravity="center"
         android:padding="16.5dp"
 
-        app:layout_constraintBottom_toBottomOf="@id/back_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/back_btn"
-        app:layout_constraintStart_toStartOf="@id/back_btn"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/back_btn"
 
         android:background="@drawable/button_background_back"
@@ -36,30 +35,46 @@
         android:clickable="true"
         />
 
-    <TextView
+    <LinearLayout
         android:id="@+id/receiver_name_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView"
-        android:layout_alignParentTop="true"
+        android:paddingLeft="0dp"
 
-        android:fontFamily="@font/montserrat_extrabold"
-        android:text="Kerry"
-        android:textColor="@color/black"
-        android:textSize="27dp"
-        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="@id/receiver_name_text"
         app:layout_constraintEnd_toEndOf="@id/receiver_name_text"
         app:layout_constraintStart_toStartOf="@id/receiver_name_text"
         app:layout_constraintTop_toTopOf="@id/receiver_name_text"
-        />
+        android:background="@drawable/message_background_name"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView"
+            android:layout_alignParentTop="true"
+            android:paddingBottom="25dp"
+            android:paddingTop="20dp"
+            android:layout_marginRight="70dp"
+            android:layout_marginLeft="70dp"
+            android:id="@+id/receiver_name"
+
+            android:fontFamily="@font/montserrat_extrabold"
+            android:text="Kerry"
+            android:textColor="@color/black"
+            android:textSize="27dp"
+            android:gravity="center"
+            />
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/message_background_message"
 
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
@@ -67,6 +82,7 @@
         app:layout_constraintTop_toBottomOf="@+id/receiver_name_text" />
 
     <LinearLayout
+
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -75,7 +91,10 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        >
 
         <EditText
             android:id="@+id/new_message"
@@ -109,10 +128,5 @@
             app:srcCompat="@drawable/ic_send_message_icon" />
 
     </LinearLayout>
-
-
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

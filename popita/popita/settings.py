@@ -179,3 +179,6 @@ LOGOUT_REDIRECT_URL = 'index'
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+#datetime format
+DATETIME_FORMAT = '%Y-%m-%d %H:%m'

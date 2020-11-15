@@ -4,13 +4,19 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.popitaapp.R
 import com.example.popitaapp.activities.adapters.OnRoomItemClickListener
 import com.example.popitaapp.activities.adapters.RoomAdapter
 import com.example.popitaapp.activities.models.Room
+import kotlinx.android.synthetic.main.activity_room.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
@@ -30,12 +36,40 @@ class RoomActivity : AppCompatActivity(), OnRoomItemClickListener {
         val rv = findViewById<RecyclerView>(R.id.recyclerView1)
         rv.layoutManager = LinearLayoutManager(this@RoomActivity, LinearLayoutManager.VERTICAL, false)
 
-        //get json with chats info, and append them to users val
         fetchJson()
+
+        //2 seconds delay to process fetchJson
+        runBlocking {     // but this expression blocks the main thread
+            delay(2000L)  // ... while we delay for 2 seconds to keep JVM alive
+        }
 
         var adapter = RoomAdapter(users, this@RoomActivity)
         rv.adapter = adapter
 
+        //search util
+        search_buddy.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                val new_users = ArrayList<Room>()
+
+                for (user in users) {
+                    if (user.receiver_name.toLowerCase().contains(p0.toString().toLowerCase())) {
+                        //adding the element to filtered list
+                        new_users.add(user)
+                    }
+                }
+
+                val new_adapter = RoomAdapter(new_users, this@RoomActivity)
+                rv.adapter = new_adapter
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+        })
     }
 
     private fun fetchJson() {
@@ -44,8 +78,8 @@ class RoomActivity : AppCompatActivity(), OnRoomItemClickListener {
         val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
         val auth_token = sharedPreference.getString("auth_token", null)
 
-        val url = "http://192.168.31.19:8000/chat/rooms/"
-        //val url = "http://192.168.0.101:8000/chat/rooms/"
+        //val url = "http://192.168.0.5:8000/chat/rooms/"
+        val url = "http://192.168.0.101:8000/chat/rooms/"
 
         val okHttpClient = OkHttpClient()
         val request = Request.Builder()
@@ -113,6 +147,9 @@ class RoomActivity : AppCompatActivity(), OnRoomItemClickListener {
 
     fun getRooms(results: JSONObject) {
 
+        //clear to not to duplicate records
+        users.clear()
+
         //iterate over results and append them to array
         val room_results = results.getJSONArray("results")
 
@@ -137,5 +174,4 @@ class RoomActivity : AppCompatActivity(), OnRoomItemClickListener {
         intent.putExtra("id", item.id)
         startActivity(intent)
     }
-
 }

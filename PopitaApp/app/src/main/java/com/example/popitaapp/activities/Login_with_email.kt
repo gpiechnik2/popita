@@ -55,15 +55,14 @@ class Login_with_email : AppCompatActivity() {
             }
 
             fetchJson(email_address, password)
-
         }
 
     }
 
     fun fetchJson(email: String, password: String) {
 
-        val url = "http://192.168.31.19:8000/auth/token/login/"
-        //val url = "http://192.168.0.101:8000/auth/token/login/"
+        //val url = "http://192.168.0.5:8000/auth/token/login/"
+        val url = "http://192.168.0.101:8000/auth/token/login/"
 
         val jsonObject = JSONObject()
         jsonObject.put("email", email)
@@ -128,6 +127,4 @@ class Login_with_email : AppCompatActivity() {
             }
         })
     }
-
-
 }

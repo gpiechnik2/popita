@@ -53,10 +53,11 @@
                         android:id="@+id/txtLastMessageTimestamp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="clip_vertical"
 
                         android:fontFamily="@font/montserrat_bold"
                         android:text="12:20"
-                        android:textColor="@color/black"
+                        android:textColor="@color/grey"
                         android:textSize="11dp"
                         android:maxLines="1"
                         android:maxLength="8"/>

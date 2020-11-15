@@ -27,6 +27,10 @@ class RoomAdapter(val userList: ArrayList<Room>, var clickListener: OnRoomItemCl
         return userList.size
     }
 
+    //for duplicated items
+    override fun getItemId(position: Int) = position.toLong()
+    override fun getItemViewType(position: Int) = position
+
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val txtName = itemView.findViewById<TextView>(R.id.txtName)
         val txtTitle = itemView.findViewById<TextView>(R.id.txtTitle)
@@ -41,6 +45,8 @@ class RoomAdapter(val userList: ArrayList<Room>, var clickListener: OnRoomItemCl
 
         }
     }
+
+
 }
 
 interface OnRoomItemClickListener {
