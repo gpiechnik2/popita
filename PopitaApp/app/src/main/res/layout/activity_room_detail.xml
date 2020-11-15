@@ -17,11 +17,11 @@
         android:layout_marginTop="40dp"
         android:layout_marginLeft="100dp"
 
-        android:drawableStart="@drawable/ic_x_icon_03"
-        android:drawableLeft="@drawable/ic_x_icon_03"
+        android:drawableStart="@drawable/ic_back_02_icon"
+        android:drawableLeft="@drawable/ic_back_02_icon"
         android:gravity="center"
         android:layout_gravity="center"
-        android:padding="16.5dp"
+        android:padding="12dp"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/back_btn"

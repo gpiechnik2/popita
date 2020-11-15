@@ -63,16 +63,19 @@ class LocalizationSerializer(serializers.ModelSerializer):
         # check the request is list view or detail view
         is_list_view = isinstance(self.instance, list)
 
-        #your coordinates
-        self_latitude = instance.latitude
-        self_longitude = instance.longitude
-
-        
         if is_list_view:
 
-            #user = self.context['request'].user
-            distance = 0
+            #user coordinates
+            latitude = instance.latitude
+            longitude = instance.longitude
 
+            #your coordinates
+            user = self.context['request'].user
+            self_localization = Localization.objects.filter(user = user)[0]
+            self_latitude = self_localization.latitude
+            self_longitude = self_localization.longitude
+
+            distance = distance(latitude, longitude, self_latitude, self_longitude)
 
             extra_ret = {
                 "distance" : distance,
@@ -81,3 +84,9 @@ class LocalizationSerializer(serializers.ModelSerializer):
             ret.update(extra_ret)
 
         return ret
+
+    #get distance - only for representation purposes
+    def distance(lat1, lon1, lat2, lon2):
+        p = pi / 180
+        a = 0.5 - cos((lat2 - lat1) * p) / 2 + cos(lat1 * p) * cos(lat2 * p) * (1 - cos((lon2 - lon1) * p)) / 2
+        return 12742 * asin(sqrt(a)) #2*R*asin...

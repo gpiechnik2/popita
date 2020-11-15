@@ -6,8 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.RoomActivity"
-    android:paddingLeft="30dp"
-    android:paddingRight="30dp"
     android:paddingTop="32dp"
     android:background="@color/white"
     android:descendantFocusability="beforeDescendants"
@@ -21,6 +19,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageView"
         android:layout_alignParentTop="true"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
 
         android:fontFamily="@font/montserrat_extrabold"
         android:text="Messages"
@@ -39,6 +39,8 @@
         android:background="@drawable/text_search_background"
         android:orientation="horizontal"
         android:layout_marginTop="24dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -82,11 +84,132 @@
         android:id="@+id/recyclerView1"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginLeft="30dp"
         android:layout_marginTop="28dp"
+        android:layout_marginRight="30dp"
 
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/menu"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <LinearLayout
+        android:id="@+id/menu"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/menu_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="horizontal"
+        android:weightSum="4">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                app:srcCompat="@drawable/ic_menu_01"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="6dp"
+
+                android:fontFamily="@font/montserrat_extrabold"
+                android:text="Messages"
+                android:textColor="@color/yellow"
+                android:textSize="12dp"
+                android:gravity="center"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                app:srcCompat="@drawable/ic_menu_02"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="6dp"
+
+                android:fontFamily="@font/montserrat_extrabold"
+                android:text="Messages"
+                android:textColor="@color/black"
+                android:textSize="12dp"
+                android:gravity="center"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                app:srcCompat="@drawable/ic_menu_03"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="6dp"
+
+                android:fontFamily="@font/montserrat_extrabold"
+                android:text="Messages"
+                android:textColor="@color/black"
+                android:textSize="12dp"
+                android:gravity="center"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                app:srcCompat="@drawable/ic_menu_04"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="6dp"
+
+                android:fontFamily="@font/montserrat_extrabold"
+                android:text="Messages"
+                android:textColor="@color/black"
+                android:textSize="12dp"
+                android:gravity="center"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

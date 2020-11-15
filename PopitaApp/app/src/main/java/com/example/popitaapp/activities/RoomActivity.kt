@@ -32,6 +32,8 @@ class RoomActivity : AppCompatActivity(), OnRoomItemClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_room)
 
+
+
         //connect with Room model
         val rv = findViewById<RecyclerView>(R.id.recyclerView1)
         rv.layoutManager = LinearLayoutManager(this@RoomActivity, LinearLayoutManager.VERTICAL, false)

@@ -18,11 +18,11 @@
         android:layout_height="65dp"
         android:layout_marginTop="13dp"
 
-        android:drawableStart="@drawable/ic_x_icon_03"
-        android:drawableLeft="@drawable/ic_x_icon_03"
+        android:drawableStart="@drawable/ic_back_02_icon"
+        android:drawableLeft="@drawable/ic_back_02_icon"
         android:gravity="center"
         android:layout_gravity="center"
-        android:padding="16.5dp"
+        android:padding="12dp"
 
         android:background="@drawable/button_background_back"
         android:fontFamily="@font/montserrat_extrabold"
