@@ -2,24 +2,25 @@ package com.example.popitaapp.activities
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.popitaapp.R
-import com.example.popitaapp.activities.RoomActivity.Companion.users
 import com.example.popitaapp.activities.adapters.ExploreAdapter
 import com.example.popitaapp.activities.adapters.OnExploreItemClickListener
-import com.example.popitaapp.activities.adapters.RoomAdapter
 import com.example.popitaapp.activities.models.Explore
-import com.example.popitaapp.activities.models.Room
+import com.example.popitaapp.activities.models.User
 import kotlinx.android.synthetic.main.activity_room.*
+import kotlinx.android.synthetic.main.explore_item_layout.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
+
 
 class ExploreActivity : AppCompatActivity(), OnExploreItemClickListener {
 
@@ -99,7 +100,7 @@ class ExploreActivity : AppCompatActivity(), OnExploreItemClickListener {
                     val body = response.body?.string()
                     val jsonObject = JSONObject(body)
 
-                    getRooms(jsonObject)
+                    getLocalUsers(jsonObject)
 
                 } else if (response.code == 400) {
                     this@ExploreActivity.runOnUiThread(Runnable {
@@ -139,23 +140,30 @@ class ExploreActivity : AppCompatActivity(), OnExploreItemClickListener {
         })
     }
 
-    fun getRooms(results: JSONObject) {
+    fun getLocalUsers(results: JSONObject) {
 
         //clear to not to duplicate records
         users.clear()
 
         //iterate over results and append them to array
-        val room_results = results.getJSONArray("results")
+        val roomResults = results.getJSONArray("results")
 
-        for (i in 0 until room_results.length()) {
-            val id = room_results.getJSONObject(i).getInt("id")
-            val last_message = room_results.getJSONObject(i).getString("last_message")
-            val last_sender = room_results.getJSONObject(i).getInt("last_sender")
-            val receiver_id = room_results.getJSONObject(i).getInt("receiver_id")
-            val receiver_name = room_results.getJSONObject(i).getString("receiver_name")
-            val last_message_timestamp = room_results.getJSONObject(i).getString("last_message_timestamp")
+        for (i in 0 until roomResults.length()) {
 
-            users.add(Explore(id, last_message, last_sender, receiver_id, receiver_name, last_message_timestamp))
+            val id = roomResults.getJSONObject(i).getInt("id")
+
+            val user_id = roomResults.getJSONObject(i).getJSONObject("user").getInt("id")
+            val user_name = roomResults.getJSONObject(i).getJSONObject("user").getString("first_name")
+            val user = User(user_id, user_name)
+
+            val longitude = roomResults.getJSONObject(i).getDouble("longitude").toFloat()
+            val latitude = roomResults.getJSONObject(i).getDouble("latitude").toFloat()
+            val attitude = roomResults.getJSONObject(i).getDouble("attitude").toFloat()
+            val location = roomResults.getJSONObject(i).getString("location")
+            val timestamp = roomResults.getJSONObject(i).getString("timestamp")
+            val distance = roomResults.getJSONObject(i).getDouble("distance").toFloat()
+
+            users.add(Explore(id, user, longitude, latitude, attitude, location, timestamp, distance))
         }
 
         //TODO if getRooms is empty, move to ANOTHER view
@@ -164,8 +172,13 @@ class ExploreActivity : AppCompatActivity(), OnExploreItemClickListener {
 
     override fun onItemClick(item: Explore, position: Int) {
         val intent = Intent(this, ExploreDetailActivity::class.java)
-        intent.putExtra("receiver_name", item.receiver_name)
         intent.putExtra("id", item.id)
+        intent.putExtra("user_id", item.user.id)
+        intent.putExtra("user_id", item.user.first_name)
+        intent.putExtra("user_id", item.distance)
+        intent.putExtra("user_id", item.location)
+        intent.putExtra("user_id", item.timestamp)
+
         startActivity(intent)
     }
 

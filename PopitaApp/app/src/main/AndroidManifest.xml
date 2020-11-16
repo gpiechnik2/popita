@@ -15,8 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PopitaApp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.ExploreDetailActivity"></activity>
-        <activity android:name=".activities.ExploreActivity" /> <!-- Splash screen -->
+         <!-- Splash screen -->
         <activity
             android:name=".activities.Splash_screen"
             android:theme="@style/AppTheme.FullScreen">
@@ -63,6 +62,7 @@
             </intent-filter>
         </activity>
         <activity
+            android:windowSoftInputMode="adjustPan"
             android:name=".activities.RoomActivity"
             android:theme="@style/AppTheme.FullScreen">
             <intent-filter>
@@ -73,6 +73,25 @@
         </activity>
         <activity
             android:name=".activities.RoomDetailActivity"
+            android:theme="@style/AppTheme.FullScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.ExploreDetailActivity"
+            android:theme="@style/AppTheme.FullScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:windowSoftInputMode="adjustPan"
+            android:name=".activities.ExploreActivity"
             android:theme="@style/AppTheme.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

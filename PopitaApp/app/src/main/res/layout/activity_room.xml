@@ -80,18 +80,29 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/bell"
+        android:layout_width="match_parent"
+        android:layout_marginTop="16dp"
+        android:layout_height="4dp"
+        android:background="@drawable/explore_recyclerview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        android:orientation="horizontal"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView1"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="28dp"
         android:layout_marginRight="30dp"
 
         app:layout_constraintBottom_toTopOf="@+id/menu"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/bell" />
 
     <LinearLayout
         android:id="@+id/menu"
