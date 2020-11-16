@@ -7,4 +7,4 @@ data class Room(
         val receiver_id: Int,
         val receiver_name: String,
         val last_message_timestamp: String
-        )
+)

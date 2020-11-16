@@ -5,4 +5,4 @@ data class Message(
         val receiver: Int,
         val message: String,
         val timestamp: String
-    )
+)

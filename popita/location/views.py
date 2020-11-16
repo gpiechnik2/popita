@@ -31,16 +31,21 @@ class LocalizationViewSet(viewsets.ModelViewSet):
         self_longitude = self_localization[0].longitude
 
         #check if person in database is < 5km from you
+        localizations = Localization.objects.all()
+
         localization_response = []
-        for localization in Localization.objects.filter(user != user):
-            if distance(self_latitude, self_longitude, localization.latitude, localization.longitude) <= 5:
-                localization_response.append(localization)
+        for localization in localizations:
+
+            p = pi / 180
+            a = 0.5 - cos((localization.latitude - self_latitude) * p) / 2 + cos(self_latitude * p) * cos(localization.latitude * p) * (1 - cos((localization.longitude - self_longitude) * p)) / 2
+            distance = 12742 * asin(sqrt(a))
+
+            if distance <= 5:
+                if localization.user.id != user.id:
+                    localization_response.append(localization)
+                else:
+                    continue
             else:
                 continue
 
         return localization_response
-
-    def distance(lat1, lon1, lat2, lon2):
-        p = pi / 180
-        a = 0.5 - cos((lat2 - lat1) * p) / 2 + cos(lat1 * p) * cos(lat2 * p) * (1 - cos((lon2 - lon1) * p)) / 2
-        return 12742 * asin(sqrt(a)) #2*R*asin...

@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from djoser.serializers import UserSerializer
+from math import cos, asin, sqrt, pi
 
 from accounts.models import User
 from .models import Localization
@@ -75,7 +76,10 @@ class LocalizationSerializer(serializers.ModelSerializer):
             self_latitude = self_localization.latitude
             self_longitude = self_localization.longitude
 
-            distance = distance(latitude, longitude, self_latitude, self_longitude)
+            #check distance
+            p = pi / 180
+            a = 0.5 - cos((self_latitude - latitude) * p) / 2 + cos(latitude * p) * cos(self_latitude * p) * (1 - cos((self_longitude - longitude) * p)) / 2
+            distance = 12742 * asin(sqrt(a)) #2*R*asin...
 
             extra_ret = {
                 "distance" : distance,
@@ -84,9 +88,3 @@ class LocalizationSerializer(serializers.ModelSerializer):
             ret.update(extra_ret)
 
         return ret
-
-    #get distance - only for representation purposes
-    def distance(lat1, lon1, lat2, lon2):
-        p = pi / 180
-        a = 0.5 - cos((lat2 - lat1) * p) / 2 + cos(lat1 * p) * cos(lat2 * p) * (1 - cos((lon2 - lon1) * p)) / 2
-        return 12742 * asin(sqrt(a)) #2*R*asin...

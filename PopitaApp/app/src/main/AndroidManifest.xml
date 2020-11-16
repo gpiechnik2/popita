@@ -15,8 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PopitaApp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.ExploreActivity"></activity>
-        <!-- Splash screen -->
+        <activity android:name=".activities.ExploreDetailActivity"></activity>
+        <activity android:name=".activities.ExploreActivity" /> <!-- Splash screen -->
         <activity
             android:name=".activities.Splash_screen"
             android:theme="@style/AppTheme.FullScreen">

@@ -103,6 +103,7 @@
         android:weightSum="4">
 
         <LinearLayout
+            android:id="@+id/menuMessages"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -130,6 +131,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/menuExplore"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -148,7 +150,7 @@
                 android:paddingTop="6dp"
 
                 android:fontFamily="@font/montserrat_extrabold"
-                android:text="Messages"
+                android:text="Explore"
                 android:textColor="@color/black"
                 android:textSize="12dp"
                 android:gravity="center"
@@ -157,6 +159,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/menuProfile"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -175,7 +178,7 @@
                 android:paddingTop="6dp"
 
                 android:fontFamily="@font/montserrat_extrabold"
-                android:text="Messages"
+                android:text="Profile"
                 android:textColor="@color/black"
                 android:textSize="12dp"
                 android:gravity="center"
@@ -184,6 +187,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/menuSettings"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -202,7 +206,7 @@
                 android:paddingTop="6dp"
 
                 android:fontFamily="@font/montserrat_extrabold"
-                android:text="Messages"
+                android:text="Settings"
                 android:textColor="@color/black"
                 android:textSize="12dp"
                 android:gravity="center"
