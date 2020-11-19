@@ -55,11 +55,8 @@ class ExploreAdapter(val userList: ArrayList<Explore>, var clickListener: OnExpl
             itemView.setOnClickListener {
                 action.onItemClick(item, adapterPosition)
             }
-
         }
     }
-
-
 }
 
 interface OnExploreItemClickListener {

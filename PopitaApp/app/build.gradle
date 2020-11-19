@@ -6,10 +6,19 @@ plugins {
 }
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 30
     buildToolsVersion "30.0.2"
 
     defaultConfig {
+
+        // Read the API key from ./secure.properties into R.string.maps_api_key
+        def secureProps = new Properties()
+        if (file("../secure.properties").exists()) {
+            file("../secure.properties")?.withInputStream { secureProps.load(it) }
+        }
+        resValue "string", "maps_api_key", (secureProps.getProperty("MAPS_API_KEY") ?: "")
+
+
         applicationId "com.example.popitaapp"
         minSdkVersion 16
         targetSdkVersion 27
@@ -69,5 +78,7 @@ dependencies {
     implementation "com.xwray:groupie-kotlin-android-extensions:2.8.1"
     implementation "com.xwray:groupie-viewbinding:2.8.1"
     implementation("ru.gildor.coroutines:kotlin-coroutines-okhttp:1.0")
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation "com.google.android.gms:play-services-places:17.0.0"
 
 }

@@ -174,10 +174,12 @@ class ExploreActivity : AppCompatActivity(), OnExploreItemClickListener {
         val intent = Intent(this, ExploreDetailActivity::class.java)
         intent.putExtra("id", item.id)
         intent.putExtra("user_id", item.user.id)
-        intent.putExtra("user_id", item.user.first_name)
-        intent.putExtra("user_id", item.distance)
-        intent.putExtra("user_id", item.location)
-        intent.putExtra("user_id", item.timestamp)
+        intent.putExtra("user_first_name", item.user.first_name)
+        intent.putExtra("longitude", item.longitude)
+        intent.putExtra("latitude", item.latitude)
+        intent.putExtra("distance", item.distance)
+        intent.putExtra("location", item.location)
+        intent.putExtra("timestamp", item.timestamp)
 
         startActivity(intent)
     }

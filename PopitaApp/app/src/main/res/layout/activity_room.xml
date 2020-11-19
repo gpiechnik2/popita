@@ -83,7 +83,7 @@
     <LinearLayout
         android:id="@+id/bell"
         android:layout_width="match_parent"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="14dp"
         android:layout_height="4dp"
         android:background="@drawable/explore_recyclerview"
         app:layout_constraintEnd_toEndOf="parent"

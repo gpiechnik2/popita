@@ -44,7 +44,6 @@ class RoomDetailActivity : AppCompatActivity() {
 
         //get id of a room
         val room_id = getIntent().getIntExtra("id", 0)
-        println(room_id)
 
         //create adapter
         val adapter = GroupAdapter<GroupieViewHolder>()
