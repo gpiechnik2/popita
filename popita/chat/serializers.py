@@ -11,13 +11,12 @@ class UserInfoSerializer(UserSerializer):
 
 class RoomSerializer(serializers.ModelSerializer):
 
-    receivers = UserInfoSerializer(many = True)
+    receivers = UserInfoSerializer(many = True, read_only = True)
 
     class Meta:
         model = Room
         fields = ['id', 'receivers']
 
-    #add
     def to_representation(self, instance):
         ret = super(RoomSerializer, self).to_representation(instance)
         # check the request is list view or detail view
@@ -47,12 +46,21 @@ class RoomSerializer(serializers.ModelSerializer):
                 last_sender = 0
 
             #get receivers info, append them to new values
-            for user_info in ret.get("receivers"):
-                if user.id != user_info['id']:
+            if ret.get("receivers"):
+                if ret.get("receivers")[0]['id'] == user.id:
+                    try:
+                        user_info = ret.get("receivers")[1]
+                        receiver_id = user_info['id']
+                        receiver_name = user_info['first_name']
+                    except IndexError:
+                        #self user exception
+                        user_info = ret.get("receivers")[0]
+                        receiver_id = user_info['id']
+                        receiver_name = user_info['first_name']
+                else:
+                    user_info = ret.get("receivers")[0]
                     receiver_id = user_info['id']
                     receiver_name = user_info['first_name']
-                else:
-                    pass
 
             #and remove them
             ret.pop("receivers")

@@ -18,10 +18,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import kotlinx.android.synthetic.main.activity_explore_detail.*
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -196,6 +193,7 @@ class ExploreDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         markerCU = mMap.addMarker(MarkerOptions()
             .position(currentUserLocation)
             .title("You"))
+            //TODO create layout to icon
     }
 
     fun getUserAddress(location: Location): String {
