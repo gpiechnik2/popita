@@ -1,26 +1,17 @@
 package com.example.popitaapp.activities
 
-import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
-import android.location.LocationManager
-import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.provider.Settings
-import android.util.Log
 import android.widget.Button
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.example.popitaapp.R
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -32,8 +23,13 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_explore_detail.*
-import kotlinx.android.synthetic.main.activity_room_detail.*
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
+import java.io.IOException
 import java.util.*
+
 
 class ExploreDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -48,6 +44,8 @@ class ExploreDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     // globally declare LocationCallback
     private lateinit var locationCallback: LocationCallback
 
+    //globally declare user Marker
+    private lateinit var markerCU: Marker
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +76,7 @@ class ExploreDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         address.text = getIntent().getStringExtra("location")
 
         //change receiver distance
-        txtDistance.text = getIntent().getStringExtra("distance")
+        txtDistance.text = getIntent().getFloatExtra("distance", 0.toFloat()).toString()
 
         //back button
         var back_btn = findViewById(R.id.back_btn) as Button
@@ -87,9 +85,7 @@ class ExploreDetailActivity : AppCompatActivity(), OnMapReadyCallback {
             val intent = Intent(this, ExploreActivity::class.java)
             startActivity(intent);
         }
-
     }
-
 
     override fun onMapReady(googleMap: GoogleMap) {
 
@@ -115,12 +111,12 @@ class ExploreDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         val ruser_latitude = getIntent().getFloatExtra("latitude", 0.toFloat())
         val ruser_name = getIntent().getStringExtra("user_first_name")
 
-        val ruser_location = LatLng(ruser_longitude.toDouble(), ruser_latitude.toDouble())
+        val ruser_location = LatLng(ruser_latitude.toDouble(), ruser_longitude.toDouble())
         mMap.addMarker(MarkerOptions()
                 .position(ruser_location)
                 .title(ruser_name))
 
-
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ruser_location, 16.toFloat()))
 
     }
 
@@ -142,11 +138,16 @@ class ExploreDetailActivity : AppCompatActivity(), OnMapReadyCallback {
                     val location =
                             locationResult.lastLocation
 
-                    println(" DZIALA")
-                    println(location)
-                    println("XDDDXXDDXXDDXDXDXDDDXDDX")
-                    // use your location object
-                    // get latitude , longitude and other info from this
+                    //get address
+                    val address = getUserAddress(location)
+
+                    //post send request to database to update user location
+                    updateUserLocation(location, address)
+
+                    //if map is actually loaded, mark current user
+                    mMap.setOnMapLoadedCallback {
+                        updateCurrentUserLocation(location)
+                    }
                 }
             }
         }
@@ -182,6 +183,116 @@ class ExploreDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onResume() {
         super.onResume()
         startLocationUpdates()
+    }
+
+    fun updateCurrentUserLocation(location: Location) {
+        //remove current marker of a current user
+        if (::markerCU.isInitialized) {
+            markerCU.remove()
+        }
+
+        //and add new marker
+        val currentUserLocation = LatLng(location.latitude, location.longitude)
+        markerCU = mMap.addMarker(MarkerOptions()
+            .position(currentUserLocation)
+            .title("You"))
+    }
+
+    fun getUserAddress(location: Location): String {
+        val latitude = location.latitude
+        val longitude = location.longitude
+
+        val addresses: List<Address>
+        val geocoder = Geocoder(this, Locale.getDefault())
+
+        addresses = geocoder.getFromLocation(
+            latitude,
+            longitude,
+            1
+        ) // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+
+
+        val address: String = addresses[0]
+            .getAddressLine(0) // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+
+        val city: String = addresses[0].getLocality()
+        val state: String = addresses[0].getAdminArea()
+        val country: String = addresses[0].getCountryName()
+        val postalCode: String = addresses[0].getPostalCode()
+        val knownName: String =
+            addresses[0].getFeatureName() // Only if available else return NULL
+
+        return address
+    }
+
+    private fun updateUserLocation(location: Location, address: String) {
+
+        //get auth token
+        val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
+        val auth_token = sharedPreference.getString("auth_token", null)
+
+        //val url = "http://192.168.0.5:8000/localization/localization/"
+        val url = "http://192.168.0.101:8000/localization/localization/"
+
+        val latitude = location.latitude
+        val longitude = location.longitude
+
+        val jsonObject = JSONObject()
+        jsonObject.put("latitude", latitude)
+        jsonObject.put("longitude", longitude)
+        jsonObject.put("attitude", 1.000000)
+        jsonObject.put("location", address)
+
+        val body = jsonObject.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
+
+        val okHttpClient = OkHttpClient()
+        val request = Request.Builder()
+            .url(url)
+            .post(body)
+            .header("Authorization", "Token " + auth_token.toString())
+            .build()
+
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                this@ExploreDetailActivity.runOnUiThread(Runnable {
+                    Toast.makeText(
+                        this@ExploreDetailActivity,
+                        "Unexpected problem.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                })
+                println(e)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.code == 200) {
+
+                } else if (response.code == 400) {
+                    this@ExploreDetailActivity.runOnUiThread(Runnable {
+                        Toast.makeText(
+                            this@ExploreDetailActivity,
+                            "Unexpected problem. Please log in again.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        val intent = Intent(this@ExploreDetailActivity, MainActivity::class.java)
+                        startActivity(intent);
+                    })
+
+                } else if (response.code == 401) {
+                    this@ExploreDetailActivity.runOnUiThread(Runnable {
+                        Toast.makeText(
+                            this@ExploreDetailActivity,
+                            "Unexpected problem. Please log in again.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        val intent = Intent(this@ExploreDetailActivity, MainActivity::class.java)
+                        startActivity(intent);
+                    })
+                }
+            }
+        })
     }
 
 }

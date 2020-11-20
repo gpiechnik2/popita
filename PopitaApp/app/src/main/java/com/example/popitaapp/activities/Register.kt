@@ -93,9 +93,5 @@ class Register : AppCompatActivity() {
                 })
             }
         })
-
-
-
     }
-
 }

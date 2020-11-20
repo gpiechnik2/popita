@@ -6,4 +6,5 @@ from .views import *
 urlpatterns = [
     path('', include('djoser.urls')),
     path('', include('djoser.urls.authtoken')),
+    path('users/<int:pk>', UserDetailApiView.as_view(), name = 'user')
 ]

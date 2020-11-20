@@ -140,15 +140,6 @@ class RoomDetailActivity : AppCompatActivity() {
                         val intent = Intent(this@RoomDetailActivity, MainActivity::class.java)
                         startActivity(intent);
                     })
-
-                } else {
-                    this@RoomDetailActivity.runOnUiThread(Runnable {
-                        Toast.makeText(
-                                this@RoomDetailActivity,
-                                "Unable to log in.",
-                                Toast.LENGTH_SHORT
-                        ).show()
-                    })
                 }
             }
         })
@@ -213,14 +204,6 @@ class RoomDetailActivity : AppCompatActivity() {
                         startActivity(intent);
                     })
 
-                } else {
-                    this@RoomDetailActivity.runOnUiThread(Runnable {
-                        Toast.makeText(
-                            this@RoomDetailActivity,
-                            "Unable to log in.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    })
                 }
             }
         })

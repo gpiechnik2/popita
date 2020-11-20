@@ -24,7 +24,7 @@ class User(AbstractUser):
     background_color = models.CharField(max_length = 6, choices = BACKGROUND_CHOICES, default = 'Orange')
     job = models.CharField(max_length = 26, default = 'N/A')
     preferred_drink = models.CharField(max_length = 30, default = 'N/A')
-    message = models.CharField(max_length = 300, default = 'N/A')
+    description = models.CharField(max_length = 300, default = 'N/A')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name']

@@ -116,14 +116,6 @@ class Login_with_email : AppCompatActivity() {
                         Toast.makeText(this@Login_with_email, "Unable to log in with provided credentials.", Toast.LENGTH_SHORT).show()
                     })
                 }
-
-                else {
-                    this@Login_with_email.runOnUiThread(Runnable {
-                        Toast.makeText(this@Login_with_email, "Unable to log in.", Toast.LENGTH_SHORT).show()
-                    })
-                }
-
-
             }
         })
     }
