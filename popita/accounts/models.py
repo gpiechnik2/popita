@@ -3,9 +3,29 @@ from django.contrib.auth.models import AbstractUser
 from .managers import CustomUserManager
 
 class User(AbstractUser):
+
+    GENDER_CHOICES = (
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+    )
+
+    BACKGROUND_CHOICES = (
+        ('Orange', 'Orange'),
+        ('Blue', 'Blue'),
+        ('Pink', 'Pink'),
+        ('Yellow', 'Yellow'),
+        ('Green', 'Green'),
+    )
+
     username = None
     username_validator = None
     email = models.EmailField(verbose_name = 'email', max_length = 255, unique = True)
+    gender = models.CharField(max_length = 6, choices = GENDER_CHOICES, default = 'M')
+    background_color = models.CharField(max_length = 6, choices = BACKGROUND_CHOICES, default = 'Orange')
+    job = models.CharField(max_length = 26, default = 'N/A')
+    preferred_drink = models.CharField(max_length = 30, default = 'N/A')
+    message = models.CharField(max_length = 300, default = 'N/A')
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name']
 

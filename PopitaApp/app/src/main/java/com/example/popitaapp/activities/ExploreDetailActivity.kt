@@ -15,6 +15,7 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.util.Log
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -30,6 +31,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.android.synthetic.main.activity_explore_detail.*
+import kotlinx.android.synthetic.main.activity_room_detail.*
 import java.util.*
 
 class ExploreDetailActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -44,7 +47,6 @@ class ExploreDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
     // globally declare LocationCallback
     private lateinit var locationCallback: LocationCallback
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,6 +70,23 @@ class ExploreDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         // Get the SupportMapFragment and request notification when the map is ready to be used.
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
         mapFragment?.getMapAsync(this)
+
+        //change receiver name
+        txtName.text = getIntent().getStringExtra("user_first_name")
+
+        //change receiver localization
+        address.text = getIntent().getStringExtra("location")
+
+        //change receiver distance
+        txtDistance.text = getIntent().getStringExtra("distance")
+
+        //back button
+        var back_btn = findViewById(R.id.back_btn) as Button
+        back_btn.setOnClickListener {
+            // Handler code here.
+            val intent = Intent(this, ExploreActivity::class.java)
+            startActivity(intent);
+        }
 
     }
 
@@ -129,8 +148,6 @@ class ExploreDetailActivity : AppCompatActivity(), OnMapReadyCallback {
                     // use your location object
                     // get latitude , longitude and other info from this
                 }
-
-
             }
         }
     }

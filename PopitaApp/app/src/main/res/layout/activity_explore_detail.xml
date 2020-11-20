@@ -1,17 +1,181 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ExploreDetailActivity">
+    tools:context=".activities.ExploreDetailActivity"
+    android:background="@color/white"
+    >
 
+    <Button
+        android:id="@+id/back_btn"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="30dp"
+
+        android:drawableStart="@drawable/ic_back_02_icon"
+        android:drawableLeft="@drawable/ic_back_02_icon"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:padding="11.5dp"
+
+        android:background="@drawable/button_background_back"
+        android:fontFamily="@font/montserrat_extrabold"
+        android:textColor="@color/white"
+        android:textSize="46dp"
+        android:clickable="true"
+        />
 
     <fragment
         android:id="@+id/map"
         class="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_above="@+id/cardInfo"
+        />
+
+    <LinearLayout
+        android:id="@+id/cardInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="26dp"
+            android:orientation="horizontal"
+            android:gravity="bottom"
+
+            >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_weight="1"
+                >
+
+                <TextView
+                    android:id="@+id/txtName"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+
+                    android:fontFamily="@font/montserrat_extrabold"
+                    android:text="Charli"
+                    android:textColor="@color/black"
+                    android:textSize="44dp"
+                    android:maxLines="1"
+                    android:maxLength="20" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:orientation="vertical"
+                android:layout_gravity="right"
+                android:layout_marginRight="30dp"
+                android:background="@drawable/explore_distance_background"
+                android:gravity="center"
+                >
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/txtDistance"
+
+                    android:fontFamily="@font/montserrat_extrabold"
+                    android:text="3,5"
+                    android:textColor="@color/white"
+                    android:textSize="24dp"
+                    android:maxLength="3"
+                    />
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="Km"
+                    android:textColor="@color/white"
+                    android:textSize="17dp"
+                    android:maxLength="3"
+                    />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="30dp"
+
+            android:fontFamily="@font/montserrat_medium"
+            android:text="Lorem ipsum dolodsa doi ajsodidsaio jdoar mit"
+            android:textColor="@color/black"
+            android:textSize="21dp"
+            />
+
+        <LinearLayout
+            android:id="@+id/firstLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:weightSum="20"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="32dp"
+            >
+
+
+            <Button
+                android:id="@+id/message_btn"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="65dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="10"
+                android:gravity="center"
+
+                android:background="@drawable/button_background_white"
+                android:fontFamily="@font/montserrat_extrabold"
+                android:text="Message"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="21dp" />
+
+            <Button
+                android:id="@+id/profile_btn"
+                android:layout_width="0dp"
+                android:layout_height="65dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="10"
+                android:gravity="center"
+
+                android:background="@drawable/button_background"
+                android:fontFamily="@font/montserrat_extrabold"
+                android:text="Profile"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="21dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
