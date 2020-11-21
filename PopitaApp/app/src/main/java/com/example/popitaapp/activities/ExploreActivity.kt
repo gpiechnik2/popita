@@ -87,6 +87,8 @@ class ExploreActivity : AppCompatActivity(), OnExploreItemClickListener {
 
         //get people near
         getPeopleNearJson()
+
+        //TODO call getPeopleNearJson() every x seconds
     }
 
     private fun getPeopleNearJson() {

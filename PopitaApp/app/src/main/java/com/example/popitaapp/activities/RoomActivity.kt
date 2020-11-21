@@ -95,6 +95,9 @@ class RoomActivity : AppCompatActivity(), OnRoomItemClickListener {
         //get info and append them to adapter for the first time
         getRoomsFromJson()
 
+        //TODO call getRoomsFromJson() every x seconds
+
+
         //search util
         search_buddy.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
