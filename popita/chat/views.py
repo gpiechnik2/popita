@@ -13,6 +13,7 @@ class RoomViewSet(viewsets.ModelViewSet):
 
     permission_classes = [IsAuthenticated]
     serializer_class = RoomSerializer
+    http_method_names = ['get', 'head']
 
     def get_queryset(self):
         user = self.request.user

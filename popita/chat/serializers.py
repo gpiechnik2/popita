@@ -22,6 +22,7 @@ class RoomSerializer(serializers.ModelSerializer):
         # check the request is list view or detail view
         is_list_view = isinstance(self.instance, list)
         room_id = instance.id
+
         if is_list_view:
 
             user = self.context['request'].user
@@ -106,10 +107,10 @@ class MessageSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
         receiver = request['receiver']
         message = request['message']
-        room = Room.objects.filter(receivers__in = [user]).filter(receivers__in = [receiver])
+
+        room = Room.objects.filter(receivers__in = [user]).filter(receivers__in = [receiverss])
 
         if not room:
-            #room = Room.objects.create(receivers = [user, receiver])[0]
             room = Room.objects.create()
             room.receivers.add(user)
             room.receivers.add(receiver)
@@ -124,6 +125,11 @@ class MessageSerializer(serializers.ModelSerializer):
 
         if not User.objects.filter(email = str(validated_data)):
             raise serializers.ValidationError('User must be in database.')
+
+        #chatting with yourself exception
+        user = self.context['request'].user
+        if str(validated_data) == str(user):
+            raise serializers.ValidationError('You can not chat with yourself.')
 
         return validated_data
 
