@@ -45,6 +45,7 @@ class RoomDetailActivity : AppCompatActivity() {
         //get id of a room
         val room_id = getIntent().getIntExtra("id", 0)
 
+        //TODO update adapter messages in async requests to database for messages with specified id
         //create adapter
         val adapter = GroupAdapter<GroupieViewHolder>()
         recyclerView2.layoutManager = LinearLayoutManager(this@RoomDetailActivity, LinearLayoutManager.VERTICAL, false)

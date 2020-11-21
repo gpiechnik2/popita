@@ -8,9 +8,13 @@ import android.location.Geocoder
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.Adapter
+import android.widget.AdapterView
 import android.widget.Button
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -45,6 +49,13 @@ class RoomActivity : AppCompatActivity(), OnRoomItemClickListener {
     // globally declare LocationCallback
     private lateinit var locationCallback: LocationCallback
 
+    // globally declare main handler
+    lateinit var mainHandler: Handler
+
+    //globally declare rv
+    private lateinit var rv: RecyclerView
+
+
     companion object {
         val users = ArrayList<Room>()
     }
@@ -67,31 +78,22 @@ class RoomActivity : AppCompatActivity(), OnRoomItemClickListener {
             startActivity(intent);
         }
 
-
-
-
-
-
+        //mainHandler = Handler(Looper.getMainLooper())
 
         //connect with Room model
-        val rv = findViewById<RecyclerView>(R.id.recyclerView1)
+        rv = findViewById(R.id.recyclerView1)
         rv.layoutManager = LinearLayoutManager(this@RoomActivity, LinearLayoutManager.VERTICAL, false)
-
-        //get post request
-        //TODO Change async request to sync
-        fetchJson()
 
         //updates of your location
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         getLocationUpdates()
 
-        //2 seconds delay to process fetchJson
-        runBlocking {     // but this expression blocks the main thread
-            delay(2000L)  // ... while we delay for 2 seconds to keep JVM alive
-        }
-
+        //create adapter
         var adapter = RoomAdapter(users, this@RoomActivity)
         rv.adapter = adapter
+
+        //get info and append them to adapter for the first time
+        getRoomsFromJson()
 
         //search util
         search_buddy.addTextChangedListener(object: TextWatcher {
@@ -119,7 +121,7 @@ class RoomActivity : AppCompatActivity(), OnRoomItemClickListener {
         })
     }
 
-    private fun fetchJson() {
+    private fun getRoomsFromJson() {
 
         //get auth token
         val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
@@ -200,6 +202,9 @@ class RoomActivity : AppCompatActivity(), OnRoomItemClickListener {
 
             users.add(Room(id, last_message, last_sender, receiver_id, receiver_name, last_message_timestamp))
         }
+
+        //update recyclerview
+        rv.invalidate()
 
         //TODO if getRooms is empty, move to ANOTHER view
 
@@ -334,12 +339,16 @@ class RoomActivity : AppCompatActivity(), OnRoomItemClickListener {
     override fun onPause() {
         super.onPause()
         stopLocationUpdates()
+
+        //mainHandler.removeCallbacks(updateRoomsList)
     }
 
     // start receiving location update when activity  visible/foreground
     override fun onResume() {
         super.onResume()
         startLocationUpdates()
+
+        //mainHandler.post(updateRoomsList)
     }
 
     fun getUserAddress(location: Location): String {
@@ -359,14 +368,14 @@ class RoomActivity : AppCompatActivity(), OnRoomItemClickListener {
         val address: String = addresses[0]
             .getAddressLine(0) // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
 
-        val city: String = addresses[0].getLocality()
-        val state: String = addresses[0].getAdminArea()
-        val country: String = addresses[0].getCountryName()
-        val postalCode: String = addresses[0].getPostalCode()
-        val knownName: String =
-            addresses[0].getFeatureName() // Only if available else return NULL
-
         return address
     }
 
+    private val updateRoomsList = object : Runnable {
+        override fun run() {
+            val newRooms = getRoomsFromJson()
+
+            mainHandler.postDelayed(this, 50000)
+        }
+    }
 }

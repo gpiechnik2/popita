@@ -44,6 +44,9 @@ class ExploreActivity : AppCompatActivity(), OnExploreItemClickListener {
     // globally declare LocationCallback
     private lateinit var locationCallback: LocationCallback
 
+    // globally declare RecyclerView
+    private lateinit var rv: RecyclerView
+
     companion object {
         val users = ArrayList<Explore>()
     }
@@ -72,25 +75,21 @@ class ExploreActivity : AppCompatActivity(), OnExploreItemClickListener {
 
 
         //connect with Room model
-        val rv = findViewById<RecyclerView>(R.id.recyclerView1)
+        rv = findViewById(R.id.recyclerView1)
         rv.layoutManager = LinearLayoutManager(this@ExploreActivity, LinearLayoutManager.VERTICAL, false)
-
-        fetchJson()
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         getLocationUpdates()
 
-        //2 seconds delay to process fetchJson
-        runBlocking {     // but this expression blocks the main thread
-            delay(2000L)  // ... while we delay for 2 seconds to keep JVM alive
-        }
-
         var adapter = ExploreAdapter(users, this@ExploreActivity)
         rv.adapter = adapter
 
+        //TODO create async request adapter with new results, and update adapter
+        getPeopleNearJson()
+
     }
 
-    private fun fetchJson() {
+    private fun getPeopleNearJson() {
 
         //get auth token
         val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
@@ -249,6 +248,8 @@ class ExploreActivity : AppCompatActivity(), OnExploreItemClickListener {
             users.add(Explore(id, user, longitude, latitude, attitude, location, timestamp, distance))
         }
 
+        rv.invalidate()
+
         //TODO if getRooms is empty, move to ANOTHER view
 
     }
@@ -265,7 +266,7 @@ class ExploreActivity : AppCompatActivity(), OnExploreItemClickListener {
         intent.putExtra("timestamp", item.timestamp)
 
         startActivity(intent)
-    }
+    }  
 
     private fun getLocationUpdates()
     {
@@ -290,6 +291,7 @@ class ExploreActivity : AppCompatActivity(), OnExploreItemClickListener {
 
                     //post send request to database to update user location
                     updateUserLocation(location, address)
+
                 }
             }
         }
