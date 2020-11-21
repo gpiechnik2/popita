@@ -108,7 +108,7 @@ class MessageSerializer(serializers.ModelSerializer):
         receiver = request['receiver']
         message = request['message']
 
-        room = Room.objects.filter(receivers__in = [user]).filter(receivers__in = [receiverss])
+        room = Room.objects.filter(receivers__in = [user]).filter(receivers__in = [receiver])
 
         if not room:
             room = Room.objects.create()

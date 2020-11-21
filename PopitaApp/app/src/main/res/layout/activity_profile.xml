@@ -1,9 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ProfileActivity">
+    tools:context=".activities.ProfileActivity"
+    android:background="@color/orange">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/profileImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_margin="30dp"
+        app:srcCompat="@drawable/ic_log_with_email_02" />
+
+    <Button
+        android:id="@+id/back_btn"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="30dp"
+
+        android:drawableStart="@drawable/ic_back_02_icon"
+        android:drawableLeft="@drawable/ic_back_02_icon"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:padding="12dp"
+
+        android:background="@drawable/button_background_back"
+        android:fontFamily="@font/montserrat_extrabold"
+        android:textColor="@color/white"
+        android:textSize="46dp"
+        android:clickable="true"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="3"
+            android:background="@drawable/card_login_with_email"            android:layout_alignParentBottom="true"
+            >
+
+            <TextView
+                android:id="@+id/txtJob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="36dp"
+                android:layout_marginBottom="8dp"
+
+                android:fontFamily="@font/montserrat_bold"
+                android:text="Graphic designer"
+                android:textAllCaps="true"
+                android:textColor="@color/green"
+                android:textSize="14dp"
+                />
+
+            <TextView
+                android:id="@+id/txtName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="5dp"
+
+                android:fontFamily="@font/montserrat_extrabold"
+                android:text="Jenny"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="36dp"
+                />
+
+            <TextView
+                android:id="@+id/txtDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="18dp"
+
+                android:fontFamily="@font/montserrat_medium"
+                android:text="I’m a painter you know. I can paint whatever I want. If you want to buy painting message."
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="21dp"
+                />
+
+            <TextView
+                android:id="@+id/txtAlcohol"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="26dp"
+
+                android:drawableStart="@drawable/ic_alcohol"
+                android:drawableLeft="@drawable/ic_alcohol"
+                android:gravity="left|center"
+                android:layout_gravity="center"
+                android:drawablePadding="6dp"
+
+                android:fontFamily="@font/montserrat_extrabold"
+                android:text="White wine"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                />
+
+            <Button
+                android:id="@+id/sendMessageBtn"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_weight="10"
+                android:layout_marginBottom="32dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:gravity="center"
+
+                android:background="@drawable/button_background"
+                android:fontFamily="@font/montserrat_extrabold"
+                android:text="Send message"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="21dp"
+                android:clickable="true"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>
