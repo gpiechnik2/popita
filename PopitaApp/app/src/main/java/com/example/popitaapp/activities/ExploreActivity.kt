@@ -81,12 +81,12 @@ class ExploreActivity : AppCompatActivity(), OnExploreItemClickListener {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         getLocationUpdates()
 
+        //create adapter
         var adapter = ExploreAdapter(users, this@ExploreActivity)
         rv.adapter = adapter
 
-        //TODO create async request adapter with new results, and update adapter
+        //get people near
         getPeopleNearJson()
-
     }
 
     private fun getPeopleNearJson() {
@@ -123,6 +123,8 @@ class ExploreActivity : AppCompatActivity(), OnExploreItemClickListener {
                     val jsonObject = JSONObject(body)
 
                     getLocalUsers(jsonObject)
+
+                    //TODO https://github.com/square/okhttp/issues/2311
 
                 } else if (response.code == 400) {
                     this@ExploreActivity.runOnUiThread(Runnable {
@@ -266,7 +268,7 @@ class ExploreActivity : AppCompatActivity(), OnExploreItemClickListener {
         intent.putExtra("timestamp", item.timestamp)
 
         startActivity(intent)
-    }  
+    }
 
     private fun getLocationUpdates()
     {
@@ -292,6 +294,8 @@ class ExploreActivity : AppCompatActivity(), OnExploreItemClickListener {
                     //post send request to database to update user location
                     updateUserLocation(location, address)
 
+                    //update users near
+                    getPeopleNearJson()
                 }
             }
         }
@@ -345,13 +349,6 @@ class ExploreActivity : AppCompatActivity(), OnExploreItemClickListener {
 
         val address: String = addresses[0]
             .getAddressLine(0) // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-
-        val city: String = addresses[0].getLocality()
-        val state: String = addresses[0].getAdminArea()
-        val country: String = addresses[0].getCountryName()
-        val postalCode: String = addresses[0].getPostalCode()
-        val knownName: String =
-            addresses[0].getFeatureName() // Only if available else return NULL
 
         return address
     }

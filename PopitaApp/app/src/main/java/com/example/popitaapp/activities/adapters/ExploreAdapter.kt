@@ -19,6 +19,7 @@ class ExploreAdapter(val userList: ArrayList<Explore>, var clickListener: OnExpl
         holder?.txtDistance?.text = userList[position].distance.toString()
         holder?.txtName?.text = userList[position].user.first_name
         holder?.txtLocation?.text = userList[position].location
+        holder?.txtDate?.text = "Last update: " + userList[position].timestamp
 
         //set random image to all cards
         val resId = intArrayOf(R.drawable.ic_localization_background_01, R.drawable.ic_localization_background_02, R.drawable.ic_localization_background_03)
@@ -48,6 +49,7 @@ class ExploreAdapter(val userList: ArrayList<Explore>, var clickListener: OnExpl
         val txtDistance = itemView.findViewById<TextView>(R.id.txtDistance)
         val txtLocation = itemView.findViewById<TextView>(R.id.txtLocation)
         val cardImage = itemView.findViewById<ImageView>(R.id.cardImage)
+        val txtDate = itemView.findViewById<TextView>(R.id.txtDate)
 
         fun initialize(item: Explore, action: OnExploreItemClickListener) {
             val id = item.id

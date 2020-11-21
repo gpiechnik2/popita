@@ -2,7 +2,9 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.http import Http404
+
 from math import cos, asin, sqrt, pi
+from datetime import datetime, timedelta
 
 from .serializers import LocalizationSerializer
 from .models import Localization
@@ -29,9 +31,14 @@ class LocalizationViewSet(viewsets.ModelViewSet):
         self_latitude = self_localization[0].latitude
         self_longitude = self_localization[0].longitude
 
-        #check if person in database is < 5km from you
+        # TODO: Change on production
+        #filter last 8 hours
+        #time = datetime.now() - timedelta(hours = 8)
+        #localizations = Localization.objects.filter(timestamp__gt = time)
+
         localizations = Localization.objects.all()
 
+        #check if person is < 5km from you
         localization_response = []
         for localization in localizations:
 
