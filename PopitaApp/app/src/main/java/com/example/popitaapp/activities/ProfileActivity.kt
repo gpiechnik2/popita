@@ -47,10 +47,10 @@ class ProfileActivity : AppCompatActivity() {
             val intent = Intent(this, RoomDetailActivity::class.java)
 
             val user_id = getIntent().getIntExtra("user_id", 0)
-            val first_name = getIntent().getStringExtra("first_name")
+            val receiver_name = getIntent().getStringExtra("first_name")
 
             intent.putExtra("user_id", user_id)
-            intent.putExtra("receiver_name", first_name)
+            intent.putExtra("receiver_name", receiver_name)
 
             startActivity(intent);
         }

@@ -60,8 +60,13 @@ class ExploreDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         message_btn.setOnClickListener {
             // Handler code here.
             val intent = Intent(this, RoomDetailActivity::class.java)
+
             val user_id = getIntent().getIntExtra("user_id", 0)
+            val receiver_name = getIntent().getStringExtra("first_name")
+
+            intent.putExtra("receiver_name", receiver_name)
             intent.putExtra("user_id", user_id)
+
             startActivity(intent);
         }
 

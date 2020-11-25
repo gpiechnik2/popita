@@ -5,14 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.popitaapp.R
-import com.example.popitaapp.activities.adapters.RoomAdapter
 import com.example.popitaapp.activities.models.Message
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.GoogleMap
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
@@ -20,13 +16,11 @@ import kotlinx.android.synthetic.main.activity_room_detail.*
 import kotlinx.android.synthetic.main.message_item_layout.view.*
 import kotlinx.android.synthetic.main.message_item_layout_02.view.*
 import kotlinx.android.synthetic.main.message_item_layout_03.view.*
-import kotlinx.coroutines.*
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import java.io.IOException
-import java.lang.Runnable
 
 class RoomDetailActivity : AppCompatActivity() {
 
@@ -65,13 +59,35 @@ class RoomDetailActivity : AppCompatActivity() {
 
         //get json and match messages to specified view
         //if is not null == Action is called from RoomActivity
-        if (room_id != null) {
+        if (room_id != 0) {
             fetchJson(room_id)
         }
         //if is, get room_id from specified endpoint
         else {
             val user_id = getIntent().getIntExtra("user_id", 0)
             getRoom(user_id)
+        }
+
+        for (i in messages) {
+            println(i)
+            //if you are sender, add new message
+            if (i.receiver == 0) {
+                adapter.add(ChatItem(i))
+            }
+            //i not, check previous message
+            else {
+                //if its first message,
+                if (messages.lastIndex < 0) {
+                    adapter.add(ChatFromItem(i))
+                }
+                //if there is only 1 message
+                else if (messages.lastIndex >= 0) {
+                    //and you are receiver(1)
+                    if (messages.last().receiver == 1) {
+                        adapter.add(ChatFromItem_02(i))
+                    }
+                }
+            }
         }
 
         //new message util
@@ -120,7 +136,7 @@ class RoomDetailActivity : AppCompatActivity() {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                if (response.code == 200) {
+                if (response.code == 201) {
 
                     //get from response room id
                     val body = response.body?.string()
@@ -258,7 +274,7 @@ class RoomDetailActivity : AppCompatActivity() {
                     //and call fetchJson to update messages(because we know, that room with
                     //current user exists
                     val results = jsonObject.getJSONArray("results")
-                    val room_id = results.getJSONObject(0).getInt("receiver_id")
+                    val room_id = results.getJSONObject(0).getInt("id")
 
                     fetchJson(room_id)
 
@@ -307,32 +323,38 @@ class RoomDetailActivity : AppCompatActivity() {
             messages.add(Message(id, receiver, message, timestamp))
         }
 
-        //append all messages based on
-        for (i in messages) {
-            println(i)
-            //if you are sender, add new message
-            if (i.receiver == 0) {
-                adapter.add(ChatItem(i))
-            }
-            //i not, check previous message
-            else {
-                //if its first message,
-                if (messages.lastIndex < 0) {
-                    adapter.add(ChatFromItem(i))
+        //update recyclerview
+        rv.invalidate()
+
+        //we need to update adapter on ui thread
+        this@RoomDetailActivity.runOnUiThread(Runnable {
+
+            for (i in messages) {
+                println(i)
+                //if you are sender, add new message
+                if (i.receiver == 0) {
+                    adapter.add(ChatItem(i))
                 }
-                //if there is only 1 message
-                else if (messages.lastIndex >= 0) {
-                    //and you are receiver(1)
-                    if (messages.last().receiver == 1) {
-                        adapter.add(ChatFromItem_02(i))
+                //i not, check previous message
+                else {
+                    //if its first message,
+                    if (messages.lastIndex < 0) {
+                        adapter.add(ChatFromItem(i))
+                    }
+                    //if there is only 1 message
+                    else if (messages.lastIndex >= 0) {
+                        //and you are receiver(1)
+                        if (messages.last().receiver == 1) {
+                            adapter.add(ChatFromItem_02(i))
+                        }
                     }
                 }
             }
-        }
 
-        //update recyclerview
-        rv.invalidate()
-        adapter.notifyDataSetChanged()
+            adapter.notifyDataSetChanged()
+
+        })
+
 
         //TODO if getMessages is empty, move to ANOTHER view
 

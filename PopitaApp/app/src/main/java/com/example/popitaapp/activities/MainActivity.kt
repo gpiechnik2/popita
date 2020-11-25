@@ -11,6 +11,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //TODO create login with providers
+
         //login button
         var login_btn = findViewById(R.id.login_btn) as Button
         login_btn.setOnClickListener {
