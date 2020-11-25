@@ -82,6 +82,11 @@ class RoomActivity : AppCompatActivity(), OnRoomItemClickListener {
             getMyProfileId()
         }
 
+        menuSettings.setOnClickListener {
+            val intent = Intent(this, SettingsActivity::class.java)
+            startActivity(intent)
+        }
+
         //mainHandler = Handler(Looper.getMainLooper())
 
         //connect with Room model

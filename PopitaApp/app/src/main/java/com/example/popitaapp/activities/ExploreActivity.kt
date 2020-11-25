@@ -63,7 +63,7 @@ class ExploreActivity : AppCompatActivity(), OnExploreItemClickListener {
             startActivity(intent);
         }
 
-        //messages button
+        //explore button
         menuExplore.setOnClickListener {
             // Handler code here.
             val intent = Intent(this, ExploreActivity::class.java)
@@ -75,8 +75,11 @@ class ExploreActivity : AppCompatActivity(), OnExploreItemClickListener {
             getMyProfileId()
         }
 
-
-
+        //settings
+        menuSettings.setOnClickListener {
+            val intent = Intent(this, SettingsActivity::class.java)
+            startActivity(intent)
+        }
 
         //connect with Room model
         rv = findViewById(R.id.recyclerView1)

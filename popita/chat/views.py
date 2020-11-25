@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 from django.http import Http404
 
@@ -39,4 +40,4 @@ class MessageViewSet(viewsets.ModelViewSet):
         if not Room.objects.filter(receivers__in = [user], pk = room_id):
             raise Http404
 
-        return Message.objects.filter(room = room_id)
+        return Message.objects.filter(room = room_id).order_by('timestamp')
