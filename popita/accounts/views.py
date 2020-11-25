@@ -5,7 +5,7 @@ from .serializers import UserSerializer
 from .models import User
 
 #get user profile info
-class UserDetailApiView(viewsets.ModelViewSet):
+class UserProfileApiView(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticatedOrReadOnly,)
     queryset = User.objects.all()
     serializer_class = UserSerializer

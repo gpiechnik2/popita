@@ -89,6 +89,7 @@ class RoomDetailActivity : AppCompatActivity() {
 
         val receiver_id = getIntent().getIntExtra("receiver_id", 0)
         val message = new_message.text.toString()
+        new_message.text.clear()
 
         val jsonObject = JSONObject()
         jsonObject.put("receiver", receiver_id)
@@ -124,16 +125,16 @@ class RoomDetailActivity : AppCompatActivity() {
                     //get from response room id
                     val body = response.body?.string()
                     val jsonObject = JSONObject(body)
-                    val room_id = jsonObject.getJSONObject("room").getInt("id")
+                    val new_room_id = jsonObject.getJSONObject("room").getInt("id")
 
-                    //and refrest current messages
-                    fetchJson(room_id)
+                    //and refresh current messages
+                    fetchJson(new_room_id)
 
                 } else if (response.code == 400) {
                     this@RoomDetailActivity.runOnUiThread(Runnable {
                         Toast.makeText(
                                 this@RoomDetailActivity,
-                                "Unable to get messages with provided credentials. Please log in or register first.",
+                                "400 Unable to get messages with provided credentials. Please log in or register first.",
                                 Toast.LENGTH_SHORT
                         ).show()
 
@@ -145,7 +146,7 @@ class RoomDetailActivity : AppCompatActivity() {
                     this@RoomDetailActivity.runOnUiThread(Runnable {
                         Toast.makeText(
                                 this@RoomDetailActivity,
-                                "Unable to get messages with provided credentials. Please log in or register first.",
+                                "401 Unable to get messages with provided credentials. Please log in or register first.",
                                 Toast.LENGTH_SHORT
                         ).show()
 
@@ -196,7 +197,7 @@ class RoomDetailActivity : AppCompatActivity() {
                     this@RoomDetailActivity.runOnUiThread(Runnable {
                         Toast.makeText(
                             this@RoomDetailActivity,
-                            "Unable to get messages with provided credentials. Please log in or register first.",
+                            "400 Unable to get messages with provided credentials. Please log in or register first.",
                             Toast.LENGTH_SHORT
                         ).show()
 
@@ -208,7 +209,7 @@ class RoomDetailActivity : AppCompatActivity() {
                     this@RoomDetailActivity.runOnUiThread(Runnable {
                         Toast.makeText(
                             this@RoomDetailActivity,
-                            "Unable to get messages with provided credentials. Please log in or register first.",
+                            "401 Unable to get messages with provided credentials. Please log in or register first.",
                             Toast.LENGTH_SHORT
                         ).show()
 
@@ -265,7 +266,7 @@ class RoomDetailActivity : AppCompatActivity() {
                     this@RoomDetailActivity.runOnUiThread(Runnable {
                         Toast.makeText(
                                 this@RoomDetailActivity,
-                                "Unable to get messages with provided credentials. Please log in or register first.",
+                                "400 Unable to get messages with provided credentials. Please log in or register first.",
                                 Toast.LENGTH_SHORT
                         ).show()
 
@@ -277,7 +278,7 @@ class RoomDetailActivity : AppCompatActivity() {
                     this@RoomDetailActivity.runOnUiThread(Runnable {
                         Toast.makeText(
                                 this@RoomDetailActivity,
-                                "Unable to get messages with provided credentials. Please log in or register first.",
+                                "401 Unable to get messages with provided credentials. Please log in or register first.",
                                 Toast.LENGTH_SHORT
                         ).show()
 

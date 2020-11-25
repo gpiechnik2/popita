@@ -77,6 +77,11 @@ class RoomActivity : AppCompatActivity(), OnRoomItemClickListener {
             startActivity(intent);
         }
 
+        //profile button
+        menuProfile.setOnClickListener {
+            getMyProfileId()
+        }
+
         //mainHandler = Handler(Looper.getMainLooper())
 
         //connect with Room model
@@ -381,4 +386,152 @@ class RoomActivity : AppCompatActivity(), OnRoomItemClickListener {
             mainHandler.postDelayed(this, 50000)
         }
     }
+
+    fun getMyProfileId() {
+
+        //get auth token
+        val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
+        val auth_token = sharedPreference.getString("auth_token", null)
+
+        //val url = "http://192.168.0.5:8000/localization/localization/"
+        val url = "http://192.168.0.101:8000/auth/users/me/"
+
+        val okHttpClient = OkHttpClient()
+        val request = Request.Builder()
+                .url(url)
+                .header("Authorization", "Token " + auth_token.toString())
+                .build()
+
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                this@RoomActivity.runOnUiThread(Runnable {
+                    Toast.makeText(
+                            this@RoomActivity,
+                            "Unexpected problem.",
+                            Toast.LENGTH_SHORT
+                    ).show()
+                })
+                println(e)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.code == 200) {
+
+                    //get user id from response
+                    val body = response.body?.string()
+                    val jsonObject = JSONObject(body)
+                    val user_id = jsonObject.getInt("id")
+
+                    getMyProfileInfo(user_id)
+
+                } else if (response.code == 400) {
+                    this@RoomActivity.runOnUiThread(Runnable {
+                        Toast.makeText(
+                                this@RoomActivity,
+                                "Unexpected problem. Please log in again.",
+                                Toast.LENGTH_SHORT
+                        ).show()
+
+                        val intent = Intent(this@RoomActivity, MainActivity::class.java)
+                        startActivity(intent);
+                    })
+
+                } else if (response.code == 401) {
+                    this@RoomActivity.runOnUiThread(Runnable {
+                        Toast.makeText(
+                                this@RoomActivity,
+                                "Unexpected problem. Please log in again.",
+                                Toast.LENGTH_SHORT
+                        ).show()
+
+                        val intent = Intent(this@RoomActivity, MainActivity::class.java)
+                        startActivity(intent);
+                    })
+                }
+            }
+        })
+    }
+
+    fun getMyProfileInfo(user_id: Int) {
+
+        //get auth token
+        val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
+        val auth_token = sharedPreference.getString("auth_token", null)
+
+        //val url = "http://192.168.0.5:8000/localization/localization/"
+        val url = "http://192.168.0.101:8000/auth/profiles/$user_id/"
+
+        val okHttpClient = OkHttpClient()
+        val request = Request.Builder()
+                .url(url)
+                .header("Authorization", "Token " + auth_token.toString())
+                .build()
+
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                this@RoomActivity.runOnUiThread(Runnable {
+                    Toast.makeText(
+                            this@RoomActivity,
+                            "Unexpected problem.",
+                            Toast.LENGTH_SHORT
+                    ).show()
+                })
+                println(e)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.code == 200) {
+
+                    //get user id from response
+                    val body = response.body?.string()
+                    val jsonObject = JSONObject(body)
+
+                    //val user_id = jsonObject.getInt("id")
+                    val first_name = jsonObject.getString("first_name")
+                    val gender = jsonObject.getString("gender")
+                    val background_color = jsonObject.getString("background_color")
+                    val job = jsonObject.getString("job")
+                    val preferred_drink = jsonObject.getString("preferred_drink")
+                    val description = jsonObject.getString("description")
+
+                    // Handler code here.
+                    val intent = Intent(this@RoomActivity, MyProfileActivity::class.java)
+                    intent.putExtra("user_id", user_id)
+                    intent.putExtra("first_name", first_name)
+                    intent.putExtra("gender", gender)
+                    intent.putExtra("background_color", background_color)
+                    intent.putExtra("job", job)
+                    intent.putExtra("preferred_drink", preferred_drink)
+                    intent.putExtra("description", description)
+
+                    startActivity(intent)
+
+                } else if (response.code == 400) {
+                    this@RoomActivity.runOnUiThread(Runnable {
+                        Toast.makeText(
+                                this@RoomActivity,
+                                "Unexpected problem. Please log in again.",
+                                Toast.LENGTH_SHORT
+                        ).show()
+
+                        val intent = Intent(this@RoomActivity, MainActivity::class.java)
+                        startActivity(intent);
+                    })
+
+                } else if (response.code == 401) {
+                    this@RoomActivity.runOnUiThread(Runnable {
+                        Toast.makeText(
+                                this@RoomActivity,
+                                "Unexpected problem. Please log in again.",
+                                Toast.LENGTH_SHORT
+                        ).show()
+
+                        val intent = Intent(this@RoomActivity, MainActivity::class.java)
+                        startActivity(intent);
+                    })
+                }
+            }
+        })
+    }
+
 }

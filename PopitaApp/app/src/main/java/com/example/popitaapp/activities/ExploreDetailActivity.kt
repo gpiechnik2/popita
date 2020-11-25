@@ -60,6 +60,8 @@ class ExploreDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         message_btn.setOnClickListener {
             // Handler code here.
             val intent = Intent(this, RoomDetailActivity::class.java)
+            val user_id = getIntent().getIntExtra("user_id", 0)
+            intent.putExtra("user_id", user_id)
             startActivity(intent);
         }
 
@@ -228,13 +230,6 @@ class ExploreDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         val address: String = addresses[0]
             .getAddressLine(0) // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
 
-        val city: String = addresses[0].getLocality()
-        val state: String = addresses[0].getAdminArea()
-        val country: String = addresses[0].getCountryName()
-        val postalCode: String = addresses[0].getPostalCode()
-        val knownName: String =
-            addresses[0].getFeatureName() // Only if available else return NULL
-
         return address
     }
 
@@ -350,8 +345,11 @@ class ExploreDetailActivity : AppCompatActivity(), OnMapReadyCallback {
                     val userProfilePreferredDrink = jsonObject.getString("preferred_drink")
                     val userProfileDescription = jsonObject.getString("description")
 
-                    //start Profile activity with data below
+                    //info needed for back button
+                    val location = getIntent().getStringExtra("location")
+                    val distance = getIntent().getFloatExtra("distance", 0.toFloat()).toString()
 
+                    //start Profile activity with data below
                     val intent = Intent(this@ExploreDetailActivity, ProfileActivity::class.java)
                     intent.putExtra("user_id", userProfileId)
                     intent.putExtra("first_name", userProfileFirstName)
@@ -360,6 +358,8 @@ class ExploreDetailActivity : AppCompatActivity(), OnMapReadyCallback {
                     intent.putExtra("job", userProfileJob)
                     intent.putExtra("preferred_drink", userProfilePreferredDrink)
                     intent.putExtra("description", userProfileDescription)
+                    intent.putExtra("location", location)
+                    intent.putExtra("distance", distance)
 
                     startActivity(intent)
 
