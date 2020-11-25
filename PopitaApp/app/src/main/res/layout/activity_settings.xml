@@ -12,7 +12,7 @@
         android:id="@+id/settingsName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:gravity="center"
@@ -46,32 +46,11 @@
         android:layout_below="@id/textView"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="12dp"
         android:layout_marginTop="18dp"
         android:background="@drawable/background_settings"
         >
-
-        <TextView
-            android:id="@+id/display"
-            android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:paddingRight="20dp"
-            android:paddingLeft="20dp"
-
-            android:drawableStart="@drawable/ic_loop_icon"
-            android:drawableLeft="@drawable/ic_loop_icon"
-            android:drawableEnd="@drawable/ic_login_icon_03"
-            android:drawableRight="@drawable/ic_login_icon_03"
-            android:gravity="left|center"
-            android:layout_gravity="center"
-            android:drawablePadding="12dp"
-
-            android:fontFamily="@font/montserrat_medium"
-            android:hint="Display"
-            android:textColorHint="@color/black"
-            android:textSize="21dp"
-            android:inputType="text" />
 
         <TextView
             android:id="@+id/profile"
@@ -79,21 +58,19 @@
             android:layout_height="65dp"
             android:paddingRight="20dp"
             android:paddingLeft="20dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="4dp"
 
-            android:drawableStart="@drawable/ic_loop_icon"
-            android:drawableLeft="@drawable/ic_loop_icon"
-            android:drawableEnd="@drawable/ic_login_icon_03"
-            android:drawableRight="@drawable/ic_login_icon_03"
+            android:drawableStart="@drawable/ic_login_icon_03"
+            android:drawableLeft="@drawable/ic_login_icon_03"
+            android:drawableEnd="@drawable/ic_back_03_icon"
+            android:drawableRight="@drawable/ic_back_03_icon"
             android:gravity="left|center"
             android:layout_gravity="center"
             android:drawablePadding="12dp"
 
-            android:fontFamily="@font/montserrat_medium"
+            android:fontFamily="@font/montserrat_extrabold"
             android:hint="Profile"
             android:textColorHint="@color/black"
-            android:textSize="21dp"
+            android:textSize="17dp"
             android:inputType="text" />
 
     </LinearLayout>
@@ -121,6 +98,7 @@
         android:layout_below="@id/SecurityText"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
+        android:layout_marginBottom="100dp"
         android:paddingTop="16dp"
         android:paddingBottom="16dp"
         android:layout_marginTop="18dp"
@@ -134,18 +112,18 @@
             android:paddingRight="20dp"
             android:paddingLeft="20dp"
 
-            android:drawableStart="@drawable/ic_loop_icon"
-            android:drawableLeft="@drawable/ic_loop_icon"
-            android:drawableEnd="@drawable/ic_login_icon_03"
-            android:drawableRight="@drawable/ic_login_icon_03"
+            android:drawableStart="@drawable/ic_password_icon_03"
+            android:drawableLeft="@drawable/ic_password_icon_03"
+            android:drawableEnd="@drawable/ic_back_03_icon"
+            android:drawableRight="@drawable/ic_back_03_icon"
             android:gravity="left|center"
             android:layout_gravity="center"
             android:drawablePadding="12dp"
 
-            android:fontFamily="@font/montserrat_medium"
+            android:fontFamily="@font/montserrat_extrabold"
             android:hint="Password"
             android:textColorHint="@color/black"
-            android:textSize="21dp"
+            android:textSize="17dp"
             android:inputType="text" />
 
         <TextView
@@ -159,16 +137,16 @@
 
             android:drawableStart="@drawable/ic_loop_icon"
             android:drawableLeft="@drawable/ic_loop_icon"
-            android:drawableEnd="@drawable/ic_login_icon_03"
-            android:drawableRight="@drawable/ic_login_icon_03"
+            android:drawableEnd="@drawable/ic_back_03_icon"
+            android:drawableRight="@drawable/ic_back_03_icon"
             android:gravity="left|center"
             android:layout_gravity="center"
             android:drawablePadding="12dp"
 
-            android:fontFamily="@font/montserrat_medium"
+            android:fontFamily="@font/montserrat_extrabold"
             android:hint="Privacy"
             android:textColorHint="@color/black"
-            android:textSize="21dp"
+            android:textSize="17dp"
             android:inputType="text" />
 
     </LinearLayout>
@@ -193,7 +171,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="34dp"
-                app:srcCompat="@drawable/ic_menu_01"
+                app:srcCompat="@drawable/ic_menu_06"
                 />
 
             <TextView
@@ -203,7 +181,7 @@
 
                 android:fontFamily="@font/montserrat_extrabold"
                 android:text="Messages"
-                android:textColor="@color/yellow"
+                android:textColor="@color/black"
                 android:textSize="12dp"
                 android:gravity="center"
                 />
@@ -277,7 +255,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="34dp"
-                app:srcCompat="@drawable/ic_menu_04"
+                app:srcCompat="@drawable/ic_menu_07"
                 />
 
             <TextView
@@ -287,7 +265,7 @@
 
                 android:fontFamily="@font/montserrat_extrabold"
                 android:text="Settings"
-                android:textColor="@color/black"
+                android:textColor="@color/orange"
                 android:textSize="12dp"
                 android:gravity="center"
                 />
