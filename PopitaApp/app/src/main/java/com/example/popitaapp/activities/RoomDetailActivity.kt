@@ -7,8 +7,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.popitaapp.R
+import com.example.popitaapp.activities.adapters.RoomAdapter
 import com.example.popitaapp.activities.models.Message
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.GoogleMap
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
@@ -18,11 +22,18 @@ import kotlinx.android.synthetic.main.message_item_layout_02.view.*
 import kotlinx.android.synthetic.main.message_item_layout_03.view.*
 import kotlinx.coroutines.*
 import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import java.io.IOException
 import java.lang.Runnable
 
 class RoomDetailActivity : AppCompatActivity() {
+
+    //globally declare rv
+    private lateinit var rv: RecyclerView
+
+    private lateinit var adapter: GroupAdapter<GroupieViewHolder>
 
     companion object {
         val messages = ArrayList<Message>()
@@ -47,43 +58,26 @@ class RoomDetailActivity : AppCompatActivity() {
 
         //TODO update adapter messages in async requests to database for messages with specified id
         //create adapter
-        val adapter = GroupAdapter<GroupieViewHolder>()
-        recyclerView2.layoutManager = LinearLayoutManager(this@RoomDetailActivity, LinearLayoutManager.VERTICAL, false)
+        adapter = GroupAdapter()
+        rv = findViewById(R.id.recyclerView2)
+        rv.layoutManager = LinearLayoutManager(this@RoomDetailActivity, LinearLayoutManager.VERTICAL, false)
+        rv.adapter = adapter
 
         //get json and match messages to specified view
-        fetchJson(room_id)
-
-        //2 seconds delay to process fetchJson
-        runBlocking {     // but this expression blocks the main thread
-            delay(2000L)  // ... while we delay for 2 seconds to keep JVM alive
+        //if is not null == Action is called from RoomActivity
+        if (room_id != null) {
+            fetchJson(room_id)
         }
-
-        for (i in messages) {
-            println(i)
-            //if you are sender, add new message
-            if (i.receiver == 0) {
-                adapter.add(ChatItem(i))
-            }
-            //i not, check previous message
-            else {
-                //if its first message,
-                if (messages.lastIndex < 0) {
-                    adapter.add(ChatFromItem(i))
-                }
-                //if there is only 1 message
-                else if (messages.lastIndex >= 0) {
-                    //and you are receiver(1)
-                    if (messages.last().receiver == 1) {
-                        adapter.add(ChatFromItem_02(i))
-                    }
-                }
-            }
+        //if is, get room_id from specified endpoint
+        else {
+            val user_id = getIntent().getIntExtra("user_id", 0)
+            getRoom(user_id)
         }
-
-        recyclerView2.adapter = adapter
 
         //new message util
-
+        SendButton.setOnClickListener {
+            sendMessage(0)
+        }
 
     }
 
@@ -93,12 +87,22 @@ class RoomDetailActivity : AppCompatActivity() {
         val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
         val auth_token = sharedPreference.getString("auth_token", null)
 
+        val receiver_id = getIntent().getIntExtra("receiver_id", 0)
+        val message = new_message.text.toString()
+
+        val jsonObject = JSONObject()
+        jsonObject.put("receiver", receiver_id)
+        jsonObject.put("message", message)
+
+        val body = jsonObject.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
+
         //val url = "http://192.168.0.5:8000/chat/rooms/$room_id/messages/"
         val url = "http://192.168.0.101:8000/chat/rooms/$room_id/messages/"
 
         val okHttpClient = OkHttpClient()
         val request = Request.Builder()
                 .url(url)
+                .post(body)
                 .header("Authorization", "Token " + auth_token.toString())
                 .build()
 
@@ -116,7 +120,14 @@ class RoomDetailActivity : AppCompatActivity() {
 
             override fun onResponse(call: Call, response: Response) {
                 if (response.code == 200) {
-                    //refresh activity
+
+                    //get from response room id
+                    val body = response.body?.string()
+                    val jsonObject = JSONObject(body)
+                    val room_id = jsonObject.getJSONObject("room").getInt("id")
+
+                    //and refrest current messages
+                    fetchJson(room_id)
 
                 } else if (response.code == 400) {
                     this@RoomDetailActivity.runOnUiThread(Runnable {
@@ -210,6 +221,75 @@ class RoomDetailActivity : AppCompatActivity() {
         })
     }
 
+    fun getRoom(user_id: Int) {
+        //get auth token
+        val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
+        val auth_token = sharedPreference.getString("auth_token", null)
+
+        //val url = "http://192.168.0.5:8000/chat/rooms/$room_id/messages/"
+        val url = "http://192.168.0.101:8000/chat/rooms/?receivers=$user_id"
+
+        val okHttpClient = OkHttpClient()
+        val request = Request.Builder()
+                .url(url)
+                .header("Authorization", "Token " + auth_token.toString())
+                .build()
+
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                this@RoomDetailActivity.runOnUiThread(Runnable {
+                    Toast.makeText(
+                            this@RoomDetailActivity,
+                            "Getting messages failed.",
+                            Toast.LENGTH_SHORT
+                    ).show()
+                })
+                println(e)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.code == 200) {
+
+                    //get receiver id from json response
+                    val body = response.body?.string()
+                    val jsonObject = JSONObject(body)
+
+                    //and call fetchJson to update messages(because we know, that room with
+                    //current user exists
+                    val results = jsonObject.getJSONArray("results")
+                    val room_id = results.getJSONObject(0).getInt("receiver_id")
+
+                    fetchJson(room_id)
+
+                } else if (response.code == 400) {
+                    this@RoomDetailActivity.runOnUiThread(Runnable {
+                        Toast.makeText(
+                                this@RoomDetailActivity,
+                                "Unable to get messages with provided credentials. Please log in or register first.",
+                                Toast.LENGTH_SHORT
+                        ).show()
+
+                        val intent = Intent(this@RoomDetailActivity, MainActivity::class.java)
+                        startActivity(intent);
+                    })
+
+                } else if (response.code == 401) {
+                    this@RoomDetailActivity.runOnUiThread(Runnable {
+                        Toast.makeText(
+                                this@RoomDetailActivity,
+                                "Unable to get messages with provided credentials. Please log in or register first.",
+                                Toast.LENGTH_SHORT
+                        ).show()
+
+                        val intent = Intent(this@RoomDetailActivity, MainActivity::class.java)
+                        startActivity(intent);
+                    })
+
+                }
+            }
+        })
+    }
+
     fun getMessages(results: JSONObject) {
 
         //clear not to duplicate message records
@@ -225,6 +305,33 @@ class RoomDetailActivity : AppCompatActivity() {
 
             messages.add(Message(id, receiver, message, timestamp))
         }
+
+        //append all messages based on
+        for (i in messages) {
+            println(i)
+            //if you are sender, add new message
+            if (i.receiver == 0) {
+                adapter.add(ChatItem(i))
+            }
+            //i not, check previous message
+            else {
+                //if its first message,
+                if (messages.lastIndex < 0) {
+                    adapter.add(ChatFromItem(i))
+                }
+                //if there is only 1 message
+                else if (messages.lastIndex >= 0) {
+                    //and you are receiver(1)
+                    if (messages.last().receiver == 1) {
+                        adapter.add(ChatFromItem_02(i))
+                    }
+                }
+            }
+        }
+
+        //update recyclerview
+        rv.invalidate()
+        adapter.notifyDataSetChanged()
 
         //TODO if getMessages is empty, move to ANOTHER view
 

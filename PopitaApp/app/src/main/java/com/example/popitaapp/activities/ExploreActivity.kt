@@ -20,6 +20,7 @@ import com.example.popitaapp.activities.adapters.OnExploreItemClickListener
 import com.example.popitaapp.activities.models.Explore
 import com.example.popitaapp.activities.models.User
 import com.google.android.gms.location.*
+import kotlinx.android.synthetic.main.activity_explore_detail.*
 import kotlinx.android.synthetic.main.activity_room.*
 import kotlinx.android.synthetic.main.explore_item_layout.*
 import kotlinx.coroutines.delay

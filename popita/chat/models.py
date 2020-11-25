@@ -4,6 +4,7 @@ from accounts.models import User
 # Create your models here.
 
 class Room(models.Model):
+    
     title = models.CharField(max_length=100, blank=True, default='')
     receivers = models.ManyToManyField(User)
 

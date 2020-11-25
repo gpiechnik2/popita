@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.popitaapp.R
+import com.example.popitaapp.activities.models.Room
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -47,6 +48,20 @@ class ExploreDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_explore_detail)
+
+        //Profile button
+        profile_btn.setOnClickListener {
+            // get user profile info, and if response code == 200, start new activity
+            val user_id = getIntent().getIntExtra("user_id", 0)
+            getUserProfileInfo(user_id)
+        }
+
+        //Message button
+        message_btn.setOnClickListener {
+            // Handler code here.
+            val intent = Intent(this, RoomDetailActivity::class.java)
+            startActivity(intent);
+        }
 
         //check your API key
         if (getString(R.string.maps_api_key).isEmpty()) {
@@ -283,6 +298,89 @@ class ExploreDetailActivity : AppCompatActivity(), OnMapReadyCallback {
                             this@ExploreDetailActivity,
                             "Unexpected problem. Please log in again.",
                             Toast.LENGTH_SHORT
+                        ).show()
+
+                        val intent = Intent(this@ExploreDetailActivity, MainActivity::class.java)
+                        startActivity(intent);
+                    })
+                }
+            }
+        })
+    }
+
+    private fun getUserProfileInfo(user_id: Int) {
+
+        //get auth token
+        val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
+        val auth_token = sharedPreference.getString("auth_token", null)
+
+        //val url = "http://192.168.0.5:8000/localization/localization/"
+        val url = "http://192.168.0.101:8000/auth/profiles/$user_id/"
+
+        val okHttpClient = OkHttpClient()
+        val request = Request.Builder()
+                .url(url)
+                .header("Authorization", "Token " + auth_token.toString())
+                .build()
+
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                this@ExploreDetailActivity.runOnUiThread(Runnable {
+                    Toast.makeText(
+                            this@ExploreDetailActivity,
+                            "Unexpected problem.",
+                            Toast.LENGTH_SHORT
+                    ).show()
+                })
+                println(e)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.code == 200) {
+
+                    val body = response.body?.string()
+                    val jsonObject = JSONObject(body)
+
+                    //get wanted info
+                    val userProfileId = jsonObject.getInt("id")
+                    val userProfileFirstName = jsonObject.getString("first_name")
+                    val userProfileGender = jsonObject.getString("gender")
+                    val userProfileBackground = jsonObject.getString("background_color")
+                    val userProfileJob = jsonObject.getString("job")
+                    val userProfilePreferredDrink = jsonObject.getString("preferred_drink")
+                    val userProfileDescription = jsonObject.getString("description")
+
+                    //start Profile activity with data below
+
+                    val intent = Intent(this@ExploreDetailActivity, ProfileActivity::class.java)
+                    intent.putExtra("user_id", userProfileId)
+                    intent.putExtra("first_name", userProfileFirstName)
+                    intent.putExtra("gender", userProfileGender)
+                    intent.putExtra("background_color", userProfileBackground)
+                    intent.putExtra("job", userProfileJob)
+                    intent.putExtra("preferred_drink", userProfilePreferredDrink)
+                    intent.putExtra("description", userProfileDescription)
+
+                    startActivity(intent)
+
+                } else if (response.code == 400) {
+                    this@ExploreDetailActivity.runOnUiThread(Runnable {
+                        Toast.makeText(
+                                this@ExploreDetailActivity,
+                                "Unexpected problem. Please log in again.",
+                                Toast.LENGTH_SHORT
+                        ).show()
+
+                        val intent = Intent(this@ExploreDetailActivity, MainActivity::class.java)
+                        startActivity(intent);
+                    })
+
+                } else if (response.code == 401) {
+                    this@ExploreDetailActivity.runOnUiThread(Runnable {
+                        Toast.makeText(
+                                this@ExploreDetailActivity,
+                                "Unexpected problem. Please log in again.",
+                                Toast.LENGTH_SHORT
                         ).show()
 
                         val intent = Intent(this@ExploreDetailActivity, MainActivity::class.java)

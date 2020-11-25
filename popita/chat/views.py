@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
 from django.http import Http404
 
 from .models import Message, Room
@@ -15,17 +16,21 @@ class RoomViewSet(viewsets.ModelViewSet):
     serializer_class = RoomSerializer
     http_method_names = ['get', 'head']
 
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['receivers']
+
     def get_queryset(self):
         user = self.request.user
         return Room.objects.filter(receivers__in = [user])
 
 class MessageViewSet(viewsets.ModelViewSet):
     """
-    A viewset for viewing and editing message instances.
+    A viewset for viewing messages.
     """
 
     permission_classes = [IsAuthenticated]
     serializer_class = MessageSerializer
+    http_method_names = ['get', 'post', 'head']
 
     def get_queryset(self):
         user = self.request.user

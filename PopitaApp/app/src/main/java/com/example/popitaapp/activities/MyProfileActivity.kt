@@ -10,3 +10,4 @@ class MyProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_my_profile)
     }
 }
+

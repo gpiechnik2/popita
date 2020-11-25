@@ -55,7 +55,6 @@ class RoomActivity : AppCompatActivity(), OnRoomItemClickListener {
     //globally declare rv
     private lateinit var rv: RecyclerView
 
-
     companion object {
         val users = ArrayList<Room>()
     }
@@ -216,6 +215,7 @@ class RoomActivity : AppCompatActivity(), OnRoomItemClickListener {
     override fun onItemClick(item: Room, position: Int) {
         val intent = Intent(this, RoomDetailActivity::class.java)
         intent.putExtra("receiver_name", item.receiver_name)
+        intent.putExtra("receiver_id", item.receiver_id)
         intent.putExtra("id", item.id)
         startActivity(intent)
     }
