@@ -22,7 +22,7 @@ class SettingsChangePasswordActivity : AppCompatActivity() {
         //back button
         back_btn.setOnClickListener {
             // Handler code here.
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, SettingsActivity::class.java)
             startActivity(intent);
         }
 
