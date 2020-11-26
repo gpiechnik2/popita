@@ -23,7 +23,7 @@
             >
 
             <Button
-                android:id="@+id/ds"
+                android:id="@+id/back_btn"
                 android:layout_width="65dp"
                 android:layout_height="65dp"
                 android:layout_marginTop="38dp"
@@ -130,15 +130,14 @@
                     android:fontFamily="@font/montserrat_medium"
                     android:gravity="left|center"
 
-                    android:hint="Jenny"
+                    android:text="Jenny"
                     android:inputType="text"
                     android:paddingLeft="20dp"
                     android:textColor="@color/black"
-                    android:textColorHint="@color/black"
                     android:textSize="21dp" />
 
                 <Spinner
-                    android:id="@+id/genderText"
+                    android:id="@+id/genderSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="65dp"
                     android:layout_gravity="center"
@@ -162,7 +161,7 @@
                     android:textSize="21dp" />
 
                 <Spinner
-                    android:id="@+id/backgroundText"
+                    android:id="@+id/backgroundSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="65dp"
                     android:layout_gravity="center"
