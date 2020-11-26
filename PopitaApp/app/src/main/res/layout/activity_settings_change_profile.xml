@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".activities.SettingsChangeProfileActivity"
     android:fillViewport="true"
-    android:background="@color/blue">
+    android:background="@color/blue"
+    android:id="@+id/root">
 
 
     <LinearLayout

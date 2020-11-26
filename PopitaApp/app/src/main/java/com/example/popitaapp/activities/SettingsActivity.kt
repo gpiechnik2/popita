@@ -1,5 +1,6 @@
 package com.example.popitaapp.activities
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -24,7 +25,7 @@ class SettingsActivity : AppCompatActivity() {
         //profile activity on click
         profile.setOnClickListener {
             val intent = Intent(this, SettingsChangeProfileActivity::class.java)
-            startActivity(intent);
+            getMyProfileId(intent)
         }
 
         //password activity on click
@@ -57,7 +58,8 @@ class SettingsActivity : AppCompatActivity() {
 
         //profile button
         menuProfile.setOnClickListener {
-            getMyProfileId()
+            val intent = Intent(this, MyProfileActivity::class.java)
+            getMyProfileId(intent)
         }
 
         menuSettings.setOnClickListener {
@@ -67,7 +69,7 @@ class SettingsActivity : AppCompatActivity() {
 
     }
 
-    fun getMyProfileId() {
+    fun getMyProfileId(intent: Intent) {
 
         //get auth token
         val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
@@ -102,7 +104,7 @@ class SettingsActivity : AppCompatActivity() {
                     val jsonObject = JSONObject(body)
                     val user_id = jsonObject.getInt("id")
 
-                    getMyProfileInfo(user_id)
+                    getMyProfileInfo(user_id, intent)
 
                 } else if (response.code == 400) {
                     this@SettingsActivity.runOnUiThread(Runnable {
@@ -112,8 +114,8 @@ class SettingsActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        val intent = Intent(this@SettingsActivity, MainActivity::class.java)
-                        startActivity(intent);
+                        val newintent = Intent(this@SettingsActivity, MainActivity::class.java)
+                        startActivity(newintent);
                     })
 
                 } else if (response.code == 401) {
@@ -124,15 +126,15 @@ class SettingsActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        val intent = Intent(this@SettingsActivity, MainActivity::class.java)
-                        startActivity(intent);
+                        val newintent = Intent(this@SettingsActivity, MainActivity::class.java)
+                        startActivity(newintent);
                     })
                 }
             }
         })
     }
 
-    fun getMyProfileInfo(user_id: Int) {
+    fun getMyProfileInfo(user_id: Int, intent: Intent) {
 
         //get auth token
         val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
@@ -175,7 +177,7 @@ class SettingsActivity : AppCompatActivity() {
                     val description = jsonObject.getString("description")
 
                     // Handler code here.
-                    val intent = Intent(this@SettingsActivity, MyProfileActivity::class.java)
+
                     intent.putExtra("user_id", user_id)
                     intent.putExtra("first_name", first_name)
                     intent.putExtra("gender", gender)
@@ -194,8 +196,8 @@ class SettingsActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        val intent = Intent(this@SettingsActivity, MainActivity::class.java)
-                        startActivity(intent);
+                        val newintent = Intent(this@SettingsActivity, MainActivity::class.java)
+                        startActivity(newintent);
                     })
 
                 } else if (response.code == 401) {
@@ -206,12 +208,11 @@ class SettingsActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        val intent = Intent(this@SettingsActivity, MainActivity::class.java)
-                        startActivity(intent);
+                        val newintent = Intent(this@SettingsActivity, MainActivity::class.java)
+                        startActivity(newintent);
                     })
                 }
             }
         })
     }
-
 }
