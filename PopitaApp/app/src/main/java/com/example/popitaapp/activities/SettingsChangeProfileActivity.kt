@@ -18,6 +18,17 @@ class SettingsChangeProfileActivity : AppCompatActivity() {
             startActivity(intent);
         }
 
+        //change EditText info
+
+
+
+        //intent.putExtra("user_id", user_id)
+        //                    intent.putExtra("first_name", first_name)
+        //                    intent.putExtra("gender", gender)
+        //                    intent.putExtra("background_color", background_color)
+        //                    intent.putExtra("job", job)
+        //                    intent.putExtra("preferred_drink", preferred_drink)
+        //                    intent.putExtra("description", description)
 
     }
 }
