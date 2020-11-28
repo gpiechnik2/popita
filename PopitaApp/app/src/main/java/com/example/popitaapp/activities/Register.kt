@@ -62,8 +62,8 @@ class Register : AppCompatActivity() {
 
     fun fetchJson(name: String, email: String, password: String) {
 
-        //val url = "http://192.168.0.5:8000/auth/users/"
-        val url = "http://192.168.0.101:8000/auth/users/"
+        val ip = getString(R.string.server_ip)
+        val url = "http://$ip/auth/users/"
 
         val jsonObject = JSONObject()
         jsonObject.put("first_name", name)

@@ -113,8 +113,8 @@ class RoomDetailActivity : AppCompatActivity() {
 
         val body = jsonObject.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
 
-        //val url = "http://192.168.0.5:8000/chat/rooms/$room_id/messages/"
-        val url = "http://192.168.0.101:8000/chat/rooms/$room_id/messages/"
+        val ip = getString(R.string.server_ip)
+        val url = "http://$ip/chat/rooms/$room_id/messages/"
 
         val okHttpClient = OkHttpClient()
         val request = Request.Builder()
@@ -180,8 +180,8 @@ class RoomDetailActivity : AppCompatActivity() {
         val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
         val auth_token = sharedPreference.getString("auth_token", null)
 
-        //val url = "http://192.168.0.5:8000/chat/rooms/$room_id/messages/"
-        val url = "http://192.168.0.101:8000/chat/rooms/$room_id/messages/"
+        val ip = getString(R.string.server_ip)
+        val url = "http://$ip/chat/rooms/$room_id/messages/"
 
         val okHttpClient = OkHttpClient()
         val request = Request.Builder()
@@ -243,8 +243,8 @@ class RoomDetailActivity : AppCompatActivity() {
         val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
         val auth_token = sharedPreference.getString("auth_token", null)
 
-        //val url = "http://192.168.0.5:8000/chat/rooms/$room_id/messages/"
-        val url = "http://192.168.0.101:8000/chat/rooms/?receivers=$user_id"
+        val ip = getString(R.string.server_ip)
+        val url = "http://$ip/chat/rooms/?receivers=$user_id"
 
         val okHttpClient = OkHttpClient()
         val request = Request.Builder()

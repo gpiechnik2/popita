@@ -75,8 +75,8 @@ class SettingsActivity : AppCompatActivity() {
         val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
         val auth_token = sharedPreference.getString("auth_token", null)
 
-        //val url = "http://192.168.0.5:8000/localization/localization/"
-        val url = "http://192.168.0.101:8000/auth/users/me/"
+        val ip = getString(R.string.server_ip)
+        val url = "http://$ip/auth/users/me/"
 
         val okHttpClient = OkHttpClient()
         val request = Request.Builder()
@@ -140,8 +140,8 @@ class SettingsActivity : AppCompatActivity() {
         val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
         val auth_token = sharedPreference.getString("auth_token", null)
 
-        //val url = "http://192.168.0.5:8000/localization/localization/"
-        val url = "http://192.168.0.101:8000/auth/profiles/$user_id/"
+        val ip = getString(R.string.server_ip)
+        val url = "http://$ip/auth/profiles/$user_id/"
 
         val okHttpClient = OkHttpClient()
         val request = Request.Builder()

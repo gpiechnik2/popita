@@ -76,8 +76,8 @@ class SettingsChangePasswordActivity : AppCompatActivity() {
 
     fun savePassword(oldPassword: String, newPassword: String) {
 
-        //val url = "http://192.168.0.5:8000/auth/users/"
-        val url = "http://192.168.0.101:8000/auth/users/set_password/"
+        val ip = getString(R.string.server_ip)
+        val url = "http://$ip/auth/users/set_password/"
 
         val jsonObject = JSONObject()
         jsonObject.put("current_password", oldPassword)

@@ -262,11 +262,9 @@
                         android:layout_weight="1"
 
                         android:fontFamily="@font/montserrat_medium"
-                        android:hint="Lorem ipsum dolor mit Lorem ipsum dolore set lorem ipsum dolor mit set dolor eka r."
                         android:inputType="textMultiLine"
                         android:paddingLeft="14dp"
                         android:textColor="@color/black"
-                        android:textColorHint="@color/black"
                         android:backgroundTint="@android:color/transparent"
                         android:textSize="21dp" />
 

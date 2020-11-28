@@ -107,8 +107,8 @@ class SettingsChangeProfileActivity : AppCompatActivity() {
         val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
         val auth_token = sharedPreference.getString("auth_token", null)
 
-        //val url = "http://192.168.0.5:8000/chat/rooms/"
-        val url = "http://192.168.0.101:8000/chat/rooms/"
+        val ip = getString(R.string.server_ip)
+        val url = "http://$ip/chat/rooms/"
 
         val jsonObject = JSONObject()
 

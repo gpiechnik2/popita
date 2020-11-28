@@ -61,8 +61,8 @@ class Login_with_email : AppCompatActivity() {
 
     fun fetchJson(email: String, password: String) {
 
-        //val url = "http://192.168.0.5:8000/auth/token/login/"
-        val url = "http://192.168.0.101:8000/auth/token/login/"
+        val ip = getString(R.string.server_ip)
+        val url = "http://$ip/auth/token/login/"
 
         val jsonObject = JSONObject()
         jsonObject.put("email", email)
