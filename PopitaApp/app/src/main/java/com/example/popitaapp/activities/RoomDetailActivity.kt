@@ -326,7 +326,7 @@ class RoomDetailActivity : AppCompatActivity() {
         //update recyclerview
         rv.invalidate()
 
-        //we need to update adapter on ui thread
+        //update adapter on ui thread
         this@RoomDetailActivity.runOnUiThread(Runnable {
 
             for (i in messages) {

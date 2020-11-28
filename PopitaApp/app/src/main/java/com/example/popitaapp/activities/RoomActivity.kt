@@ -113,7 +113,7 @@ class RoomActivity : AppCompatActivity(), OnRoomItemClickListener {
         adapter = RoomAdapter(users, this@RoomActivity)
         rv.adapter = adapter
 
-        //init mainhandler
+        //init Main handler to get updates in room activity
         mainHandler = Handler(Looper.getMainLooper())
 
         //search util

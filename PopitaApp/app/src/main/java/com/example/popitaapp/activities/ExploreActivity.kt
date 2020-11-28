@@ -7,6 +7,8 @@ import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.view.View
 import android.widget.Toast
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.popitaapp.R
 import com.example.popitaapp.activities.adapters.ExploreAdapter
 import com.example.popitaapp.activities.adapters.OnExploreItemClickListener
+import com.example.popitaapp.activities.adapters.RoomAdapter
 import com.example.popitaapp.activities.models.Explore
 import com.example.popitaapp.activities.models.User
 import com.google.android.gms.location.*
@@ -47,6 +50,20 @@ class ExploreActivity : AppCompatActivity(), OnExploreItemClickListener {
 
     // globally declare RecyclerView
     private lateinit var rv: RecyclerView
+
+    //globally declare adapter
+    private lateinit var adapter: ExploreAdapter
+
+    // globally declare main handler
+    lateinit var mainHandler: Handler
+
+    //update rooms every 120 seconds
+    private val updatePeopleNear = object : Runnable {
+        override fun run() {
+            getPeopleNearJson()
+            mainHandler.postDelayed(this, 120000)
+        }
+    }
 
     companion object {
         val users = ArrayList<Explore>()
@@ -86,16 +103,16 @@ class ExploreActivity : AppCompatActivity(), OnExploreItemClickListener {
         rv.layoutManager = LinearLayoutManager(this@ExploreActivity, LinearLayoutManager.VERTICAL, false)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        //init updating user location
         getLocationUpdates()
 
         //create adapter
-        var adapter = ExploreAdapter(users, this@ExploreActivity)
+        adapter = ExploreAdapter(users, this@ExploreActivity)
         rv.adapter = adapter
 
-        //get people near
-        getPeopleNearJson()
-
-        //TODO call getPeopleNearJson() every x seconds
+        //init Main handler to get updates in Explore activity
+        mainHandler = Handler(Looper.getMainLooper())
     }
 
     private fun getPeopleNearJson() {
@@ -259,7 +276,13 @@ class ExploreActivity : AppCompatActivity(), OnExploreItemClickListener {
             users.add(Explore(id, user, longitude, latitude, attitude, location, timestamp, distance))
         }
 
+        //update users
         rv.invalidate()
+
+        //update adapter on ui thread
+        this@ExploreActivity.runOnUiThread(Runnable {
+            adapter.notifyDataSetChanged()
+        })
 
         //TODO if getRooms is empty, move to ANOTHER view
 
@@ -334,12 +357,14 @@ class ExploreActivity : AppCompatActivity(), OnExploreItemClickListener {
     override fun onPause() {
         super.onPause()
         stopLocationUpdates()
+        mainHandler.removeCallbacks(updatePeopleNear)
     }
 
     // start receiving location update when activity  visible/foreground
     override fun onResume() {
         super.onResume()
         startLocationUpdates()
+        mainHandler.post(updatePeopleNear)
     }
 
     fun getUserAddress(location: Location): String {
