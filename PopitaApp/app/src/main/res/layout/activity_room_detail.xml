@@ -72,17 +72,25 @@
         android:id="@+id/recyclerView2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/message_background_message"
 
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintBottom_toTopOf="@+id/bell"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/receiver_name_text" />
 
     <LinearLayout
+        android:id="@+id/bell"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@drawable/explore_recyclerview"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="horizontal"
+        />
 
+    <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -90,7 +98,6 @@
         android:background="@drawable/text_message_background"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
