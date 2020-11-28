@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".activities.Login_with_email"
     android:background="@color/orange"
-    android:keyTextColor="@color/blue">
+    >
 
     <ImageView
     android:id="@+id/imageView4"

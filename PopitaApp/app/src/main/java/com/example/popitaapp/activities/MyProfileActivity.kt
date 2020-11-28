@@ -38,7 +38,7 @@ class MyProfileActivity : AppCompatActivity() {
         //edit profile button
         editButton.setOnClickListener {
             // Handler code here.
-            val intent = Intent(this, RoomActivity::class.java)
+            val intent = Intent(this, SettingsChangeProfileActivity::class.java)
 
             //needed info for EditProfileActivity
             val job = getIntent().getStringExtra("job")
@@ -57,7 +57,6 @@ class MyProfileActivity : AppCompatActivity() {
 
             startActivity(intent);
         }
-
     }
 }
 
