@@ -26,6 +26,8 @@ import com.example.popitaapp.activities.adapters.OnRoomItemClickListener
 import com.example.popitaapp.activities.adapters.RoomAdapter
 import com.example.popitaapp.activities.models.Room
 import com.google.android.gms.location.*
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_room.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
@@ -49,8 +51,19 @@ class RoomActivity : AppCompatActivity(), OnRoomItemClickListener {
     // globally declare LocationCallback
     private lateinit var locationCallback: LocationCallback
 
+    //globally declare adapter
+    private lateinit var adapter: RoomAdapter
+
     // globally declare main handler
     lateinit var mainHandler: Handler
+
+    //update rooms every 40 seconds
+    private val updateRooms = object : Runnable {
+        override fun run() {
+            getRoomsFromJson()
+            mainHandler.postDelayed(this, 40000)
+        }
+    }
 
     //globally declare rv
     private lateinit var rv: RecyclerView
@@ -82,12 +95,11 @@ class RoomActivity : AppCompatActivity(), OnRoomItemClickListener {
             getMyProfileId()
         }
 
+        //settings button
         menuSettings.setOnClickListener {
             val intent = Intent(this, SettingsActivity::class.java)
             startActivity(intent)
         }
-
-        //mainHandler = Handler(Looper.getMainLooper())
 
         //connect with Room model
         rv = findViewById(R.id.recyclerView1)
@@ -98,14 +110,11 @@ class RoomActivity : AppCompatActivity(), OnRoomItemClickListener {
         getLocationUpdates()
 
         //create adapter
-        var adapter = RoomAdapter(users, this@RoomActivity)
+        adapter = RoomAdapter(users, this@RoomActivity)
         rv.adapter = adapter
 
-        //get info and append them to adapter for the first time
-        getRoomsFromJson()
-
-        //TODO call getRoomsFromJson() every x seconds
-
+        //init mainhandler
+        mainHandler = Handler(Looper.getMainLooper())
 
         //search util
         search_buddy.addTextChangedListener(object: TextWatcher {
@@ -135,6 +144,7 @@ class RoomActivity : AppCompatActivity(), OnRoomItemClickListener {
 
     private fun getRoomsFromJson() {
 
+        println("UGA BUGA JARAM SZLUGA SZLUGA SZLUAGA AJLSFISAP DJPISAI JDJISAIDAS IDISA IJDISAJ")
         //get auth token
         val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
         val auth_token = sharedPreference.getString("auth_token", null)
@@ -217,6 +227,11 @@ class RoomActivity : AppCompatActivity(), OnRoomItemClickListener {
 
         //update recyclerview
         rv.invalidate()
+
+        //update adapter by calling him in ui thread
+        this@RoomActivity.runOnUiThread(Runnable {
+            adapter.notifyDataSetChanged()
+        })
 
         //TODO if getRooms is empty, move to ANOTHER view
 
@@ -352,16 +367,14 @@ class RoomActivity : AppCompatActivity(), OnRoomItemClickListener {
     override fun onPause() {
         super.onPause()
         stopLocationUpdates()
-
-        //mainHandler.removeCallbacks(updateRoomsList)
+        mainHandler.removeCallbacks(updateRooms)
     }
 
     // start receiving location update when activity  visible/foreground
     override fun onResume() {
         super.onResume()
         startLocationUpdates()
-
-        //mainHandler.post(updateRoomsList)
+        mainHandler.post(updateRooms)
     }
 
     fun getUserAddress(location: Location): String {
@@ -538,5 +551,4 @@ class RoomActivity : AppCompatActivity(), OnRoomItemClickListener {
             }
         })
     }
-
 }
