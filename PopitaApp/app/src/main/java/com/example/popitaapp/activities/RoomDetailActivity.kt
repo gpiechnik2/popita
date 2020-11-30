@@ -2,6 +2,7 @@ package com.example.popitaapp.activities
 
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.getIntent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +14,7 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
 import kotlinx.android.synthetic.main.activity_room_detail.*
+import kotlinx.android.synthetic.main.activity_room_detail.back_btn
 import kotlinx.android.synthetic.main.message_item_layout.view.*
 import kotlinx.android.synthetic.main.message_item_layout_02.view.*
 import kotlinx.android.synthetic.main.message_item_layout_03.view.*
@@ -31,6 +33,7 @@ class RoomDetailActivity : AppCompatActivity() {
 
     companion object {
         val messages = ArrayList<Message>()
+        var userName = ""
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +53,8 @@ class RoomDetailActivity : AppCompatActivity() {
         //get id of a room
         val room_id = getIntent().getIntExtra("id", 0)
 
+        userName = getIntent().getStringExtra("receiver_name").toString()
+
         //create adapter
         adapter = GroupAdapter()
 
@@ -58,36 +63,19 @@ class RoomDetailActivity : AppCompatActivity() {
         rv.adapter = adapter
 
         //get json and match messages to specified view
-        //if is not null == Action is called from RoomActivity
+        //if room_id is not 0 means, that action is called from RoomActivity
         if (room_id != 0) {
             fetchJson(room_id)
+
+            //get info based on receiver_id and update ui thread
+            //val receiver_id = getIntent().getIntExtra("receiver_id", 0)
+            //getParticipantInfo(receiver_id)
         }
+
         //if is, get room_id from specified endpoint
         else {
             val user_id = getIntent().getIntExtra("user_id", 0)
             getRoom(user_id)
-        }
-
-        for (i in messages) {
-            println(i)
-            //if you are sender, add new message
-            if (i.receiver == 0) {
-                adapter.add(ChatItem(i))
-            }
-            //i not, check previous message
-            else {
-                //if its first message,
-                if (messages.lastIndex < 0) {
-                    adapter.add(ChatFromItem(i))
-                }
-                //if there is only 1 message
-                else if (messages.lastIndex >= 0) {
-                    //and you are receiver(1)
-                    if (messages.last().receiver == 1) {
-                        adapter.add(ChatFromItem_02(i))
-                    }
-                }
-            }
         }
 
         //new message util
@@ -339,13 +327,22 @@ class RoomDetailActivity : AppCompatActivity() {
                 else {
                     //if its first message,
                     if (messages.lastIndex < 0) {
-                        adapter.add(ChatFromItem(i))
+                        adapter.add(ChatFromItem(i, userName))
                     }
-                    //if there is only 1 message
+                    //if there is more than 1 message
                     else if (messages.lastIndex >= 0) {
-                        //and you are receiver(1)
-                        if (messages.last().receiver == 1) {
+
+                        //get count of items
+                        val adapterCount = adapter.groupCount
+
+                        //check last item and his layout
+                        //if last item layout is with icon, add without
+                        if (adapter.getItem(adapterCount - 1).layout == R.layout.message_item_layout) {
                             adapter.add(ChatFromItem_02(i))
+                        } else if (adapter.getItem(adapterCount - 1).layout == R.layout.message_item_layout_03) {
+                            adapter.add(ChatFromItem(i, userName))
+                        } else {
+                            adapter.add(ChatFromItem(i, userName))
                         }
                     }
                 }
@@ -361,9 +358,12 @@ class RoomDetailActivity : AppCompatActivity() {
     }
 }
 
-class ChatFromItem(private val message: Message): Item<GroupieViewHolder>() {
+class ChatFromItem(private val message: Message, private val name: String): Item<GroupieViewHolder>() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.itemView.txtMessage.text = message.message
+        viewHolder.itemView.txtFirstLetter.text = name
+        println("CHAT FROM ITEM INIT")
+
     }
 
     override fun getLayout() = R.layout.message_item_layout
@@ -373,6 +373,7 @@ class ChatFromItem(private val message: Message): Item<GroupieViewHolder>() {
 class ChatFromItem_02(private val message: Message): Item<GroupieViewHolder>() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.itemView.txtMessage2.text = message.message
+        println("CHAT FROM ITEM 2 INIT")
     }
 
     override fun getLayout() = R.layout.message_item_layout_02
@@ -382,6 +383,8 @@ class ChatFromItem_02(private val message: Message): Item<GroupieViewHolder>() {
 class ChatItem(private val message: Message): Item<GroupieViewHolder>() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.itemView.txtMessage3.text = message.message
+        println("CHAT FROM ITEM 3 INIT")
+
     }
 
     override fun getLayout() = R.layout.message_item_layout_03
