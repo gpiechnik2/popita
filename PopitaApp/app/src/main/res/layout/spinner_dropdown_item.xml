@@ -1,0 +1,15 @@
+<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:id="@android:id/text1"
+    android:background="@drawable/spinner_background"
+
+    android:layout_width="match_parent"
+    android:layout_height="65dp"
+    android:paddingLeft="26dp"
+    android:gravity="left|center"
+
+    android:fontFamily="@font/montserrat_medium"
+    android:textColor="@color/black"
+    android:textSize="21dp"
+    android:text="DSADAS "
+    />

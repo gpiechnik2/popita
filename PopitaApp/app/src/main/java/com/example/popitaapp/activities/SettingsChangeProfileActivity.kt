@@ -4,13 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
-import android.widget.Spinner
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.popitaapp.R
-import com.example.popitaapp.activities.models.Room
 import kotlinx.android.synthetic.main.activity_settings_change_password.back_btn
 import kotlinx.android.synthetic.main.activity_settings_change_profile.*
 import okhttp3.*
@@ -23,8 +22,8 @@ import java.io.IOException
 class SettingsChangeProfileActivity : AppCompatActivity() {
 
     companion object {
-        val newGender = String
-        val newBackground = String
+        var gender = String?: ""
+        var background = String?: ""
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +41,7 @@ class SettingsChangeProfileActivity : AppCompatActivity() {
         firstNameText.setText(getIntent().getStringExtra("first_name"))
 
         //set dynamically image based on user info
-        val gender = getIntent().getStringExtra("gender")
+        gender = getIntent().getStringExtra("gender").toString()
 
         if (gender == "Male") {
             genderImage.setImageResource(R.drawable.ic_gender_male)
@@ -54,28 +53,46 @@ class SettingsChangeProfileActivity : AppCompatActivity() {
         ArrayAdapter.createFromResource(
                 this,
                 R.array.gender,
-                android.R.layout.simple_spinner_item
+                R.layout.gender_spinner_item
         ).also { adapter ->
             // Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
             // Apply the adapter to the spinner
             genderSpinner.adapter = adapter
         }
 
-        //set gender spinner
-        ArrayAdapter.createFromResource(
-                this,
-                R.array.backgroundChoices,
-                android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            // Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Apply the adapter to the spinner
-            backgroundSpinner.adapter = adapter
-        }
+        //get id of a gender in genders list
+        val genders = getResources().getStringArray(R.array.gender)
+        val idOfGender = genders.indexOf(gender)
+
+        //and set a proper gender
+        genderSpinner.setSelection(idOfGender)
+
+        genderSpinner.setOnItemSelectedListener(object : OnItemSelectedListener {
+            override fun onItemSelected(
+                parentView: AdapterView<*>?,
+                selectedItemView: View?,
+                position: Int,
+                id: Long
+            ) {
+                //change color of a new background based on
+                gender = genders.get(position)
+
+                if (gender == "Male") {
+                    genderImage.setImageResource(R.drawable.ic_gender_male)
+                } else {
+                    genderImage.setImageResource(R.drawable.ic_gender_female)
+                }
+
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>?) {
+                // your code here
+            }
+        })
 
         //change background color
-        val background = getIntent().getStringExtra("background_color")
+        background = getIntent().getStringExtra("background_color").toString()
 
         if (background == "Orange") {
             root.setBackgroundColor(getResources().getColor(R.color.orange))
@@ -88,6 +105,54 @@ class SettingsChangeProfileActivity : AppCompatActivity() {
         } else if (background == "Pink") {
             root.setBackgroundColor(getResources().getColor(R.color.pink))
         }
+
+        //set background spinner
+        ArrayAdapter.createFromResource(
+                this,
+                R.array.backgroundChoices,
+                R.layout.background_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            backgroundSpinner.adapter = adapter
+        }
+
+        //get id of a background in genders list
+        val backgrounds = getResources().getStringArray(R.array.backgroundChoices)
+        val idOfBackground = backgrounds.indexOf(background)
+
+        //and set a proper background
+        backgroundSpinner.setSelection(idOfBackground)
+
+        backgroundSpinner.setOnItemSelectedListener(object : OnItemSelectedListener {
+            override fun onItemSelected(
+                parentView: AdapterView<*>?,
+                selectedItemView: View?,
+                position: Int,
+                id: Long
+            ) {
+                //change color of a new background based on
+                background = backgrounds.get(position)
+
+                if (background == "Orange") {
+                    root.setBackgroundColor(getResources().getColor(R.color.orange))
+                } else if (background == "Blue") {
+                    root.setBackgroundColor(getResources().getColor(R.color.blue))
+                } else if (background == "Green") {
+                    root.setBackgroundColor(getResources().getColor(R.color.green))
+                } else if (background == "Yellow") {
+                    root.setBackgroundColor(getResources().getColor(R.color.yellow))
+                } else if (background == "Pink") {
+                    root.setBackgroundColor(getResources().getColor(R.color.pink))
+                }
+
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>?) {
+                // your code here
+            }
+        })
 
         //set other info
         jobText.setText(getIntent().getStringExtra("job"))
@@ -119,8 +184,8 @@ class SettingsChangeProfileActivity : AppCompatActivity() {
         val description = descriptionText.text.toString().trim()
 
         jsonObject.put("first_name", first_name)
-        jsonObject.put("gender", newGender)
-        jsonObject.put("background_color", newBackground)
+        jsonObject.put("gender", gender)
+        jsonObject.put("background_color", background)
         jsonObject.put("job", job)
         jsonObject.put("preferred_drink", preferred_drink)
         jsonObject.put("description", description)

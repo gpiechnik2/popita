@@ -144,7 +144,6 @@ class RoomActivity : AppCompatActivity(), OnRoomItemClickListener {
 
     private fun getRoomsFromJson() {
 
-        println("UGA BUGA JARAM SZLUGA SZLUGA SZLUAGA AJLSFISAP DJPISAI JDJISAIDAS IDISA IJDISAJ")
         //get auth token
         val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
         val auth_token = sharedPreference.getString("auth_token", null)

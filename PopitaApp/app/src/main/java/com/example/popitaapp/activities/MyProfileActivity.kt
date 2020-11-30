@@ -5,13 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import com.example.popitaapp.R
-import kotlinx.android.synthetic.main.activity_explore_detail.*
-import kotlinx.android.synthetic.main.activity_explore_detail.back_btn
 import kotlinx.android.synthetic.main.activity_my_profile.*
-import kotlinx.android.synthetic.main.activity_profile.*
-import kotlinx.android.synthetic.main.activity_profile.txtAlcohol
-import kotlinx.android.synthetic.main.activity_profile.txtDescription
-import kotlinx.android.synthetic.main.activity_profile.txtJob
 
 class MyProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +28,29 @@ class MyProfileActivity : AppCompatActivity() {
         txtDescription.text = getIntent().getStringExtra("description")
         txtAlcohol.text = getIntent().getStringExtra("preferred_drink")
 
+        //set dynamically image based on user info
+        val gender = getIntent().getStringExtra("gender")
+
+        if (gender == "Male") {
+            profileImage.setImageResource(R.drawable.ic_gender_male)
+        } else {
+            profileImage.setImageResource(R.drawable.ic_gender_female)
+        }
+
+        //change background color
+        val background = getIntent().getStringExtra("background_color")
+
+        if (background == "Orange") {
+            root.setBackgroundColor(getResources().getColor(R.color.orange))
+        } else if (background == "Blue") {
+            root.setBackgroundColor(getResources().getColor(R.color.blue))
+        } else if (background == "Green") {
+            root.setBackgroundColor(getResources().getColor(R.color.green))
+        } else if (background == "Yellow") {
+            root.setBackgroundColor(getResources().getColor(R.color.yellow))
+        } else if (background == "Pink") {
+            root.setBackgroundColor(getResources().getColor(R.color.pink))
+        }
 
         //edit profile button
         editButton.setOnClickListener {

@@ -54,7 +54,7 @@
                 android:layout_weight="1"
 
                 android:fontFamily="@font/montserrat_extrabold"
-                android:text="Privacy"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="27dp"
                 />
@@ -71,10 +71,10 @@
 
         <ImageView
             android:id="@+id/genderImage"
-            android:layout_marginTop="30dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_gender_female" />
+            app:srcCompat="@drawable/ic_gender_female"
+            android:layout_marginTop="-30dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -196,8 +196,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/input_background"
 
-                    android:drawableStart="@drawable/ic_password_icon_03"
-                    android:drawableLeft="@drawable/ic_password_icon_03"
+                    android:drawableStart="@drawable/ic_job_icon"
+                    android:drawableLeft="@drawable/ic_job_icon"
                     android:drawablePadding="12dp"
                     android:fontFamily="@font/montserrat_medium"
                     android:gravity="left|center"

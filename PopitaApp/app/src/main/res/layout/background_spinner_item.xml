@@ -1,0 +1,18 @@
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+
+    android:layout_width="match_parent"
+    android:layout_height="65dp"
+    android:paddingTop="18dp"
+    android:paddingBottom="20dp"
+
+    android:drawableStart="@drawable/ic_background_icon"
+    android:drawableLeft="@drawable/ic_login_icon_03"
+    android:gravity="left|center"
+    android:drawablePadding="12dp"
+
+    android:textColorHint="@color/black"
+    android:fontFamily="@font/montserrat_medium"
+    android:textColor="@color/black"
+    android:textSize="21dp"
+    />
