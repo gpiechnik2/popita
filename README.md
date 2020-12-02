@@ -2,7 +2,7 @@
 ![Image of Popita](https://github.com/gpiechnik2/popita/blob/master/static/Popita_app.jpg)
 
 # Popita
-Popita is an android mobile app that is completely rest API-based.
+Popita is an android mobile app that is completly based on rest API. The app gives users the ability to view and send messages to people nearby who are currently drinking.
 
 ## Features
 - Login and creating account
