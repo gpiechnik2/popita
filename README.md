@@ -54,6 +54,6 @@ python3 manage.py
 ## TODO
 
 ## Documentation
-For detailed rest API documentation, please go [here].(https://developers.google.com/maps/documentation/android-sdk/get-api-key)
+For detailed rest API documentation, please go [here](https://developers.google.com/maps/documentation/android-sdk/get-api-key).
 
 ## License
