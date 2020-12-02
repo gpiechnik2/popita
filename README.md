@@ -27,7 +27,7 @@ SERVER_IP=<YOUR_SERVER_IP>
 WEB_APP_CLIENT_ID=<YOUR_WEB_APP_CLIENT_ID>
 ```
 
-<br/>
+
 **In strings.xml file complete the data below with your credentials**
 
 - For **facebook_app_id** and **fb_login_protocol_scheme**, go to [Facebook Login for Android - Quickstart](https://developers.facebook.com/docs/facebook-login/android/v2.4)
