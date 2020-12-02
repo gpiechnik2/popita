@@ -15,28 +15,23 @@ Loremi psum dolor mit
 - Django app
 - Adobe Xd project
 
-## Setup
-**In file secure.properties complete the data below with your credentials**
-- **MAPS_API_KEY** is used for lorem ipsum. The key can be found at: [link to API key!](http://google.com) 
-- **SERVER_IP** is the ip of the server to which we will send a request from the mobile application.
-- **WEB_APP_CLIENT_ID** is the key used for lorem ipsum. The key can be found at: [link to API key!](http://google.com) 
-
-```
-MAPS_API_KEY=<YOUR_MAPS_API_KEY>
-SERVER_IP=<YOUR_SERVER_IP>
-WEB_APP_CLIENT_ID=<YOUR_WEB_APP_CLIENT_ID>
-```
-
+## Dependencies
 
 **In strings.xml file complete the data below with your credentials**
 
 - For **facebook_app_id** and **fb_login_protocol_scheme**, go to [Facebook Login for Android - Quickstart](https://developers.facebook.com/docs/facebook-login/android/v2.4)
-- For **web_client_id**, go to [GIGA](https://google.pl)
+- For **web_client_id**, go to [Get your backend server's OAuth 2.0 client ID](https://developers.google.com/identity/sign-in/android/start-integrating#get_your_backend_servers_oauth_20_client_id)
+- For **maps_api_key** go to [Creating API keys](https://developers.google.com/maps/documentation/android-sdk/get-api-key)
+- **server_ip** is the ip of the server to which we will send a request from the mobile application.
 ```
 <string name="facebook_app_id">YOUR_FACEBOOK_APP_ID</string>
 <string name="fb_login_protocol_scheme">YOUR_FACEBOOK_LOGIN_PROTOCOL_SCHEME</string>
 <string name ="web_client_id">YOUR_WEB_CLIENT_ID</string>
+<strng name="maps_api_key">YOUR_MAPS_API_KEY</string>
+<string name="server_ip">YOUR_SERVER_IP</string>
 ```
+
+## Setup
 
 **Install dependencies**
 ```
@@ -52,5 +47,7 @@ python3 manage.py migrate
 ```
 python3 manage.py
 ```
+
+## TODO
 
 ## License
