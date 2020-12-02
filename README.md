@@ -2,13 +2,16 @@
 ![Image of Popita](https://github.com/gpiechnik2/popita/blob/master/static/Popita_app.jpg)
 
 # Popita
-Loremi psum dolor mit
+Popita is an android mobile app that is completely rest API-based.
 
 ## Features
-- Lorem ipsum dolor mit set 
-- Lorem ipsum dolor mit set 
-- Lorem ipsum dolor mit set 
-- Lorem ipsum dolor mit set 
+- Login and creating account
+- Authentication via provider(Google or Facebook)
+- Sending, receiving, and filtering messages from other users
+- Setting the user locations in real time
+- Displaying recently active users within 5km
+- Edit a user profile and credentials
+- Viewing users profiles
 
 ## What's included
 - Android app
