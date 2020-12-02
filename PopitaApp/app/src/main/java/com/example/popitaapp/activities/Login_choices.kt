@@ -7,8 +7,12 @@ import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
 import com.example.popitaapp.R
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -25,8 +29,13 @@ import java.io.IOException
 
 class Login_choices : AppCompatActivity() {
 
+    //google provider
     lateinit var mGoogleSignInClient: GoogleSignInClient
     private val RC_SIGN_IN = 9001
+
+    //facebook provider
+    lateinit var callbackManager: CallbackManager
+    private val FB_SIGN_IN = 64206
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,13 +59,38 @@ class Login_choices : AppCompatActivity() {
 
         //facebook provider choice button
 
+        callbackManager = CallbackManager.Factory.create()
 
+        facebook_btn.setOnClickListener {
+            LoginManager.getInstance().logInWithReadPermissions(this, listOf("public_profile", "email"))
+        }
+
+        // Callback registration
+        LoginManager.getInstance().registerCallback(callbackManager, object : FacebookCallback<LoginResult?> {
+            override fun onSuccess(loginResult: LoginResult?) {
+                Log.d("TAG", "Success Login")
+                // Get User's Info
+                val accessToken = loginResult?.accessToken
+                println("ACCESS TOKEN KURWA")
+                println(accessToken)
+            }
+
+            override fun onCancel() {
+                Toast.makeText(this@Login_choices, "Login Cancelled", Toast.LENGTH_LONG).show()
+            }
+
+            override fun onError(exception: FacebookException) {
+                Toast.makeText(this@Login_choices, exception.message, Toast.LENGTH_LONG).show()
+            }
+        })
 
 
         //google provider choice button
 
+        val idToken = getString(R.string.web_client_id)
+
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("310796535988-nhshm1tvbbll0p1gbkbnu16k8pg7pcl8.apps.googleusercontent.com")
+                .requestIdToken("$idToken")
                 .requestEmail()
                 .build()
 
@@ -77,12 +111,20 @@ class Login_choices : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
+        //facebook provider
+        if (requestCode == FB_SIGN_IN) {
+            callbackManager.onActivityResult(requestCode, resultCode, data)
+        }
+
+        //google provider
         if (requestCode == RC_SIGN_IN) {
             val task =
                     GoogleSignIn.getSignedInAccountFromIntent(data)
 
             handleSignInResult(task)
         }
+
     }
 
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {

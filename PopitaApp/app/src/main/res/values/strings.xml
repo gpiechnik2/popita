@@ -22,7 +22,11 @@
         <item>Yellow</item>
         <item>Green</item>
     </string-array>
-    
+
+    <string name="facebook_app_id">164835301996637</string>
+    <string name="fb_login_protocol_scheme">fb164835301996637</string>
+    <string name ="web_client_id">310796535988-nhshm1tvbbll0p1gbkbnu16k8pg7pcl8.apps.googleusercontent.com</string>
+
 </resources>
 
 

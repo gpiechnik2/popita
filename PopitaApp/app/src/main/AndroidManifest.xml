@@ -30,7 +30,13 @@
 
         <uses-library
             android:name="com.google.android.maps"
-            android:required="true" /> <!-- Splash screen -->
+            android:required="true" />
+
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
+
+
+        <!-- Splash screen -->
         <activity
             android:name=".activities.Splash_screen"
             android:theme="@style/AppTheme.FullScreen">
@@ -39,7 +45,9 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Main Activity -->
+        </activity>
+
+        <!-- Main Activity -->
         <activity
             android:name=".activities.MainActivity"
             android:theme="@style/AppTheme.FullScreen">
@@ -48,7 +56,9 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Register -->
+        </activity>
+
+        <!-- Register -->
         <activity
             android:name=".activities.Register"
             android:theme="@style/AppTheme.FullScreen">
@@ -57,7 +67,9 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Login with email -->
+        </activity>
+
+        <!-- Login with email -->
         <activity
             android:name=".activities.Login_with_email"
             android:theme="@style/AppTheme.FullScreen">
@@ -66,16 +78,36 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Login choices -->
-        <activity
-            android:name=".activities.Login_choices"
-            android:theme="@style/AppTheme.FullScreen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        </activity>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+
+        <!-- Login choices -->
+        <activity
+            android:name=".activities.Login_choices"
+            android:theme="@style/AppTheme.FullScreen"
+           >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+
+
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".activities.RoomActivity"
             android:theme="@style/AppTheme.FullScreen"
@@ -86,6 +118,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activities.RoomDetailActivity"
             android:theme="@style/AppTheme.FullScreen">
