@@ -1,9 +1,11 @@
 package com.example.popitaapp.activities
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import com.example.popitaapp.R
@@ -14,6 +16,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import kotlinx.android.synthetic.main.activity_login_choices.*
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
+import java.io.IOException
 
 
 class Login_choices : AppCompatActivity() {
@@ -56,12 +63,12 @@ class Login_choices : AppCompatActivity() {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
         google_btn.setOnClickListener {
-            signIn()
+            signInByGoogle()
         }
     }
 
 
-    private fun signIn() {
+    private fun signInByGoogle() {
         val signInIntent = mGoogleSignInClient.signInIntent
         startActivityForResult(
                 signInIntent, RC_SIGN_IN
@@ -73,6 +80,7 @@ class Login_choices : AppCompatActivity() {
         if (requestCode == RC_SIGN_IN) {
             val task =
                     GoogleSignIn.getSignedInAccountFromIntent(data)
+
             handleSignInResult(task)
         }
     }
@@ -83,24 +91,11 @@ class Login_choices : AppCompatActivity() {
                     ApiException::class.java
             )
 
-            // Signed in successfully
-            val googleId = account?.id ?: ""
-            Log.i("Google ID",googleId)
-
-            val googleFirstName = account?.givenName ?: ""
-            Log.i("Google First Name", googleFirstName)
-
-            val googleLastName = account?.familyName ?: ""
-            Log.i("Google Last Name", googleLastName)
-
-            val googleEmail = account?.email ?: ""
-            Log.i("Google Email", googleEmail)
-
-            val googleProfilePicURL = account?.photoUrl.toString()
-            Log.i("Google Profile Pic URL", googleProfilePicURL)
-
             val googleIdToken = account?.idToken ?: ""
             Log.i("Google ID Token", googleIdToken)
+
+            //Perform generating auth token on server side
+            loginWithGoogleToken(googleIdToken)
 
         } catch (e: ApiException) {
             // Sign in was unsuccessful
@@ -110,4 +105,62 @@ class Login_choices : AppCompatActivity() {
         }
     }
 
+    fun loginWithGoogleToken(googleIdToken: String) {
+        val ip = getString(R.string.server_ip)
+        val url = "http://$ip/auth/jwt/token/login/"
+
+        val jsonObject = JSONObject()
+        jsonObject.put("id_token", googleIdToken)
+
+        val body = jsonObject.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
+
+        val okHttpClient = OkHttpClient()
+        val request = Request.Builder()
+                .url(url)
+                .post(body)
+                .build()
+
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                this@Login_choices.runOnUiThread(Runnable {
+                    Toast.makeText(this@Login_choices, "Creating account failed.", Toast.LENGTH_SHORT).show()
+                })
+                println(e)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.code == 200) {
+
+                    val body = response.body?.string()
+                    val jsonObject = JSONObject(body)
+                    val auth_token = jsonObject.get("token")
+
+                    //instance and save method
+                    val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
+                    var editor = sharedPreference.edit()
+                    editor.putString("auth_token", auth_token.toString())
+                    editor.commit()
+
+                    //on-production only
+                    //val authorization_token = sharedPreference.getString("auth_token", null)
+                    //println(authorization_token)
+
+                    this@Login_choices.runOnUiThread(Runnable {
+                        Toast.makeText(this@Login_choices, "Successful log in.", Toast.LENGTH_SHORT).show()
+                    })
+
+                    //room activity
+                    val intent = Intent(this@Login_choices, RoomActivity::class.java)
+                    startActivity(intent);
+
+                }
+
+                else if (response.code == 400) {
+                    this@Login_choices.runOnUiThread(Runnable {
+                        Toast.makeText(this@Login_choices, "Unable to log in with provided credentials.", Toast.LENGTH_SHORT).show()
+                    })
+                }
+            }
+        })
+    }
 }

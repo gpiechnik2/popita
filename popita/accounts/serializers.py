@@ -2,6 +2,9 @@ from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework import serializers
 from .models import *
 
+class UserJWTSerializer(serializers.Serializer):
+    id_token = serializers.CharField()
+
 class UserCreateSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
         model = User
@@ -13,7 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'first_name', 'gender', 'background_color', 'job', 'preferred_drink', 'description')
 
     def update(self, instance, validated_data):
-        
+
         instance.first_name = validated_data.get('first_name')
         instance.gender = validated_data.get('gender')
         instance.background_color = validated_data.get('background_color')
