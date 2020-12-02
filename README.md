@@ -5,13 +5,13 @@
 Popita is an android mobile app that is completly based on rest API. The app gives users the ability to view and send messages to people nearby who are currently drinking.
 
 ## Features
-- Login and creating account
-- Authentication via provider(Google or Facebook)
-- Sending, receiving, and filtering messages from other users
-- Setting the user locations in real time
-- Displaying recently active users within 5km
-- Edit a user profile and credentials
-- Viewing users profiles
+- Login and account registration.
+- Authentication via provider(Google or Facebook).
+- Sending, receiving, and filtering messages from other users.
+- Setting the user locations in real time.
+- Displaying recently active users within 5km(8 miles).
+- Edit a user profile and credentials.
+- Viewing users profiles.
 
 ## What's included
 - Android app
@@ -52,5 +52,8 @@ python3 manage.py
 ```
 
 ## TODO
+
+## Documentation
+For detailed rest API documentation, please go [here].(https://developers.google.com/maps/documentation/android-sdk/get-api-key)
 
 ## License
