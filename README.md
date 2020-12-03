@@ -30,7 +30,7 @@ Popita is an android mobile app that is completly based on rest API. The app giv
 <string name="facebook_app_id">YOUR_FACEBOOK_APP_ID</string>
 <string name="fb_login_protocol_scheme">YOUR_FACEBOOK_LOGIN_PROTOCOL_SCHEME</string>
 <string name ="web_client_id">YOUR_WEB_CLIENT_ID</string>
-<strng name="maps_api_key">YOUR_MAPS_API_KEY</string>
+<string name="maps_api_key">YOUR_MAPS_API_KEY</string>
 <string name="server_ip">YOUR_SERVER_IP</string>
 ```
 
