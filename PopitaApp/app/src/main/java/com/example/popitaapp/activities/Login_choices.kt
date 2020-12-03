@@ -1,5 +1,6 @@
 package com.example.popitaapp.activities
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -7,10 +8,9 @@ import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.popitaapp.BuildConfig
 import com.example.popitaapp.R
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
+import com.facebook.*
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -70,9 +70,8 @@ class Login_choices : AppCompatActivity() {
             override fun onSuccess(loginResult: LoginResult?) {
                 Log.d("TAG", "Success Login")
                 // Get User's Info
-                val accessToken = loginResult?.accessToken
-                println("ACCESS TOKEN KURWA")
-                println(accessToken)
+                getUserProfile(loginResult?.accessToken, loginResult?.accessToken?.userId)
+
             }
 
             override fun onCancel() {
@@ -101,6 +100,109 @@ class Login_choices : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("LongLogTag")
+    fun getUserProfile(token: AccessToken?, userId: String?) {
+
+        val parameters = Bundle()
+        parameters.putString(
+            "fields",
+            "id, first_name, middle_name, last_name, name, picture, email"
+        )
+        GraphRequest(token,
+            "/$userId/",
+            parameters,
+            HttpMethod.GET,
+            GraphRequest.Callback { response ->
+                val jsonObject = response.jsonObject
+
+                // Facebook Access Token
+                // You can see Access Token only in Debug mode.
+                // You can't see it in Logcat using Log.d, Facebook did that to avoid leaking user's access token.
+                if (BuildConfig.DEBUG) {
+                    FacebookSdk.setIsDebugEnabled(true)
+                    FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS)
+                }
+
+                val access_token = token.toString()
+
+                //Log.i("FACEBOOK ACCES TOKEN: ", token.toString())
+
+                // Facebook Id
+                if (jsonObject.has("id")) {
+                    val facebookId = jsonObject.getString("id")
+                    Log.i("Facebook Id: ", facebookId.toString())
+
+                    validateAccesToken(access_token, facebookId)
+
+                } else {
+                    Log.i("Facebook Id: ", "Not exists")
+                }
+
+
+            }).executeAsync()
+    }
+
+    private fun validateAccesToken(access_token: String, facebookId: String) {
+
+        val ip = getString(R.string.server_ip)
+        val url = "http://$ip/auth/facebook/token/login/"
+
+        val jsonObject = JSONObject()
+        jsonObject.put("access_token", access_token)
+        jsonObject.put("facebookId", facebookId)
+
+
+        val body = jsonObject.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
+
+        val okHttpClient = OkHttpClient()
+        val request = Request.Builder()
+            .url(url)
+            .post(body)
+            .build()
+
+        okHttpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                this@Login_choices.runOnUiThread(Runnable {
+                    Toast.makeText(this@Login_choices, "Creating account failed.", Toast.LENGTH_SHORT).show()
+                })
+                println(e)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.code == 200) {
+
+                    val body = response.body?.string()
+                    val jsonObject = JSONObject(body)
+                    val auth_token = jsonObject.get("token")
+
+                    //instance and save method
+                    val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
+                    var editor = sharedPreference.edit()
+                    editor.putString("auth_token", auth_token.toString())
+                    editor.commit()
+
+                    //on-production only
+                    //val authorization_token = sharedPreference.getString("auth_token", null)
+                    //println(authorization_token)
+
+                    this@Login_choices.runOnUiThread(Runnable {
+                        Toast.makeText(this@Login_choices, "Successful log in.", Toast.LENGTH_SHORT).show()
+                    })
+
+                    //room activity
+                    val intent = Intent(this@Login_choices, RoomActivity::class.java)
+                    startActivity(intent);
+
+                }
+
+                else if (response.code == 400) {
+                    this@Login_choices.runOnUiThread(Runnable {
+                        Toast.makeText(this@Login_choices, "Unable to log in with provided credentials.", Toast.LENGTH_SHORT).show()
+                    })
+                }
+            }
+        })
+    }
 
     private fun signInByGoogle() {
         val signInIntent = mGoogleSignInClient.signInIntent
@@ -149,7 +251,7 @@ class Login_choices : AppCompatActivity() {
 
     fun loginWithGoogleToken(googleIdToken: String) {
         val ip = getString(R.string.server_ip)
-        val url = "http://$ip/auth/jwt/token/login/"
+        val url = "http://$ip/auth/google/token/login/"
 
         val jsonObject = JSONObject()
         jsonObject.put("id_token", googleIdToken)

@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import RoomViewSet, MessageViewSet
+from .views import RoomViewSet, MessageViewSet, MessagePostViewSet
 from rest_framework.routers import SimpleRouter
 from rest_framework_nested import routers
 
@@ -12,4 +12,7 @@ message_router.register('messages', MessageViewSet, base_name='room-messages')
 urlpatterns = [
     path('', include(router.urls)),
     path('', include(message_router.urls)),
+    path('message/new/', MessagePostViewSet.as_view({
+        'post': 'create'
+    })),
 ]

@@ -31,7 +31,25 @@ class MessageViewSet(viewsets.ModelViewSet):
 
     permission_classes = [IsAuthenticated]
     serializer_class = MessageSerializer
-    http_method_names = ['get', 'post', 'head']
+    http_method_names = ['get', 'head']
+
+    def get_queryset(self):
+        user = self.request.user
+        room_id = self.kwargs['rooms_pk']
+
+        if not Room.objects.filter(receivers__in = [user], pk = room_id):
+            raise Http404
+
+        return Message.objects.filter(room = room_id).order_by('timestamp')
+
+class MessagePostViewSet(viewsets.ModelViewSet):
+    """
+    A viewset for viewing messages.
+    """
+
+    permission_classes = [IsAuthenticated]
+    serializer_class = MessageSerializer
+    http_method_names = ['post']
 
     def get_queryset(self):
         user = self.request.user

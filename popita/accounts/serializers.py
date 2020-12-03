@@ -2,8 +2,12 @@ from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework import serializers
 from .models import *
 
-class UserJWTSerializer(serializers.Serializer):
+class UserGoogleJWTSerializer(serializers.Serializer):
     id_token = serializers.CharField()
+
+class UserFacebookATSerializer(serializers.Serializer):
+    access_token = serializers.CharField()
+    facebookId = serializers.CharField()
 
 class UserCreateSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):

@@ -114,7 +114,6 @@ class MessageSerializer(serializers.ModelSerializer):
             room = Room.objects.create()
             room.receivers.add(user)
             room.receivers.add(receiver)
-
         else:
             room = room[0]
 
