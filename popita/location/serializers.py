@@ -15,6 +15,7 @@ class LocalizationSerializer(serializers.ModelSerializer):
 
     user = UserInfoSerializer(many = False, read_only = True)
     timestamp = serializers.DateTimeField(format = '%Y-%m-%d %H:%m', input_formats = None, read_only = True)
+    location = serializers.CharField(required = True)
 
     class Meta:
         model = Localization

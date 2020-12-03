@@ -80,12 +80,12 @@ class RoomDetailActivity : AppCompatActivity() {
 
         //new message util
         SendButton.setOnClickListener {
-            sendMessage(0)
+            sendMessage()
         }
 
     }
 
-    private fun sendMessage(room_id: Int) {
+    private fun sendMessage() {
 
         //get auth token
         val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
@@ -102,7 +102,7 @@ class RoomDetailActivity : AppCompatActivity() {
         val body = jsonObject.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
 
         val ip = getString(R.string.server_ip)
-        val url = "http://$ip/chat/rooms/$room_id/messages/"
+        val url = "http://$ip/chat/message/new/"
 
         val okHttpClient = OkHttpClient()
         val request = Request.Builder()
