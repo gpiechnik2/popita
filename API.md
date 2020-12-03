@@ -63,7 +63,7 @@
     curl -i -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Token <YOUR_TOKEN>" http://hostname/chat/rooms/
   ```
   
- **Show user spicified room**
+**Show user spicified room**
 ----
   Returns json data about specified room of a user.
 
@@ -139,7 +139,7 @@
     curl -i -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Token <YOUR_TOKEN>" http://hostname/chat/rooms/:room_id/
   ```
   
- **Show messages from a spicified room**
+**Show messages from a spicified room**
 ----
   Returns json data about messages of a specified room of a user.
 
@@ -214,7 +214,7 @@
     curl -i -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Token <YOUR_TOKEN>" http://hostname/chat/rooms/:id/messages/
   ```
   
-   **Show specified message from spicified room**
+**Show specified message from spicified room**
 ----
   Returns json data about specified message of a user.
 
@@ -306,7 +306,90 @@
     curl -i -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Token <YOUR_TOKEN>" http://hostname/chat/rooms/:room_id/messages/:message_id/
   ```
 
-   **Show localization data**
+**Send message data**
+----
+  Returns json data about send message.
+
+* **URL**
+
+  chat/message/new/
+
+* **Method:**
+
+  `POST`
+
+* **Header Params**
+
+  `Authorization: Token <AUTHORIZATION_TOKEN>`
+
+*  **URL Params**
+
+  None
+
+* **Data Params**
+
+    ```
+      {
+          "receiver": 2,
+          "message": "My message"
+      }
+    ```
+    
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** 
+    
+    ```
+      {
+          "id": 1,
+          "receiver": 2,
+          "room": {
+              "id": 1,
+              "receivers": [
+                  {
+                      "id": 1,
+                      "first_name": "Johnny",
+                      "gender": "Male",
+                      "background_color": "Orange",
+                      "job": "Graphic designer",
+                      "preferred_drink": "Wódka",
+                      "description": "I'm a painter you know."
+                  },
+                  {
+                      "id": 2,
+                      "first_name": "Joe",
+                      "gender": "Female",
+                      "background_color": "Red",
+                      "job": "Tester",
+                      "preferred_drink": "Amarena",
+                      "description": "I'm a painter you know."
+                  }
+              ]
+          },
+          "message": "Hi!",
+          "timestamp": "2020-12-03 16:12"
+      }
+    ```
+ 
+* **Error Response:**
+
+  * **Code:** 401 UNAUTHORIZED <br />
+    **Content:**
+    
+    ```
+      {
+        "detail": "Invalid token."
+      }
+    ```
+
+* **Sample Call:**
+
+  ```
+    curl -X POST -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Token <YOUR_TOKEN>" -d '{"receiver": <RECEIVER_ID>, "message": <MESSAGE>}' http://hostname/chat/message/new/
+  ```
+
+**Show localization data**
 ----
   Returns json data about nearby people.
 
@@ -374,10 +457,10 @@
   ```
     curl -i -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Token <YOUR_TOKEN>" http://hostname/localization/localizations/
   ```
-
-   **Show localization data**
+  
+  **Change localization data**
 ----
-  Returns json data about nearby people.
+  Returns json data about your updated location.
 
 * **URL**
 
@@ -385,7 +468,7 @@
 
 * **Method:**
 
-  `GET`
+  `POST`
 
 * **Header Params**
 
