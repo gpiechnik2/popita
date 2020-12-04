@@ -100,12 +100,7 @@
           "receivers": [
               {
                   "id": 1,
-                  "first_name": "Johnny",
-                  "gender": "Male",
-                  "background_color": "Blue",
-                  "job": "Graphic designer",
-                  "preferred_drink": "Amarena",
-                  "description": "I’m a painter you know. I can paint whatever I want. If you want to buy painting message."
+                  "first_name": "Johnny"
               }
           ]
       }
@@ -178,7 +173,7 @@
           "results": [
               {
                   "id": 1,
-                  "message": "My first message",
+                  "message": "My message",
                   "timestamp": "2020-11-20 21:11",
                   "receiver": 0
               }
@@ -255,25 +250,15 @@
               "receivers": [
                   {
                       "id": 1,
-                      "first_name": "Johnny",
-                      "gender": "Male",
-                      "background_color": "Blue",
-                      "job": "Graphic designer",
-                      "preferred_drink": "Amarena",
-                      "description": "I’m a painter you know. I can paint whatever I want. If you want to buy painting message."
+                      "first_name": "Johnny"
                   },
                   {
                       "id": 2,
-                      "first_name": "Ashley",
-                      "gender": "Female",
-                      "background_color": "Orange",
-                      "job": "Tester",
-                      "preferred_drink": "N/A",
-                      "description": "I’m a painter you know. I can paint whatever I want. If you want to buy painting message."
+                      "first_name": "Joe"
                   }
               ]
           },
-          "message": "My first message.",
+          "message": "My message.",
           "timestamp": "2020-11-20 21:11"
       }
     ```
@@ -330,8 +315,8 @@
 
     ```
       {
-          "receiver": 2,
-          "message": "My message"
+          "receiver": <Integer>,
+          "message": <String>
       }
     ```
     
@@ -349,25 +334,15 @@
               "receivers": [
                   {
                       "id": 1,
-                      "first_name": "Johnny",
-                      "gender": "Male",
-                      "background_color": "Orange",
-                      "job": "Graphic designer",
-                      "preferred_drink": "Wódka",
-                      "description": "I'm a painter you know."
+                      "first_name": "Johnny"
                   },
                   {
                       "id": 2,
-                      "first_name": "Joe",
-                      "gender": "Female",
-                      "background_color": "Red",
-                      "job": "Tester",
-                      "preferred_drink": "Amarena",
-                      "description": "I'm a painter you know."
+                      "first_name": "Joe"
                   }
               ]
           },
-          "message": "Hi!",
+          "message": "My message.",
           "timestamp": "2020-12-03 16:12"
       }
     ```
@@ -395,7 +370,7 @@
 
 * **URL**
 
-  localization/localizations/
+  localizations/
 
 * **Method:**
 
@@ -455,7 +430,7 @@
 * **Sample Call:**
 
   ```
-    curl -i -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Token <YOUR_TOKEN>" http://hostname/localization/localizations/
+    curl -i -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Token <YOUR_TOKEN>" http://hostname/localizations/
   ```
   
   **Change localization data**
@@ -464,7 +439,7 @@
 
 * **URL**
 
-  localization/localizations/
+  localizations/
 
 * **Method:**
 
@@ -480,7 +455,14 @@
 
 * **Data Params**
 
-  None
+    ```
+      {
+          "longitude": <Double>,
+          "latitude": <Double>,
+          "attitude": <Double>,
+          "location": <String>
+      }
+    ```
 
 * **Success Response:**
 
@@ -489,24 +471,16 @@
     
     ```
       {
-          "count": 1,
-          "next": null,
-          "previous": null,
-          "results": [
-              {
-                  "id": 1,
-                  "user": {
-                      "id": 2,
-                      "first_name": "Johnny"
-                  },
-                  "longitude": 22.001986,
-                  "latitude": 50.044788,
-                  "attitude": 1.0,
-                  "location": "Sienkiewicza 3/10, Rzeszów, Poland.",
-                  "timestamp": "2020-11-20 17:11",
-                  "distance": 0.08216830339470174
-              }
-          ]
+          "id": 1,
+          "user": {
+              "id": 1,
+              "first_name": "Johnny"
+          },
+          "longitude": 12.312,
+          "latitude": 1.342423,
+          "attitude": 12312.0,
+          "location": "Sienkiewicza 7/23 Rzeszów, Poland",
+          "timestamp": "2020-12-03 17:12"
       }
     ```
  
@@ -524,5 +498,5 @@
 * **Sample Call:**
 
   ```
-    curl -i -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Token <YOUR_TOKEN>" http://hostname/localization/localizations/
+    curl -X POST -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Token <YOUR_TOKEN>" -d '{"logitude": <LONGITUDE>, "latitude": <LATITUDE>, "attitude": <ATTITUDE>, "location": <LOCATION>}' http://hostname/localizations/
   ```
