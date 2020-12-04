@@ -7,7 +7,7 @@ class UserInfoSerializer(UserSerializer):
 
     class Meta:
         model = User
-        exclude = ('email', 'password', 'is_superuser', 'last_name', 'is_staff', 'date_joined', 'groups', 'user_permissions', 'last_login', 'is_active',)
+        exclude = ('gender', 'background_color', 'job', 'preferred_drink', 'description', 'email', 'password', 'is_superuser', 'last_name', 'is_staff', 'date_joined', 'groups', 'user_permissions', 'last_login', 'is_active',)
 
 class RoomSerializer(serializers.ModelSerializer):
 

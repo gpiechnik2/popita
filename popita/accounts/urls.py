@@ -8,7 +8,7 @@ router = DefaultRouter()
 router.register('profiles', UserProfileApiView, base_name = 'profiles')
 
 urlpatterns = [
-    path('', include('djoser.urls')),
+    #path('', include('djoser.urls')),
     path('', include('djoser.urls.authtoken')),
     path('', include(router.urls)),
     path('google/token/login/', GoogleJwtAuthToken.as_view()),

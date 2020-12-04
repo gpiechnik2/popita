@@ -245,7 +245,7 @@ class ExploreDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         val auth_token = sharedPreference.getString("auth_token", null)
 
         val ip = getString(R.string.server_ip)
-        val url = "http://$ip/localization/localization/"
+        val url = "http://$ip/localizations/"
 
         val latitude = location.latitude
         val longitude = location.longitude
