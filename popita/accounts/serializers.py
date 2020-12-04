@@ -9,12 +9,22 @@ class UserFacebookATSerializer(serializers.Serializer):
     access_token = serializers.CharField()
     facebookId = serializers.CharField()
 
-class UserCreateSerializer(UserCreateSerializer):
-    class Meta(UserCreateSerializer.Meta):
-        model = User
-        fields = ('id', 'email', 'first_name', 'password')
+class PasswordSerializer(serializers.Serializer):
+    current_password = serializers.CharField()
+    new_password = serializers.CharField()
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.Serializer):
+
+    email = serializers.EmailField(required = True)
+    first_name = serializers.CharField(required = False)
+    password = serializers.CharField()
+    re_password = serializers.CharField()
+
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'first_name', 'password', 're_password')
+
+class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'first_name', 'gender', 'background_color', 'job', 'preferred_drink', 'description')

@@ -104,7 +104,7 @@ class SettingsChangePasswordActivity : AppCompatActivity() {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                if (response.code == 204) {
+                if (response.code == 200) {
 
                     this@SettingsChangePasswordActivity.runOnUiThread(Runnable {
                         Toast.makeText(

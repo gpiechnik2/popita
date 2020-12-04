@@ -2,20 +2,92 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework import generics, viewsets
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
-from .serializers import UserSerializer, UserGoogleJWTSerializer, UserFacebookATSerializer
+from rest_framework.decorators import action, list_route
+
+from .serializers import UserProfileSerializer, UserGoogleJWTSerializer, UserFacebookATSerializer, UserSerializer, PasswordSerializer
 from .models import User
 
 import requests
 import jwt
 import json
 
+class UserViewSet(viewsets.ViewSet):
+
+    #register
+    @action(detail = True, methods = ['post'])
+    def create(self, request, *args, **kwargs):
+
+        #check if serializer is valid
+        serializer = UserSerializer(data = request.data)
+        if serializer.is_valid():
+
+            #check if user with posted email exists
+            email = serializer.validated_data['email']
+            users = User.objects.filter(email = email)
+
+            #if user with provided credentials exists, return status 409
+            if users:
+                return Response(status = status.HTTP_409_CONFLICT)
+
+            #check if password and re_password are the same
+            password = serializer.validated_data['password']
+            re_password = serializer.validated_data['re_password']
+
+            if password != re_password:
+                return Response(status = status.HTTP_400_BAD_REQUEST)
+
+            #create user with provided data
+            first_name = serializer.validated_data.get('first_name', '')
+            user = User.objects.create(email = email, first_name = first_name, password = password)
+
+            #return user token, if does not exist, create new before
+            token, created = Token.objects.get_or_create(user = user)
+            return Response({
+                'token': token.key
+            })
+
+        else:
+            return Response(serializer.errors,
+                            status = status.HTTP_400_BAD_REQUEST)
+
+    #set password
+    @action(detail = True, methods = ['post'], permission_classes=[IsAuthenticated])
+    def set_password(self, request, *args, **kwargs):
+
+        serializer = PasswordSerializer(data = request.data)
+        if serializer.is_valid():
+
+            #check if user is anonymous
+            user = self.request.user
+            if user.is_anonymous:
+                return Response(serializer.errors,
+                                status=status.HTTP_401_UNAUTHORIZED)
+
+            #check if validated data is the same
+            if user.password == serializer.current_password:
+                if serializer.current_password == serializer.new_password:
+                    user.set_password(serializer.data['new_password'])
+                    user.save()
+                    return Response(status = status.HTTP_200_OK)
+
+                else:
+                    return Response(serializer.errors,
+                                    status = status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(serializer.errors,
+                                status = status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(serializer.errors,
+                            status = status.HTTP_400_BAD_REQUEST)
+
+
 #get user profile info
 class UserProfileApiView(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticatedOrReadOnly,)
-    serializer_class = UserSerializer
+    serializer_class = UserProfileSerializer
     http_method_names = ['get', 'patch', 'head']
     queryset = User.objects.all()
 
@@ -34,6 +106,33 @@ class UserProfileApiView(viewsets.ModelViewSet):
             return Response(serializer.data, status = status.HTTP_200_OK)
 
         return Response(status = status.HTTP_404_NOT_FOUND)
+
+    #check user id
+    @list_route(methods=['get'], permission_classes=[IsAuthenticated])
+    def me(self, request):
+
+        #get current user
+        user = self.request.user
+
+        #check if is anonymous
+        if user.is_anonymous:
+            return Response(status = status.HTTP_401_UNAUTHORIZED)
+
+        #if not exists, return 400
+        if user:
+            return Response({
+                'user_id': user.id,
+                'first_name': user.first_name,
+                'gender': user.gender,
+                'background_color': user.background_color,
+                'job': user.job,
+                'preferred_drink': user.preferred_drink,
+                'description': user.description,
+
+            })
+        else:
+            return Response(status = status.HTTP_400_BAD_REQUEST)
+
 
 class GoogleJwtAuthToken(ObtainAuthToken):
 

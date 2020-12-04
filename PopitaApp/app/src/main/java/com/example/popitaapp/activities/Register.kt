@@ -90,6 +90,9 @@ class Register : AppCompatActivity() {
             override fun onResponse(call: Call, response: Response) {
                 this@Register.runOnUiThread(Runnable {
                     Toast.makeText(this@Register, "Your account has been created. Please log in.", Toast.LENGTH_SHORT).show()
+
+                    val intent = Intent(this@Register, Login_with_email::class.java)
+                    startActivity(intent)
                 })
             }
         })
