@@ -67,22 +67,21 @@ class UserViewSet(viewsets.ViewSet):
                                 status=status.HTTP_401_UNAUTHORIZED)
 
             #check if validated data is the same
-            if user.password == serializer.current_password:
-                if serializer.current_password == serializer.new_password:
-                    user.set_password(serializer.data['new_password'])
-                    user.save()
-                    return Response(status = status.HTTP_200_OK)
 
-                else:
-                    return Response(serializer.errors,
-                                    status = status.HTTP_400_BAD_REQUEST)
+            if not user.check_password(serializer.data.get("current_password")):
+                return Response({"current_password": ["Wrong password."]}, status = status.HTTP_400_BAD_REQUEST)
+
+            if serializer.data['current_password'] == serializer.data['new_password']:
+                user.set_password(serializer.data['new_password'])
+                user.save()
+                return Response(status = status.HTTP_200_OK)
+
             else:
                 return Response(serializer.errors,
                                 status = status.HTTP_400_BAD_REQUEST)
         else:
             return Response(serializer.errors,
                             status = status.HTTP_400_BAD_REQUEST)
-
 
 #get user profile info
 class UserProfileApiView(viewsets.ModelViewSet):
@@ -107,7 +106,7 @@ class UserProfileApiView(viewsets.ModelViewSet):
 
         return Response(status = status.HTTP_404_NOT_FOUND)
 
-    #check user id
+    #check user info
     @list_route(methods=['get'], permission_classes=[IsAuthenticated])
     def me(self, request):
 
