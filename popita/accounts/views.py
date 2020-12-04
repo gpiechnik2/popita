@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework import generics, viewsets
+from rest_framework import viewsets, mixins
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
@@ -28,9 +28,9 @@ class UserViewSet(viewsets.ViewSet):
             email = serializer.validated_data['email']
             users = User.objects.filter(email = email)
 
-            #if user with provided credentials exists, return status 409
+            #if user with given credentials exists, return status 409
             if users:
-                return Response(status = status.HTTP_409_CONFLICT)
+                return Response({"email": "User with given email already exists."}, status = status.HTTP_409_CONFLICT)
 
             #check if password and re_password are the same
             password = serializer.validated_data['password']
@@ -39,14 +39,14 @@ class UserViewSet(viewsets.ViewSet):
             if password != re_password:
                 return Response(status = status.HTTP_400_BAD_REQUEST)
 
-            #create user with provided data
+            #create user with given data
             first_name = serializer.validated_data.get('first_name', '')
             user = User.objects.create(email = email, first_name = first_name, password = password)
 
             #return user token, if does not exist, create new before
             token, created = Token.objects.get_or_create(user = user)
             return Response({
-                'token': token.key
+                'auth_token': token.key
             })
 
         else:
@@ -63,18 +63,18 @@ class UserViewSet(viewsets.ViewSet):
             #check if user is anonymous
             user = self.request.user
             if user.is_anonymous:
-                return Response(serializer.errors,
-                                status=status.HTTP_401_UNAUTHORIZED)
+                return Response({"User": "Anonymous users can not change user password."},
+                                status = status.HTTP_401_UNAUTHORIZED)
 
             #check if validated data is the same
 
             if not user.check_password(serializer.data.get("current_password")):
-                return Response({"current_password": ["Wrong password."]}, status = status.HTTP_400_BAD_REQUEST)
+                return Response({"current_password": "Wrong password."}, status = status.HTTP_400_BAD_REQUEST)
 
             if serializer.data['current_password'] == serializer.data['new_password']:
                 user.set_password(serializer.data['new_password'])
                 user.save()
-                return Response(status = status.HTTP_200_OK)
+                return Response({"password": "Password has been changed."}, status = status.HTTP_200_OK)
 
             else:
                 return Response(serializer.errors,
@@ -84,11 +84,12 @@ class UserViewSet(viewsets.ViewSet):
                             status = status.HTTP_400_BAD_REQUEST)
 
 #get user profile info
-class UserProfileApiView(viewsets.ModelViewSet):
+class UserProfileApiView(mixins.UpdateModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = UserProfileSerializer
-    http_method_names = ['get', 'patch', 'head']
+    http_method_names = ['get', 'patch']
     queryset = User.objects.all()
+
 
     def partial_update(self, request, pk):
 
@@ -132,7 +133,6 @@ class UserProfileApiView(viewsets.ModelViewSet):
         else:
             return Response(status = status.HTTP_400_BAD_REQUEST)
 
-
 class GoogleJwtAuthToken(ObtainAuthToken):
 
     serializer_class = UserGoogleJWTSerializer
@@ -175,7 +175,7 @@ class GoogleJwtAuthToken(ObtainAuthToken):
         #return user token, if does not exist, create new before
         token, created = Token.objects.get_or_create(user = user)
         return Response({
-            'token': token.key
+            'auth_token': token.key
         })
 
 class FacebookAccesToken(ObtainAuthToken):
@@ -221,5 +221,5 @@ class FacebookAccesToken(ObtainAuthToken):
         #return user token, if does not exist, create new before
         token, created = Token.objects.get_or_create(user = user)
         return Response({
-            'token': token.key
+            'auth_token': token.key
         })
