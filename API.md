@@ -634,7 +634,7 @@
       }
     ```
  
- * **Error Response:**
+* **Error Response:**
 
   * **Code:** 401 UNAUTHORIZED <br />
     **Content:**
@@ -695,7 +695,7 @@
       }
     ```
  
- * **Error Response:**
+* **Error Response:**
 
   * **Code:** 400 BAD REUQEST
     
@@ -733,7 +733,7 @@
 
   * **Code:** 204 <br />
     
- * **Error Response:**
+* **Error Response:**
 
   * **Code:** 401 UNAUTHORIZED <br />
     **Content:**
@@ -794,7 +794,7 @@
           "description": "I'm a painter you know."
       }
     ```    
- * **Error Response:**
+* **Error Response:**
 
   * **Code:** 401 UNAUTHORIZED <br />
     **Content:**
@@ -857,7 +857,7 @@
           "description": "I'm a painter you know."
       }
     ```    
- * **Error Response:**
+* **Error Response:**
 
   * **Code:** 401 UNAUTHORIZED <br />
     **Content:**
@@ -922,7 +922,7 @@
           "description": "I'm a painter you know."
       }
     ```    
- * **Error Response:**
+* **Error Response:**
 
   * **Code:** 400 BAD REQUEST 
     
@@ -977,7 +977,7 @@
           "description": "I'm a painter you know."
       }
     ```    
- * **Error Response:**
+* **Error Response:**
 
   * **Code:** 400 BAD REQUEST 
     
