@@ -51,9 +51,8 @@ class ExploreDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
         //Profile button
         profile_btn.setOnClickListener {
-            // get user profile info, and if response code == 200, start new activity
-            val user_id = getIntent().getIntExtra("user_id", 0)
-            getUserProfileInfo(user_id)
+            // get user profile info
+            getUserProfileInfo()
         }
 
         //Message button
@@ -308,14 +307,14 @@ class ExploreDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         })
     }
 
-    private fun getUserProfileInfo(user_id: Int) {
+    private fun getUserProfileInfo() {
 
         //get auth token
         val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
         val auth_token = sharedPreference.getString("auth_token", null)
 
         val ip = getString(R.string.server_ip)
-        val url = "http://$ip/auth/profiles/$user_id/"
+        val url = "http://$ip/auth/profiles/me/"
 
         val okHttpClient = OkHttpClient()
         val request = Request.Builder()
@@ -342,7 +341,7 @@ class ExploreDetailActivity : AppCompatActivity(), OnMapReadyCallback {
                     val jsonObject = JSONObject(body)
 
                     //get wanted info
-                    val userProfileId = jsonObject.getInt("id")
+                    val userProfileId = jsonObject.getInt("user_id")
                     val userProfileFirstName = jsonObject.getString("first_name")
                     val userProfileGender = jsonObject.getString("gender")
                     val userProfileBackground = jsonObject.getString("background_color")
@@ -356,6 +355,7 @@ class ExploreDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
                     //start Profile activity with data below
                     val intent = Intent(this@ExploreDetailActivity, ProfileActivity::class.java)
+
                     intent.putExtra("user_id", userProfileId)
                     intent.putExtra("first_name", userProfileFirstName)
                     intent.putExtra("gender", userProfileGender)

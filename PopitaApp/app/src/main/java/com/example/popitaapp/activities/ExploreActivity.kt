@@ -89,7 +89,7 @@ class ExploreActivity : AppCompatActivity(), OnExploreItemClickListener {
 
         //profile button
         menuProfile.setOnClickListener {
-            getMyProfileId()
+            getMyProfileInfo()
         }
 
         //settings
@@ -387,79 +387,14 @@ class ExploreActivity : AppCompatActivity(), OnExploreItemClickListener {
         return address
     }
 
-    fun getMyProfileId() {
+    fun getMyProfileInfo() {
 
         //get auth token
         val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
         val auth_token = sharedPreference.getString("auth_token", null)
 
         val ip = getString(R.string.server_ip)
-        val url = "http://$ip/auth/users/me/"
-
-        val okHttpClient = OkHttpClient()
-        val request = Request.Builder()
-                .url(url)
-                .header("Authorization", "Token " + auth_token.toString())
-                .build()
-
-        okHttpClient.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                this@ExploreActivity.runOnUiThread(Runnable {
-                    Toast.makeText(
-                            this@ExploreActivity,
-                            "Unexpected problem.",
-                            Toast.LENGTH_SHORT
-                    ).show()
-                })
-                println(e)
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                if (response.code == 200) {
-
-                    //get user id from response
-                    val body = response.body?.string()
-                    val jsonObject = JSONObject(body)
-                    val user_id = jsonObject.getInt("id")
-
-                    getMyProfileInfo(user_id)
-
-                } else if (response.code == 400) {
-                    this@ExploreActivity.runOnUiThread(Runnable {
-                        Toast.makeText(
-                                this@ExploreActivity,
-                                "Unexpected problem. Please log in again.",
-                                Toast.LENGTH_SHORT
-                        ).show()
-
-                        val intent = Intent(this@ExploreActivity, MainActivity::class.java)
-                        startActivity(intent);
-                    })
-
-                } else if (response.code == 401) {
-                    this@ExploreActivity.runOnUiThread(Runnable {
-                        Toast.makeText(
-                                this@ExploreActivity,
-                                "Unexpected problem. Please log in again.",
-                                Toast.LENGTH_SHORT
-                        ).show()
-
-                        val intent = Intent(this@ExploreActivity, MainActivity::class.java)
-                        startActivity(intent);
-                    })
-                }
-            }
-        })
-    }
-
-    fun getMyProfileInfo(user_id: Int) {
-
-        //get auth token
-        val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
-        val auth_token = sharedPreference.getString("auth_token", null)
-
-        val ip = getString(R.string.server_ip)
-        val url = "http://$ip/auth/profiles/$user_id/"
+        val url = "http://$ip/auth/profiles/me/"
 
         val okHttpClient = OkHttpClient()
         val request = Request.Builder()
@@ -487,6 +422,7 @@ class ExploreActivity : AppCompatActivity(), OnExploreItemClickListener {
                     val jsonObject = JSONObject(body)
 
                     //val user_id = jsonObject.getInt("id")
+                    val user_id = jsonObject.getString("user_id")
                     val first_name = jsonObject.getString("first_name")
                     val gender = jsonObject.getString("gender")
                     val background_color = jsonObject.getString("background_color")

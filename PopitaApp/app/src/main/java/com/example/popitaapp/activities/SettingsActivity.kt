@@ -1,13 +1,11 @@
 package com.example.popitaapp.activities
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.example.popitaapp.R
-import kotlinx.android.synthetic.main.activity_room.*
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.activity_settings.menuExplore
 import kotlinx.android.synthetic.main.activity_settings.menuMessages
@@ -25,7 +23,7 @@ class SettingsActivity : AppCompatActivity() {
         //profile activity on click
         profile.setOnClickListener {
             val intent = Intent(this, SettingsChangeProfileActivity::class.java)
-            getMyProfileId(intent)
+            getMyProfileInfo(intent)
         }
 
         //password activity on click
@@ -58,8 +56,8 @@ class SettingsActivity : AppCompatActivity() {
 
         //profile button
         menuProfile.setOnClickListener {
-            val intent = Intent(this, MyProfileActivity::class.java)
-            getMyProfileId(intent)
+            val intent = Intent(this@SettingsActivity, MyProfileActivity::class.java)
+            getMyProfileInfo(intent)
         }
 
         menuSettings.setOnClickListener {
@@ -69,79 +67,14 @@ class SettingsActivity : AppCompatActivity() {
 
     }
 
-    fun getMyProfileId(intent: Intent) {
+    fun getMyProfileInfo(intent: Intent) {
 
         //get auth token
         val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
         val auth_token = sharedPreference.getString("auth_token", null)
 
         val ip = getString(R.string.server_ip)
-        val url = "http://$ip/auth/users/me/"
-
-        val okHttpClient = OkHttpClient()
-        val request = Request.Builder()
-            .url(url)
-            .header("Authorization", "Token " + auth_token.toString())
-            .build()
-
-        okHttpClient.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                this@SettingsActivity.runOnUiThread(Runnable {
-                    Toast.makeText(
-                        this@SettingsActivity,
-                        "Unexpected problem.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                })
-                println(e)
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                if (response.code == 200) {
-
-                    //get user id from response
-                    val body = response.body?.string()
-                    val jsonObject = JSONObject(body)
-                    val user_id = jsonObject.getInt("id")
-
-                    getMyProfileInfo(user_id, intent)
-
-                } else if (response.code == 400) {
-                    this@SettingsActivity.runOnUiThread(Runnable {
-                        Toast.makeText(
-                            this@SettingsActivity,
-                            "Unexpected problem. Please log in again.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-
-                        val newintent = Intent(this@SettingsActivity, MainActivity::class.java)
-                        startActivity(newintent);
-                    })
-
-                } else if (response.code == 401) {
-                    this@SettingsActivity.runOnUiThread(Runnable {
-                        Toast.makeText(
-                            this@SettingsActivity,
-                            "Unexpected problem. Please log in again.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-
-                        val newintent = Intent(this@SettingsActivity, MainActivity::class.java)
-                        startActivity(newintent);
-                    })
-                }
-            }
-        })
-    }
-
-    fun getMyProfileInfo(user_id: Int, intent: Intent) {
-
-        //get auth token
-        val sharedPreference =  getSharedPreferences("AUTH_TOKEN", Context.MODE_PRIVATE)
-        val auth_token = sharedPreference.getString("auth_token", null)
-
-        val ip = getString(R.string.server_ip)
-        val url = "http://$ip/auth/profiles/$user_id/"
+        val url = "http://$ip/auth/profiles/me/"
 
         val okHttpClient = OkHttpClient()
         val request = Request.Builder()
@@ -169,6 +102,7 @@ class SettingsActivity : AppCompatActivity() {
                     val jsonObject = JSONObject(body)
 
                     //val user_id = jsonObject.getInt("id")
+                    val user_id = jsonObject.getString("user_id")
                     val first_name = jsonObject.getString("first_name")
                     val gender = jsonObject.getString("gender")
                     val background_color = jsonObject.getString("background_color")
