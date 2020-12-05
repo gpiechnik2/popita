@@ -5,7 +5,7 @@ from rest_framework import viewsets, mixins
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import action, list_route
+from rest_framework.decorators import action
 
 from .serializers import UserProfileSerializer, UserGoogleJWTSerializer, UserFacebookATSerializer, UserSerializer, PasswordSerializer
 from .models import User
@@ -108,7 +108,7 @@ class UserProfileApiView(mixins.UpdateModelMixin, mixins.RetrieveModelMixin, vie
         return Response(status = status.HTTP_404_NOT_FOUND)
 
     #check user info
-    @list_route(methods=['get'], permission_classes=[IsAuthenticated])
+    @action(detail = False, methods = ['get'], permission_classes=[IsAuthenticated])
     def me(self, request):
 
         #get current user

@@ -4,10 +4,10 @@ from rest_framework.routers import SimpleRouter
 from rest_framework_nested import routers
 
 router = SimpleRouter()
-router.register('rooms', RoomViewSet, base_name = 'rooms')
+router.register('rooms', RoomViewSet, basename = 'rooms')
 
 message_router = routers.NestedSimpleRouter(router, 'rooms', lookup = 'rooms')
-message_router.register('messages', MessageViewSet, base_name='room-messages')
+message_router.register('messages', MessageViewSet, basename = 'room-messages')
 
 urlpatterns = [
     path('', include(router.urls)),

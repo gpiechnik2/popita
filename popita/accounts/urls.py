@@ -5,7 +5,7 @@ from rest_framework import routers, serializers, viewsets
 from .views import UserViewSet, UserProfileApiView, GoogleJwtAuthToken, FacebookAccesToken
 
 router = SimpleRouter()
-router.register('profiles', UserProfileApiView, base_name = 'profiles')
+router.register('profiles', UserProfileApiView, basename = 'profiles')
 
 urlpatterns = [
     path('users/', UserViewSet.as_view({
