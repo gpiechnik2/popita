@@ -51,8 +51,6 @@ python3 manage.py migrate
 python3 manage.py
 ```
 
-## TODO
-
 ## Documentation
 For detailed rest API documentation, please go [here](https://github.com/gpiechnik2/popita/blob/master/API.md).
 
