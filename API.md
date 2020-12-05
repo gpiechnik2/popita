@@ -938,7 +938,7 @@
 
 * **URL**
 
-  auth/google/token/login/
+  auth/facebook/token/login/
 
 * **Method:**
 
