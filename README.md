@@ -54,4 +54,7 @@ python3 manage.py
 ## Documentation
 For detailed rest API documentation, please go [here](https://github.com/gpiechnik2/popita/blob/master/API.md).
 
+## External resources
+In project has been used resources from [Contra](https://contrauikit.com/?ref=uistoredesign?ref=uistore.design) and [Open peeps](https://openpeeps.com/).
+
 ## License
