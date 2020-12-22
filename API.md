@@ -913,13 +913,7 @@
     
     ```
       {
-          "user_id": 1,
-          "first_name": "Johnny",
-          "gender": "Male",
-          "background_color": "Orange",
-          "job": "Tester",
-          "preferred_drink": "Amarena",
-          "description": "I'm a painter you know."
+          "auth_token": "38c5cba2c678551ad3077dfbcef4015cec12ab47"
       }
     ```    
 * **Error Response:**
@@ -968,13 +962,7 @@
     
     ```
       {
-          "user_id": 1,
-          "first_name": "Johnny",
-          "gender": "Male",
-          "background_color": "Orange",
-          "job": "Tester",
-          "preferred_drink": "Amarena",
-          "description": "I'm a painter you know."
+          "auth_token": "38c5cba2c678551ad3077dfbcef4015cec12ab47"
       }
     ```    
 * **Error Response:**
