@@ -652,7 +652,7 @@
 * **Sample Call:**
 
   ```
-    curl -X POST -H "Accept: application/json" -H "Content-Type: application/json" -d '{"email": <EMAIL>, "password": <PASSWORD>, "re_password": <PASSWORD>}' http://hostname/auth/users/
+    curl -X POST -H "Accept: application/json" -H "Content-Type: application/json" -d '{"current_password": <PASSWORD>, "new_password": <PASSWORD>}' http://hostname/auth/users/set_password/
   ```
 
 **Login user**
