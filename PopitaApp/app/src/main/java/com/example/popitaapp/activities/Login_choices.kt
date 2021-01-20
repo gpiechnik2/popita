@@ -123,7 +123,7 @@ class Login_choices : AppCompatActivity() {
                     FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS)
                 }
 
-                val access_token = token.toString()
+                val access_token = token?.token.toString()
 
                 //Log.i("FACEBOOK ACCES TOKEN: ", token.toString())
 
@@ -150,7 +150,6 @@ class Login_choices : AppCompatActivity() {
         val jsonObject = JSONObject()
         jsonObject.put("access_token", access_token)
         jsonObject.put("facebookId", facebookId)
-
 
         val body = jsonObject.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
 
