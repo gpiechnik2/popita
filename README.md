@@ -8,9 +8,9 @@ Popita is an android mobile app that is completly based on rest API. The app giv
 - Login and account registration.
 - Authentication via provider(Google or Facebook).
 - Sending, receiving, and filtering messages from other users.
-- Setting the user locations in real time.
+- Setting and getting the users locations in real time.
 - Displaying recently active users within 5km(8 miles).
-- Edit a user profile and credentials.
+- Editing a user profile and credentials.
 - Viewing users profiles.
 
 ## What's included
