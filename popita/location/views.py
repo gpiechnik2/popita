@@ -31,12 +31,9 @@ class LocalizationViewSet(viewsets.ModelViewSet):
         self_latitude = self_localization[0].latitude
         self_longitude = self_localization[0].longitude
 
-        # TODO: Change on production
         #filter last 8 hours
-        #time = datetime.now() - timedelta(hours = 8)
-        #localizations = Localization.objects.filter(timestamp__gt = time)
-
-        localizations = Localization.objects.all()
+        time = datetime.now() - timedelta(hours = 8)
+        localizations = Localization.objects.filter(timestamp__gt = time)
 
         #check if person is < 5km from you
         localization_response = []
