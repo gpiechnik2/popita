@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework import viewsets, mixins
+from rest_framework import viewsets, mixins, renderers
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
@@ -138,6 +138,7 @@ class UserProfileApiView(mixins.UpdateModelMixin, mixins.RetrieveModelMixin, vie
 class GoogleJwtAuthToken(ObtainAuthToken):
 
     serializer_class = UserGoogleJWTSerializer
+    renderer_classes = [renderers.JSONRenderer]
 
     def post(self, request, *args, **kwargs):
 

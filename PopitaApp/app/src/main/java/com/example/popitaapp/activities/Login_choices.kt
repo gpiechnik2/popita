@@ -233,7 +233,6 @@ class Login_choices : AppCompatActivity() {
             val account = completedTask.getResult(
                     ApiException::class.java
             )
-
             val googleIdToken = account?.idToken ?: ""
             Log.i("Google ID Token", googleIdToken)
 
