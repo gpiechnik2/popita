@@ -23,13 +23,10 @@
         <item>Green</item>
     </string-array>
 
-    <string name="facebook_app_id">164835301996637</string>
-    <string name="fb_login_protocol_scheme">fb164835301996637</string>
-    <string name ="web_client_id">310796535988-nhshm1tvbbll0p1gbkbnu16k8pg7pcl8.apps.googleusercontent.com</string>
-    <string name="maps_api_key">AIzaSyBl_hZ_7KFPtLRa7rjdAOLUAqZAIGX2MY4</string>
+    <string name="facebook_app_id"></string>
+    <string name="fb_login_protocol_scheme"></string>
+    <string name ="web_client_id"></string>
+    <string name="maps_api_key"></string>
     <string name="server_ip">http://127.0.0.1:8000/</string>
 
 </resources>
-
-
-
