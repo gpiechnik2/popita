@@ -892,7 +892,7 @@
   
 * **Header Params**
 
-  `Authorization: Token <AUTHORIZATION_TOKEN>`
+  None
 
 *  **URL Params**
 
@@ -940,7 +940,7 @@
   
 * **Header Params**
 
-  `Authorization: Token <AUTHORIZATION_TOKEN>`
+  None
 
 *  **URL Params**
 
