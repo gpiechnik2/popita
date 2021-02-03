@@ -173,7 +173,8 @@ class SettingsChangeProfileActivity : AppCompatActivity() {
         val auth_token = sharedPreference.getString("auth_token", null)
 
         val ip = getString(R.string.server_ip)
-        val url = "http://$ip/chat/rooms/"
+        val user_id = getIntent().getIntExtra("user_id", 0)
+        val url = "http://$ip/auth/profiles/$user_id/"
 
         val jsonObject = JSONObject()
 

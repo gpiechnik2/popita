@@ -27,6 +27,6 @@
     <string name="fb_login_protocol_scheme"></string>
     <string name ="web_client_id"></string>
     <string name="maps_api_key"></string>
-    <string name="server_ip">http://127.0.0.1:8000/</string>
+    <string name="server_ip"></string>
 
 </resources>

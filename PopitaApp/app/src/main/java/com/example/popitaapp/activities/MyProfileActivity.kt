@@ -58,6 +58,7 @@ class MyProfileActivity : AppCompatActivity() {
             val intent = Intent(this, SettingsChangeProfileActivity::class.java)
 
             //needed info for EditProfileActivity
+            val user_id = getIntent().getStringExtra("user_id")
             val job = getIntent().getStringExtra("job")
             val first_name = getIntent().getStringExtra("first_name")
             val description = getIntent().getStringExtra("description")
@@ -65,6 +66,7 @@ class MyProfileActivity : AppCompatActivity() {
             val background_color = getIntent().getStringExtra("background_color")
             val gender = getIntent().getStringExtra("gender")
 
+            intent.putExtra("id", user_id)
             intent.putExtra("job", job)
             intent.putExtra("first_name", first_name)
             intent.putExtra("description", description)

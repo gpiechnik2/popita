@@ -297,7 +297,7 @@ class RoomDetailActivity : AppCompatActivity() {
 
     fun getMessages(results: JSONObject) {
 
-        //clear not to duplicate message records
+        //clear to not to duplicate message records
         messages.clear()
 
         val message_results = results.getJSONArray("results")
@@ -349,6 +349,9 @@ class RoomDetailActivity : AppCompatActivity() {
             }
 
             adapter.notifyDataSetChanged()
+
+            //update recyclerview
+            rv.invalidate()
 
         })
 

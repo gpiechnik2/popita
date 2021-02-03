@@ -79,6 +79,9 @@ class Login_choices : AppCompatActivity() {
             }
 
             override fun onError(exception: FacebookException) {
+                if (AccessToken.getCurrentAccessToken() != null) {
+                    LoginManager.getInstance().logOut();
+                }
                 Toast.makeText(this@Login_choices, exception.message, Toast.LENGTH_LONG).show()
             }
         })
@@ -125,7 +128,7 @@ class Login_choices : AppCompatActivity() {
 
                 val access_token = token?.token.toString()
 
-                //Log.i("FACEBOOK ACCES TOKEN: ", token.toString())
+                Log.i("FACEBOOK ACCES TOKEN: ", token.toString())
 
                 // Facebook Id
                 if (jsonObject.has("id")) {
