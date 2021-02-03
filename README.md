@@ -58,7 +58,7 @@ For detailed rest API documentation, please go [here](https://github.com/gpiechn
 In project has been used resources from [Contra](https://contrauikit.com/?ref=uistoredesign?ref=uistore.design) and [Open peeps](https://openpeeps.com/).
 
 ## License
-Copyright 2020 Grzegorz Piechnik
+Copyright 2021 Grzegorz Piechnik
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
